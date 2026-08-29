@@ -70,6 +70,7 @@ object ISA {
     def ATTENTION_VALUE_COMPUTE = 2.U
     def ATTENTION_LSE_NORM_SCALE = 3.U
     def ATTENTION_LSE_NORM = 4.U
+    def TENSOR_TRANSPOSE = 5.U
   }
 
   object DMAFunc {

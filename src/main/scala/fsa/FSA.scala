@@ -32,7 +32,8 @@ case class FSAParams(
       ISA.MxFunc.ATTENTION_SCORE_COMPUTE -> new AttentionScoreExecPlan(rows, cols, ap),
       ISA.MxFunc.ATTENTION_VALUE_COMPUTE -> new AttentionValueExecPlan(rows, cols),
       ISA.MxFunc.ATTENTION_LSE_NORM_SCALE -> new AttentionLseNormScale(rows, cols, ap),
-      ISA.MxFunc.ATTENTION_LSE_NORM -> new AttentionLseNorm(rows, cols)
+      ISA.MxFunc.ATTENTION_LSE_NORM -> new AttentionLseNorm(rows, cols),
+      ISA.MxFunc.TENSOR_TRANSPOSE -> new TensorTransposeExecPlan(rows, cols),
     )
   },
   unitTestBuild: Boolean = false

@@ -283,6 +283,8 @@ class AttentionScoreExecPlan(val rows: Int, val cols: Int, ap: HasArithmeticPara
 
 class AttentionValueExecPlan(val rows: Int, val cols: Int) extends ExecutionPlan {
   /****** O = P @ V ******/
+  // Prime SA up/down pipe (pipe_no_reset bits hold $random until valid=1).
+  setComparator(0, 1, CmpControlCmd.PROP_ZERO)
   // read V from spad
   readScratchPad(0, rows, None)
   // release the semaphore immediately at the last cycle of reading sram
@@ -330,3 +332,15 @@ class AttentionLseNorm(val rows: Int, val cols: Int) extends ExecutionPlan {
   // This is a blocking instruction
   setConflictFree(rows)
 }
+
+
+/* For now this is a no-op placeholder. The FSM idles for 1 cycle then will complete. 
+   Transpose implemented via DMA not the SA */
+class TensorTransposeExecPlan(val rows: Int, val cols: Int) extends ExecutionPlan {
+  releaseSemaphore(0)
+  // acc timer runs for 1 cycle, giving computeMaxCycle = 0 and accumulateMaxCycle = 1
+  // which satisfies the require in useAccTimer for setConflictFree(0)
+  readAccRAM(0, 1, Some(ConstRead(AccConstIdx.ZERO, revIn = false, revOut = false, delay = false)), rmw = false)
+  setConflictFree(0)
+}
+
