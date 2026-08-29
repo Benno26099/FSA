@@ -24,7 +24,7 @@ class DMAImpl(outer: DMA) extends LazyModuleImp(outer) {
 
   val io = IO(new Bundle {
     val inst = Flipped(Decoupled(new DMAInstruction(sramAddrWidth, memAddrWidth)))
-    // one for load and one for storek
+    // one for load and one for store
     val semaphoreAcquire = Vec(2, Decoupled(new Semaphore))
     val semaphoreRelease = Vec(2, Valid(new Semaphore))
     val spadWrite = Vec(nPorts, new SRAMNarrowWrite(sramAddrWidth, outer.spadElemWidth, outer.spadRowSize, beatBytes))
@@ -46,7 +46,9 @@ class DMAImpl(outer: DMA) extends LazyModuleImp(outer) {
   dmaReq.bits.acquireSemValue := io.inst.bits.header.acquireSemValue
   dmaReq.bits.releaseValid := io.inst.bits.header.releaseValid
   dmaReq.bits.releaseSemValue := io.inst.bits.header.releaseSemValue
+  /* sets isLoad true for the TRANSPOSE_SRAM */
   dmaReq.bits.isLoad := io.inst.bits.header.func === DMAFunc.LD_SRAM || io.inst.bits.header.func === DMAFunc.TRANSPOSE_SRAM
+  /* Creates a func field that sets TRANSPOSE_SRAM */
   dmaReq.bits.isTranspose := io.inst.bits.header.func === DMAFunc.TRANSPOSE_SRAM
   io.inst.ready := dmaReq.ready
 

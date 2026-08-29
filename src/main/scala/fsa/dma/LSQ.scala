@@ -175,7 +175,7 @@ class LoadQueue[E <: Data]
   val colCnt = RegInit(0.U(log2Up(spadWrite.dataSize).W))
   val rowBufValid = RegInit(false.B)
 
-  //* Per-Entry AR/R-side state */
+  /* Per-Entry AR/R-side state */
   val memAddrWidth = edge.bundle.addrBits
   val MAX_COL_BITS = 6
   /* baseAddr = original memory base address for each queue entry. AR mutates the memAddr as it walks
@@ -245,6 +245,8 @@ class LoadQueue[E <: Data]
     when(arEntry.req.repeat === 1.U) {
       arPtr.inc()
     }
+    /* empty requestes (repeat = 0) from the RequestPartitioner that is then routed to port 0 only for the transpose
+       without this arPtr will stall perpetually on empty entries and will deadlock next enqueue */
   } .elsewhen(valid(arPtr) && arEntry.req.repeat === 0.U) {
     arPtr.inc()
   }
@@ -322,7 +324,7 @@ class LoadQueue[E <: Data]
       rPtr.inc()
     }
   }
-
+/* Applies to both transpose and !transpose paths. Prevents rPtr deadlock and R misroutes. */
 }
   when(valid(rPtr) && rEntry.rRepeat === 0.U) {
     r.ready := false.B
