@@ -1,3 +1,6 @@
+# ---------------------------------------------------------------------------
+# Upstream FSA .gitignore (unchanged)
+# ---------------------------------------------------------------------------
 target
 .metals
 .scala-build
@@ -6,3 +9,53 @@ build
 *.vcd
 *.fst
 *.log
+
+# ---------------------------------------------------------------------------
+# Thesis-only additions (fork-local)
+# ---------------------------------------------------------------------------
+
+# Personal thesis materials — investigation log, roadmap, test-fix reference.
+# Kept out of the fork; maintained separately.
+docs/thesis/
+
+# Scala / SBT build state not already covered above
+project/target/
+project/project/
+project/build.properties
+.bloop/
+.bsp/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.python-version
+
+# IDE / editor
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Verilator waveforms / dumps not covered by *.vcd or *.fst
+*.wlf
+*.wave
+transcript
+
+# Local scratch / notes not intended for the fork.
+# Uncomment if you keep scratch files at the repo root and don't want them tracked.
+# scratch/
+# TODO.md
+# NOTES.md
