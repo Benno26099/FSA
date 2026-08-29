@@ -75,6 +75,9 @@ object ISA {
   object DMAFunc {
     def LD_SRAM = 0.U
     def ST_SRAM = 1.U
+    /* Added an ISA instruction for the FSA Architecture to 
+       be execute */
+    def TRANSPOSE_SRAM = 2.U
   }
 
 }

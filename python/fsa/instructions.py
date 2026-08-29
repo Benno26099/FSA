@@ -18,6 +18,7 @@ class MxFunc(Enum):
 class DMAFunc(Enum):
     LD_SRAM = 0
     ST_SRAM = 1
+    TRANSPOSE_SRAM = 2
 
 @dataclass
 class InstructionField:

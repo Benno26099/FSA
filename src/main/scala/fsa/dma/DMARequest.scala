@@ -14,6 +14,9 @@ class DMARequest(val sramAddrWidth: Int, val memAddrWidth: Int) extends Bundle w
   val repeat = UInt(DMA_REPEAT_BITS.W)
   val size = UInt(DMA_SIZE_BITS.W)
   val isLoad = Bool()
+  /* Added boolean for whether or not data being loaded into DMA needs
+     to be transposed or not */
+  val isTranspose = Bool()
 }
 
 // Partition the request into `n` parts across `repeat`
@@ -42,9 +45,22 @@ class RequestPartitioner(reqGen: DMARequest, n: Int) extends Module {
       val addrIncr = (initialRepeatCnt * (i.U +& Mux(addRem, i.U, remainingRepeatCnt))).zext
       when(io.in.fire) {
         req := io.in.bits
-        req.repeat := repeatCnt
-        req.memAddr := (io.in.bits.memAddr.asSInt + addrIncr * io.in.bits.memStride).asUInt
-        req.sramAddr := (io.in.bits.sramAddr.asSInt + addrIncr * io.in.bits.sramStride).asUInt
+        /* Due to TRANSPOSE needing to access data in a column-major pattern. 
+           The linear partitioner cannot express this. Requires a routing the whole request
+           through to port 0, and have the other ports have an empty request, with repeat = 0.
+           This autocompletes the empty-entry skip in the LoadQueue */
+        
+        when(io.in.bits.isTranspose) {
+          if (i == 0) {
+            req.repeat := io.in.bits.repeat
+          } else {
+            req.repeat := 0.U
+          }
+        } .otherwise {
+          req.repeat := repeatCnt
+          req.memAddr := (io.in.bits.memAddr.asSInt + addrIncr * io.in.bits.memStride).asUInt
+          req.sramAddr := (io.in.bits.sramAddr.asSInt + addrIncr * io.in.bits.sramStride).asUInt
+        }
       }
     }
 

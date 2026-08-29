@@ -46,7 +46,8 @@ class DMAImpl(outer: DMA) extends LazyModuleImp(outer) {
   dmaReq.bits.acquireSemValue := io.inst.bits.header.acquireSemValue
   dmaReq.bits.releaseValid := io.inst.bits.header.releaseValid
   dmaReq.bits.releaseSemValue := io.inst.bits.header.releaseSemValue
-  dmaReq.bits.isLoad := io.inst.bits.header.func === DMAFunc.LD_SRAM
+  dmaReq.bits.isLoad := io.inst.bits.header.func === DMAFunc.LD_SRAM || io.inst.bits.header.func === DMAFunc.TRANSPOSE_SRAM
+  dmaReq.bits.isTranspose := io.inst.bits.header.func === DMAFunc.TRANSPOSE_SRAM
   io.inst.ready := dmaReq.ready
 
   val partitioner = Module(new RequestPartitioner(chiselTypeOf(dmaReq.bits), nPorts))

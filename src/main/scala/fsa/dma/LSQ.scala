@@ -164,16 +164,57 @@ class LoadQueue[E <: Data]
   val ar = IO(Decoupled(new AXI4BundleAR(edge.bundle)))
   val r = IO(Flipped(Decoupled(new AXI4BundleR(edge.bundle))))
   val spadWrite = IO(spadWriteGen.cloneType)
+  val elemBytes = (spadWrite.elemWidth / 8).U
+
+  /* Row Buffers and Column Count registers 
+     rowBuf = Vector of elements that holds the tranposed row. Before flushed to Spad
+     colCnt = num elements collected in rowBuf so far
+     rowBufValid = flag rowBuf ready to flush 
+     ONLY ONE ROW AT A TIME */
+  val rowBuf = Reg(Vec(spadWrite.dataSize, UInt(spadWrite.elemWidth.W)))
+  val colCnt = RegInit(0.U(log2Up(spadWrite.dataSize).W))
+  val rowBufValid = RegInit(false.B)
+
+  //* Per-Entry AR/R-side state */
+  val memAddrWidth = edge.bundle.addrBits
+  val MAX_COL_BITS = 6
+  /* baseAddr = original memory base address for each queue entry. AR mutates the memAddr as it walks
+     arColIdx = source coulumn the AR side reads for
+     rowCnt = row the current column the AR is on
+     rColIdx = independent R-side column tracker. AR advances faster than R. */
+
+  val baseAddr = Reg(Vec(nInflight, UInt(memAddrWidth.W)))
+  val arColIdx = RegInit(VecInit(Seq.fill(nInflight)(0.U(MAX_COL_BITS.W))))
+  val rowCnt   = RegInit(VecInit(Seq.fill(nInflight)(0.U(DMA_SIZE_BITS.W))))
+  val rColIdx  = RegInit(VecInit(Seq.fill(nInflight)(0.U(MAX_COL_BITS.W))))
+
+  /* Initialize per-entry transpose state on enqueue */
+  when(io.req.fire) {
+    baseAddr(enqPtr.value) := io.req.bits.memAddr
+    arColIdx(enqPtr.value) := 0.U
+    rowCnt(enqPtr.value) := 0.U
+    rColIdx(enqPtr.value) := 0.U
+  }
 
   val arPtr = Counter(nInflight)
   val rPtr = Counter(nInflight)
 
   // read address
   val arEntry = entries(arPtr.value)
+  val arBaseAddr = baseAddr(arPtr.value)
+  val arColIdxCur = arColIdx(arPtr.value)
+  val arSrcRows = arEntry.req.size
   ar.valid := valid(arPtr) && arEntry.req.repeat =/= 0.U
-  ar.bits.addr := arEntry.req.memAddr
+
+  /* AR addresses can be element-aligned for transposing, but the
+     AXI slave requires beat-aligned addresses. Need to mask off
+     the low bits and the per-element offset is recovered later via memAddr LSBs. */ 
+  val beatAlignMask = ~((edge.slave.beatBytes - 1).U(memAddrWidth.W))
+  ar.bits.addr := Mux(arEntry.req.isTranspose,
+                      arEntry.req.memAddr & beatAlignMask,
+                      arEntry.req.memAddr)
   ar.bits.id := 0.U
-  ar.bits.len := (arEntry.req.size >> log2Up(edge.slave.beatBytes)).asUInt - 1.U
+  ar.bits.len := Mux(arEntry.req.isTranspose,0.U, (arEntry.req.size >> log2Up(edge.slave.beatBytes)).asUInt - 1.U)
   ar.bits.size := log2Up(edge.slave.beatBytes).U
   ar.bits.burst := AXI4Parameters.BURST_INCR
   ar.bits.lock := 0.U
@@ -183,15 +224,50 @@ class LoadQueue[E <: Data]
 
   when(ar.fire) {
     arEntry.req.repeat := arEntry.req.repeat - 1.U
-    arEntry.req.memAddr := (arEntry.req.memAddr.asSInt + arEntry.req.memStride).asUInt
+    when(arEntry.req.isTranspose) {
+      val colDone = rowCnt(arPtr.value) === arSrcRows - 1.U
+
+      when(colDone) {
+        // resets row counter as to start at top of rows again
+        rowCnt(arPtr.value) := 0.U
+        // increments column number
+        arColIdx(arPtr.value) := arColIdxCur + 1.U
+        // jumps address to start of next column
+        arEntry.req.memAddr := arBaseAddr + ((arColIdxCur +& 1.U) * elemBytes)
+      } .otherwise {
+        // iterate rows
+        rowCnt(arPtr.value) := rowCnt(arPtr.value) + 1.U
+        arEntry.req.memAddr := (arEntry.req.memAddr.asSInt + arEntry.req.memStride).asUInt
+      }
+    } .otherwise {
+      arEntry.req.memAddr := (arEntry.req.memAddr.asSInt + arEntry.req.memStride).asUInt
+    }
     when(arEntry.req.repeat === 1.U) {
       arPtr.inc()
     }
+  } .elsewhen(valid(arPtr) && arEntry.req.repeat === 0.U) {
+    arPtr.inc()
   }
 
-  // read data
+  val rEntry = entries(rPtr.value)
+  val isTranspose = rEntry.req.isTranspose
+  
   val nBeats = spadWrite.nSubBanks
   val rBeatCnt = RegInit(0.U(log2Up(nBeats).W))
+ 
+  spadWrite.valid := false.B
+  spadWrite.addr := 0.U
+  spadWrite.data := DontCare
+  spadWrite.subBankIdx := 0.U
+  r.ready := false.B
+
+  when(r.fire) {
+  assert(r.bits.id === 0.U, "Currently only one ID is supported")
+  assert(r.bits.resp === AXI4Parameters.RESP_OKAY, "Currently only OKAY response is supported")
+}
+
+  
+  when(!isTranspose) {
   spadWrite.valid := r.valid
   spadWrite.addr := entries(rPtr.value).req.sramAddr
   spadWrite.data := r.bits.data.asTypeOf(spadWrite.data)
@@ -199,9 +275,6 @@ class LoadQueue[E <: Data]
   r.ready := spadWrite.ready
 
   when(r.fire) {
-    val rEntry = entries(rPtr.value)
-    assert(r.bits.id === 0.U, "Currently only one ID is supported")
-    assert(r.bits.resp === AXI4Parameters.RESP_OKAY, "Currently only OKAY response is supported")
     rBeatCnt := Mux(r.bits.last, 0.U, rBeatCnt + 1.U)
     when(r.bits.last) {
       rEntry.rRepeat := rEntry.rRepeat - 1.U
@@ -210,5 +283,50 @@ class LoadQueue[E <: Data]
         rPtr.inc()
       }
     }
+  }
+  } .otherwise {
+/* Transpose Path */
+  /* Spad not written on every beat, accumulated in rowBuf first */ 
+  spadWrite.valid := rowBufValid
+  spadWrite.addr  := rEntry.req.sramAddr
+  spadWrite.data  := rowBuf
+  spadWrite.subBankIdx := 0.U
+  
+  r.ready := !rowBufValid
+
+  when(r.fire) {
+    val beatData = r.bits.data.asTypeOf(Vec(spadWrite.dataSize, UInt(spadWrite.elemWidth.W)))
+    /* AR advances memAddr every time it fires. When R returns, memAddr stale.
+      rColIdx dervies the element offset within the beat */
+    val elemBytesLog2 = log2Up(spadWrite.elemWidth / 8)
+    val beatBytesLog2 = log2Up(edge.slave.beatBytes)
+    val elemIdxBits = beatBytesLog2 - elemBytesLog2
+    val elemIdx = rColIdx(rPtr.value)(elemIdxBits - 1, 0)
+    rowBuf(colCnt) := beatData(elemIdx)
+
+    val lastCol = colCnt === (spadWrite.dataSize - 1).U
+    colCnt := Mux(lastCol, 0.U, colCnt + 1.U)
+    when(lastCol) {
+      rowBufValid := true.B
+      rColIdx(rPtr.value) := rColIdx(rPtr.value) + 1.U
+    }
+
+    rBeatCnt := Mux(r.bits.last, 0.U, rBeatCnt + 1.U)
+  }
+
+  when(rowBufValid && spadWrite.ready) {
+    rowBufValid := false.B
+    rEntry.rRepeat := rEntry.rRepeat - spadWrite.dataSize.U
+    rEntry.req.sramAddr := (rEntry.req.sramAddr.asSInt + rEntry.req.sramStride).asUInt
+    when(rEntry.rRepeat === spadWrite.dataSize.U) {
+      rPtr.inc()
+    }
+  }
+
+}
+  when(valid(rPtr) && rEntry.rRepeat === 0.U) {
+    r.ready := false.B
+    spadWrite.valid := false.B
+    rPtr.inc()
   }
 }
