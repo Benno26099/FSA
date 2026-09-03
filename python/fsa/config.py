@@ -63,3 +63,9 @@ def get_config() -> FSAConfig:
 def get_mem_manager() -> CompoundMemoryManger:
     require_initialized()
     return __global_vars.mem_manager
+
+
+def reset():
+    """Reset FSA state so init() can be called again. Used by test suites."""
+    global __global_vars
+    __global_vars = None
