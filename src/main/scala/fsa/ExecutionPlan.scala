@@ -344,3 +344,24 @@ class TensorTransposeExecPlan(val rows: Int, val cols: Int) extends ExecutionPla
   setConflictFree(0)
 }
 
+class TensorMultiplicationExecPlan(val rows: Int, val cols: Int) extends ExecutionPlan {
+  /****** C = stream @ anti_transpose(stationary) ******/
+  // Prime SA up/down pipe (pipe_no_reset bits hold $random until valid=1).
+  setComparator(0, 1, CmpControlCmd.PROP_ZERO)
+  // read stream operand from spad
+  readScratchPad(0, rows, None)
+  // release the semaphore immediately at the last cycle of reading sram
+  releaseSemaphore(rows - 1)
+  // stream operand flows from top left to bottom through the SA. Then multiplied against stationary registers
+  mac.flow_down(1, rows)
+  acc_ui.flow_down(1, rows)
+  flow_lr.flow_down(1, rows)
+
+  setConflictFree(2 * rows - 1 - 1)
+
+  // read current accumulator, write SA output back
+  readAccRAM(rows + cols - 1, rows, None)
+  setAccumulator(rows + cols, rows, AccumulatorCmd.ACC_SA_PLAIN)
+  
+}
+

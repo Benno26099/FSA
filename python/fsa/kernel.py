@@ -197,3 +197,23 @@ def mx_attn_lse_norm(tile: ATile, sem: Optional[Semaphore], aq: bool = True, rl:
         False
     )
     __g_kernel_ctx.push(MatrixInstruction(header, spad, acc))
+
+
+@check_kernel_ctx
+def mx_tensor_multiplication(v_t: STile, o_t: ATile, accumulate: bool, sem: Optional[Semaphore], aq: bool = True, rl: bool = True) -> None:
+    assert len(v_t.shape) == 2 and len(o_t.shape) == 2
+    header = build_matrix_instruction_header(
+        MxFunc.TENSOR_MULTIPLICATION.value, False,
+        sem, aq, rl
+    )
+    spad = MatrixInstructionSpad(
+        __g_kernel_ctx.tile_row_addr(v_t),
+        __g_kernel_ctx.tile_stride(v_t),
+        True, False, True
+    )
+    acc = MatrixInstrucionAcc(
+        __g_kernel_ctx.tile_row_addr(o_t),
+        __g_kernel_ctx.tile_stride(o_t),
+        not accumulate
+    )
+    __g_kernel_ctx.push(MatrixInstruction(header, spad, acc))

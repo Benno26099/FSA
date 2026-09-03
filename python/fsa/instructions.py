@@ -15,6 +15,7 @@ class MxFunc(Enum):
     ACC_RECIPROCOL = 3
     ATTN_LSE_NORM = 4
     TENSOR_TRANSPOSE = 5
+    TENSOR_MULTIPLICATION = 6
 
 class DMAFunc(Enum):
     LD_SRAM = 0

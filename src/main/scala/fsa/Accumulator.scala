@@ -19,6 +19,15 @@ object AccumulatorCmd {
   def SET_SCALE = 4.U(width.W)
 
   def RECIPROCAL = 5.U(width.W)
+
+/* Accumulator mode for standalone matmul
+ * ACC_SA above multiplies sa_in by the scale register `s`, which is
+ * initialised earlier in the attention pipeline. Matmul on its own doesn't run those steps, 
+ * so `s` is uninitialised and reading it corrupts the accumulator output. 
+ * ACC_SA_PLAIN feeds 1 for the multiplier instead, giving sa_in * 1 + sram_in without touching the scale register.
+ */
+
+  def ACC_SA_PLAIN = 6.U(width.W)
 }
 
 
@@ -54,6 +63,8 @@ class Accumulator[A <: Data : Arithmetic]
   val set = cmd === AccumulatorCmd.SET_SCALE
   val reciprocal = cmd === AccumulatorCmd.RECIPROCAL
 
+  val acc_sa_plain = cmd === AccumulatorCmd.ACC_SA_PLAIN
+
   /*
     * exp s1: scale <- sa_in * lg2e/sqrt(dk) + 0
     * exp s2: scale <- pow2(scale)
@@ -63,9 +74,11 @@ class Accumulator[A <: Data : Arithmetic]
   */
 
   for (((((s, acc), sa_in), sram_in), sram_out) <- scale.zip(accUnit).zip(io.sa_in).zip(io.sram_in).zip(io.sram_out)) {
-    acc.io.in_a := Mux(exp_s1, sa_in, s)
+    /* Plain matmul will bypass the scale register (uninitialized outside attention) by feeding 1 as the multipler */
+    acc.io.in_a := Mux(exp_s1, sa_in, Mux(acc_sa_plain, accType.one, s))
     acc.io.in_b := Mux(exp_s1, accType.attentionScale(rows), sram_in)
-    acc.io.in_c := Mux(acc_sa, sa_in, accType.zero)
+    /* Both ACC_SA and ACC_SA_PLAIN route the SA output into the MAC's C-operand */
+    acc.io.in_c := Mux(acc_sa || acc_sa_plain, sa_in, accType.zero)
     acc.io.in_cmd := Mux(exp_s2, MacCMD.EXP2, MacCMD.MAC)
     acc.multiCycleIO.reciprocal_in_valid := valid && reciprocal
     when(valid) {
