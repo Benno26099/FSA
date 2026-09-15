@@ -185,7 +185,7 @@ class MatrixControlFSM
       if (plan.accumulateMaxCycle > 0 && plan.accStartCycle == 0) {
         af := sel
       }
-      (plan.conflict_free.cycle == 0).B
+      sel && (plan.conflict_free.cycle == 0).B
     }
     conflictFreeFlag.write(1, Cat(set_cf).orR)
   }
