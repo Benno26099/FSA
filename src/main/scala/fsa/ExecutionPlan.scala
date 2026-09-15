@@ -188,7 +188,7 @@ class LoadStationary(val rows: Int, val cols: Int) extends ExecutionPlan {
     the next instruction should always read sram first (with 1 cycle
     latency), so we can start the next instruction at cycle `cols-1`
    */
-  setConflictFree(cols - 1)
+  setConflictFree(cols)
 }
 
 class AttentionScoreExecPlan(val rows: Int, val cols: Int, ap: HasArithmeticParams) extends ExecutionPlan {
