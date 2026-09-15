@@ -171,9 +171,10 @@ class LoadQueue[E <: Data]
      colCnt = num elements collected in rowBuf so far
      rowBufValid = flag rowBuf ready to flush 
      ONLY ONE ROW AT A TIME */
-  val rowBuf = Reg(Vec(spadWrite.dataSize, UInt(spadWrite.elemWidth.W)))
-  val colCnt = RegInit(0.U(log2Up(spadWrite.dataSize).W))
+  val rowBuf = Reg(Vec(spadWrite.dataSize * spadWrite.nSubBanks, UInt(spadWrite.elemWidth.W)))
+  val colCnt = RegInit(0.U(log2Up(spadWrite.dataSize * spadWrite.nSubBanks).W))
   val rowBufValid = RegInit(false.B)
+  val nSubBanksCnt = RegInit(0.U(log2Up(spadWrite.nSubBanks).W))
 
   /* Per-Entry AR/R-side state */
   val memAddrWidth = edge.bundle.addrBits
@@ -289,10 +290,11 @@ class LoadQueue[E <: Data]
   } .otherwise {
 /* Transpose Path */
   /* Spad not written on every beat, accumulated in rowBuf first */ 
+  
   spadWrite.valid := rowBufValid
   spadWrite.addr  := rEntry.req.sramAddr
-  spadWrite.data  := rowBuf
-  spadWrite.subBankIdx := 0.U
+  spadWrite.data  := rowBuf.asTypeOf(Vec(spadWrite.nSubBanks, Vec(spadWrite.dataSize, UInt(spadWrite.elemWidth.W))))(nSubBanksCnt)
+  spadWrite.subBankIdx := nSubBanksCnt
   
   r.ready := !rowBufValid
 
@@ -306,23 +308,27 @@ class LoadQueue[E <: Data]
     val elemIdx = rColIdx(rPtr.value)(elemIdxBits - 1, 0)
     rowBuf(colCnt) := beatData(elemIdx)
 
-    val lastCol = colCnt === (spadWrite.dataSize - 1).U
+    val lastCol = colCnt === (spadWrite.rowSize - 1).U
     colCnt := Mux(lastCol, 0.U, colCnt + 1.U)
     when(lastCol) {
       rowBufValid := true.B
       rColIdx(rPtr.value) := rColIdx(rPtr.value) + 1.U
     }
 
-    rBeatCnt := Mux(r.bits.last, 0.U, rBeatCnt + 1.U)
   }
 
   when(rowBufValid && spadWrite.ready) {
-    rowBufValid := false.B
-    rEntry.rRepeat := rEntry.rRepeat - spadWrite.dataSize.U
-    rEntry.req.sramAddr := (rEntry.req.sramAddr.asSInt + rEntry.req.sramStride).asUInt
-    when(rEntry.rRepeat === spadWrite.dataSize.U) {
-      rPtr.inc()
+    val lastSubBankCnt = nSubBanksCnt === (spadWrite.nSubBanks - 1).U
+    nSubBanksCnt := Mux(lastSubBankCnt, 0.U, nSubBanksCnt + 1.U)
+    when(lastSubBankCnt) {
+      rowBufValid := false.B
+      rEntry.rRepeat := rEntry.rRepeat - (spadWrite.rowSize).U
+      rEntry.req.sramAddr := (rEntry.req.sramAddr.asSInt + rEntry.req.sramStride).asUInt
+      when(rEntry.rRepeat === (spadWrite.rowSize).U) {
+        rPtr.inc()
+      }
     }
+    
   }
 /* Applies to both transpose and !transpose paths. Prevents rPtr deadlock and R misroutes. */
 }
