@@ -351,7 +351,7 @@ class TensorMultiplicationExecPlan(val rows: Int, val cols: Int) extends Executi
   // read stream operand from spad
   readScratchPad(0, rows, None)
   // release the semaphore immediately at the last cycle of reading sram
-  releaseSemaphore(rows - 1)
+  releaseSemaphore(2 * rows + cols - 1)
   // stream operand flows from top left to bottom through the SA. Then multiplied against stationary registers
   mac.flow_down(1, rows)
   acc_ui.flow_down(1, rows)
