@@ -198,6 +198,12 @@ def make_attn_value(spad_tile, acc_tile, sem_id, rel_val, e_itemsize, a_itemsize
         )
     )
 
+def tensor_generator(N, seed):
+    rng = np.random.default_rng(seed)
+    tensor = rng.uniform(low=-1, high=1, size=(N, N))
+    tensor_f16 = tensor.astype(np.float16)
+    return tensor_f16
+
 
 # Test: DMA transpose of a square matrix
 
@@ -585,12 +591,7 @@ def test_double_transpose(engine, sa_rows, sa_cols):
     e_itemsize = cfg.e_type.itemsize
     a_itemsize = cfg.a_type.itemsize
 
-    A = np.array([
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11, 12],
-        [13, 14, 15, 16]
-    ], dtype=np.float16)[:N, :N]
+    A = tensor_generator(N, 42)
 
     expected = anti_transpose(A).astype(np.float32)
 

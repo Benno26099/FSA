@@ -186,6 +186,12 @@ def make_tensor_multiplication(spad_tile, acc_tile, sem_id, rel_val, e_itemsize,
         )
     )
 
+def tensor_generator(N, seed):
+    rng = np.random.default_rng(seed)
+    tensor = rng.uniform(low=-1, high=1, size=(N, N))
+    tensor_f16 = tensor.astype(np.float16)
+    return tensor_f16
+
 def test_matmul_identity(engine, sa_rows, sa_cols, label="identity"):
     """
     Pipeline:
@@ -295,18 +301,8 @@ def test_matmul_plain(engine, sa_rows, sa_cols, label="plain"):
     e_itemsize = cfg.e_type.itemsize
     a_itemsize = cfg.a_type.itemsize
 
-    A = np.array([
-            [1, 2, 3, 4],
-            [5, 6, 7, 8],
-            [9, 10, 11, 12],
-            [13, 14, 15, 16]
-        ], dtype=np.float16)[:N, :N]
-    B = np.array([
-            [16, 15, 14, 13],
-            [12, 11, 10, 9],
-            [8, 7, 6, 5],
-            [4, 3, 2, 1]
-    ], dtype=np.float16)[:N, :N]
+    A = tensor_generator(N, 42)
+    B = tensor_generator(N, 100)
     
     expected = B.astype(np.float32) @ (A.astype(np.float32).T)[::-1, ::-1]
     # Allocate on-chip storage
@@ -391,18 +387,8 @@ def test_matmul_transpose_A(engine, sa_rows, sa_cols, label="transpose_a"):
     e_itemsize = cfg.e_type.itemsize
     a_itemsize = cfg.a_type.itemsize
 
-    A = np.array([
-            [1, 2, 3, 4],
-            [5, 6, 7, 8],
-            [9, 10, 11, 12],
-            [13, 14, 15, 16]
-        ], dtype=np.float16)[:N, :N]
-    B = np.array([
-            [16, 15, 14, 13],
-            [12, 11, 10, 9],
-            [8, 7, 6, 5],
-            [4, 3, 2, 1]
-    ], dtype=np.float16)[:N, :N]
+    A = tensor_generator(N, 42)
+    B = tensor_generator(N, 100)
     
     expected = B.astype(np.float32) @ (A.astype(np.float32))[::-1, ::-1]    
     spad_a  = F.alloc_spad((N, N))            
@@ -486,18 +472,8 @@ def test_matmul_transpose_B(engine, sa_rows, sa_cols, label="transpose_b"):
     e_itemsize = cfg.e_type.itemsize
     a_itemsize = cfg.a_type.itemsize
 
-    A = np.array([
-            [1, 2, 3, 4],
-            [5, 6, 7, 8],
-            [9, 10, 11, 12],
-            [13, 14, 15, 16]
-        ], dtype=np.float16)[:N, :N]
-    B = np.array([
-            [16, 15, 14, 13],
-            [12, 11, 10, 9],
-            [8, 7, 6, 5],
-            [4, 3, 2, 1]
-    ], dtype=np.float16)[:N, :N]
+    A = tensor_generator(N, 42)
+    B = tensor_generator(N, 100)
     
     expected = B.T @ anti_transpose(A) 
     spad_a  = F.alloc_spad((N, N))            
@@ -523,11 +499,13 @@ def test_matmul_transpose_B(engine, sa_rows, sa_cols, label="transpose_b"):
         src_rows=N, src_cols=N, e_itemsize=e_itemsize
     ))
 
+
     # Step 3: LoadStationary A 
     instructions.append(make_load_stationary(
         spad_a, sem_id=2, acq_val=1, rel_val=2, e_itemsize=e_itemsize
     ))
 
+    
     # Step 4: TensorMultiplication with stream=B.
     instructions.append(make_tensor_multiplication(
         spad_b, acc_out, sem_id=1, rel_val=1,
@@ -581,18 +559,8 @@ def test_matmul_transpose_Both(engine, sa_rows, sa_cols, label="transpose_both")
     e_itemsize = cfg.e_type.itemsize
     a_itemsize = cfg.a_type.itemsize
 
-    A = np.array([
-            [1, 2, 3, 4],
-            [5, 6, 7, 8],
-            [9, 10, 11, 12],
-            [13, 14, 15, 16]
-        ], dtype=np.float16)[:N, :N]
-    B = np.array([
-            [16, 15, 14, 13],
-            [12, 11, 10, 9],
-            [8, 7, 6, 5],
-            [4, 3, 2, 1]
-    ], dtype=np.float16)[:N, :N]
+    A = tensor_generator(N, 42)
+    B = tensor_generator(N, 100)
     
     expected = B.astype(np.float32).T @ (A.astype(np.float32))[::-1, ::-1]  
     spad_a  = F.alloc_spad((N, N))            
@@ -667,24 +635,9 @@ def test_matmul_accumulate_two_tiles(engine, sa_rows, sa_cols, label="transpose_
     e_itemsize = cfg.e_type.itemsize
     a_itemsize = cfg.a_type.itemsize
 
-    A1 = np.array([
-            [1, 2, 3, 4],
-            [5, 6, 7, 8],
-            [9, 10, 11, 12],
-            [13, 14, 15, 16]
-        ], dtype=np.float16)[:N, :N]
-    A2 = np.array([
-            [4, 3, 2, 1],
-            [8, 7, 6, 5],
-            [12, 11, 10, 9],
-            [16, 15, 14, 13]
-    ], dtype=np.float16)[:N, :N]
-    B = np.array([
-            [16, 15, 14, 13],
-            [12, 11, 10, 9],
-            [8, 7, 6, 5],
-            [4, 3, 2, 1]
-    ], dtype=np.float16)[:N, :N]
+    A1 = tensor_generator(N, 42)
+    A2 = tensor_generator(N, 100)
+    B = tensor_generator(N, 54)
     
     expected = B.astype(np.float32) @ (A1.astype(np.float32) + A2.astype(np.float32)).T[::-1, ::-1]
     spad_a1  = F.alloc_spad((N, N))            
@@ -775,36 +728,11 @@ def test_matmul_accumulate_four_tiles(engine, sa_rows, sa_cols, label="transpose
     a_itemsize = cfg.a_type.itemsize
 
     # Input: NxN matrix with recognizable values 
-    A1 = np.array([
-            [1, 2, 3, 4],
-            [5, 6, 7, 8],
-            [9, 10, 11, 12],
-            [13, 14, 15, 16]
-        ], dtype=np.float16)[:N, :N]
-    A2 = np.array([
-            [4, 3, 2, 1],
-            [8, 7, 6, 5],
-            [12, 11, 10, 9],
-            [16, 15, 14, 13]
-    ], dtype=np.float16)[:N, :N]
-    A3 = np.array([
-            [1, 1, 1, 1],
-            [2, 2, 2, 2],
-            [3, 3, 3, 3],
-            [4, 4, 4, 4]
-    ], dtype=np.float16)[:N, :N]
-    A4 = np.array([
-            [5, 5, 5, 5],
-            [6, 6, 6, 6],
-            [7, 7, 7, 7],
-            [8, 8, 8, 8]
-    ], dtype=np.float16)[:N, :N]
-    B = np.array([
-            [16, 15, 14, 13],
-            [12, 11, 10, 9],
-            [8, 7, 6, 5],
-            [4, 3, 2, 1]
-    ], dtype=np.float16)[:N, :N]
+    A1 = tensor_generator(N, 32)
+    A2 = tensor_generator(N, 67)
+    A3 =tensor_generator(N, 69)
+    A4 = tensor_generator(N, 76)
+    B = tensor_generator(N, 100)
     
     expected = B.astype(np.float32) @ (A1.astype(np.float32) + A2.astype(np.float32) + A3.astype(np.float32) + A4.astype(np.float32)).T[::-1, ::-1]
     spad_a1  = F.alloc_spad((N, N))            
