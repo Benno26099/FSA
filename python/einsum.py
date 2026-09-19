@@ -352,7 +352,7 @@ def _run_transpose_dma(stream_data, engine):
     # Step 4: AttentionValue: stream I through SA. With stationary = A.T,
     # SA computes I @ anti_transpose(A.T) = A[::-1, ::-1] = rot180(A) into
     # acc_out.
-    instructions.append(make_attn_value(
+    instructions.append(make_tensor_multiplication(
         spad_id, acc_out, sem_id=1, rel_val=1,
         e_itemsize=e_itemsize, a_itemsize=a_itemsize
     ))

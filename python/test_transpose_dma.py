@@ -171,6 +171,8 @@ def make_load_stationary(spad_tile, sem_id, acq_val, rel_val, e_itemsize):
     )
 
 
+# Retained for reference only -- no longer used. Storing on this instruction's
+# semaphore races the accumulator writes (Bug 9); see make_tensor_multiplication.
 def make_attn_value(spad_tile, acc_tile, sem_id, rel_val, e_itemsize, a_itemsize):
     from fsa.instructions import (
         MatrixInstructionHeader, MatrixInstructionSpad, MatrixInstrucionAcc,
@@ -197,6 +199,55 @@ def make_attn_value(spad_tile, acc_tile, sem_id, rel_val, e_itemsize, a_itemsize
             addr=acc_row0, stride=1, zero=True
         )
     )
+
+def make_tensor_multiplication(spad_tile, acc_tile, sem_id, rel_val, e_itemsize, a_itemsize,
+                               accumulate=False, wait_prev_acc: bool = False):
+    """SA readback via TENSOR_MULTIPLICATION rather than ATTN_VALUE.
+
+    Computationally identical to make_attn_value for this use (same spad read,
+    same flow_down, same accumulator window), but it is the correct primitive
+    outside the attention pipeline:
+
+      - its semaphore is released after the accumulator writes land
+        (releaseSemaphore(2*rows + cols - 1)), where ATTN_VALUE releases at
+        compute cycle rows-1 meaning "scratchpad free". Storing on the ATTN_VALUE
+        semaphore races the accumulator writes -- invisible at 4x4 and 8x8,
+        fatal at 16x16 where the gap is cols+1 = 17 cycles. See Bug 9.
+      - it uses ACC_SA_PLAIN, which does not read the uninitialised scale
+        register (Bug 4). Numerically a no-op here -- zero=True forces sram_in
+        to 0, so ACC_SA's scale * sram_in term vanishes and both reduce to
+        sa_in. Defensive hygiene, not a behaviour change.
+
+    The semaphore is the only difference that alters behaviour. Both plans
+    carry the PROP_ZERO primer (Bug 1); the plans are otherwise line-for-line
+    identical.
+    """
+    from fsa.instructions import (
+        MatrixInstructionHeader, MatrixInstructionSpad, MatrixInstrucionAcc,
+        MatrixInstruction, MxFunc
+    )
+    spad_row_bytes = spad_tile.shape[-1] * e_itemsize
+    acc_row_bytes = acc_tile.shape[-1] * a_itemsize
+    spad_row0 = spad_tile.data_ptr // spad_row_bytes
+    acc_row0 = acc_tile.data_ptr // acc_row_bytes
+
+    return MatrixInstruction(
+        MatrixInstructionHeader(
+            semId=sem_id,
+            acquireValid=False, acquireSemValue=0,
+            releaseValid=True, releaseSemValue=rel_val,
+            func=MxFunc.TENSOR_MULTIPLICATION.value,
+            waitPrevAcc=wait_prev_acc
+        ),
+        MatrixInstructionSpad(
+            addr=spad_row0, stride=1,
+            revInput=True, revOutput=False, delayOutput=True
+        ),
+        MatrixInstrucionAcc(
+            addr=acc_row0, stride=1, zero=(not accumulate)
+        )
+    )
+
 
 def tensor_generator(N, seed):
     rng = np.random.default_rng(seed)
@@ -264,8 +315,8 @@ def test_transpose_square(engine, sa_rows, sa_cols, label="square"):
         spad_at, sem_id=2, acq_val=1, rel_val=2, e_itemsize=e_itemsize
     ))
 
-    # Step 4: AttentionValue: stream I through SA -> acc = A^T
-    instructions.append(make_attn_value(
+    # Step 4: TensorMultiplication: stream I through SA -> acc = A^T
+    instructions.append(make_tensor_multiplication(
         spad_id, acc_out, sem_id=1, rel_val=1,
         e_itemsize=e_itemsize, a_itemsize=a_itemsize
     ))
@@ -351,7 +402,7 @@ def test_transpose_load_readback(engine, sa_rows, sa_cols, values="sequential"):
     ))
 
     # Multiply by identity to read back
-    instructions.append(make_attn_value(
+    instructions.append(make_tensor_multiplication(
         spad_id, acc_out, sem_id=1, rel_val=1,
         e_itemsize=e_itemsize, a_itemsize=a_itemsize
     ))
@@ -434,8 +485,8 @@ def test_normal_load_unchanged(engine, sa_rows, sa_cols):
         spad_a, sem_id=2, acq_val=1, rel_val=2, e_itemsize=e_itemsize
     ))
 
-    # AttentionValue: A @ I = A
-    instructions.append(make_attn_value(
+    # TensorMultiplication: A @ I = A
+    instructions.append(make_tensor_multiplication(
         spad_id, acc_out, sem_id=1, rel_val=1,
         e_itemsize=e_itemsize, a_itemsize=a_itemsize
     ))
@@ -525,7 +576,7 @@ def test_transpose_nonsquare_padded(engine, sa_rows, sa_cols, src_rows, src_cols
     ))
 
     # Multiply by identity to readback
-    instructions.append(make_attn_value(
+    instructions.append(make_tensor_multiplication(
         spad_id, acc_out, sem_id=1, rel_val=1,
         e_itemsize=e_itemsize, a_itemsize=a_itemsize
     ))
@@ -622,7 +673,7 @@ def test_double_transpose(engine, sa_rows, sa_cols):
     instructions.append(make_load_stationary(
         spad_data, sem_id=2, acq_val=1, rel_val=2, e_itemsize=e_itemsize
     ))
-    instructions.append(make_attn_value(
+    instructions.append(make_tensor_multiplication(
         spad_id, acc_out, sem_id=1, rel_val=1,
         e_itemsize=e_itemsize, a_itemsize=a_itemsize
     ))
@@ -642,7 +693,7 @@ def test_double_transpose(engine, sa_rows, sa_cols):
     instructions.append(make_load_stationary(
         spad_data, sem_id=4, acq_val=1, rel_val=2, e_itemsize=e_itemsize
     ))
-    instructions.append(make_attn_value(
+    instructions.append(make_tensor_multiplication(
         spad_id, acc_out, sem_id=5, rel_val=1,
         e_itemsize=e_itemsize, a_itemsize=a_itemsize
     ))
@@ -733,8 +784,8 @@ def test_transpose_matmul(engine, sa_rows, sa_cols):
         spad_at, sem_id=2, acq_val=1, rel_val=2, e_itemsize=e_itemsize
     ))
 
-    # AttentionValue: A^T @ B
-    instructions.append(make_attn_value(
+    # TensorMultiplication: A^T @ B
+    instructions.append(make_tensor_multiplication(
         spad_b, acc_out, sem_id=1, rel_val=1,
         e_itemsize=e_itemsize, a_itemsize=a_itemsize
     ))
