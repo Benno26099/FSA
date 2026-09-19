@@ -33,6 +33,8 @@ class TestResult:
 def anti_transpose(M: np.ndarray) -> np.ndarray:
     return M.T[::-1, ::-1]
 
+def rot180(M: np.ndarray) -> np.ndarray:
+    return M[::-1, ::-1]
 
 def print_results(results: list[TestResult]):
     print("\n" + "=" * 60)
@@ -228,7 +230,7 @@ def make_tensor_multiplication(spad_tile, acc_tile, sem_id, rel_val, e_itemsize,
         )
     )
 
-def _run_matmul_on_sa(stationary_data, stream_data, engine):
+def _run_matmul_on_sa(stationary_data, stream_data, engine, transpose_stream = False):
     import fsa as F
     from fsa.instructions import FenceInstruction
     from fsa.kernel import Kernel
@@ -257,17 +259,22 @@ def _run_matmul_on_sa(stationary_data, stream_data, engine):
     instructions = []
 
     # Step 1: DMA plain-load stream_data -> spad_stream
-    instructions.append(make_dma_load(
-        stream_mem, spad_stream, sem_id=0, rel_val=1,
-        rows=stream_data.shape[0], cols=stream_data.shape[1], e_itemsize=e_itemsize
+    if transpose_stream == True:
+        instructions.append(make_dma_transpose_load(
+                stream_mem, spad_stream, sem_id=0, rel_val=1,
+                src_rows=stream_data.shape[0], src_cols=stream_data.shape[1], e_itemsize=e_itemsize
+            ))
+    else:
+        instructions.append(make_dma_load(
+            stream_mem, spad_stream, sem_id=0, rel_val=1,
+            rows=stream_data.shape[0], cols=stream_data.shape[1], e_itemsize=e_itemsize
     ))
-
+        
     # Step 2: DMA plain-load stationary_data -> spad_stationary
     instructions.append(make_dma_load(
         stationary_mem, spad_stationary, sem_id=2, rel_val=1,
         rows=stationary_data.shape[0], cols=stationary_data.shape[1], e_itemsize=e_itemsize
     ))
-
     # Step 3: LoadStationary spad_stationary 
     instructions.append(make_load_stationary(
         spad_stationary, sem_id=2, acq_val=1, rel_val=2, e_itemsize=e_itemsize
@@ -365,15 +372,12 @@ def _run_transpose_dma(stream_data, engine):
     return anti_transpose(result).astype(original_dtype)
 
 
-def mx_matmul(A, B, engine, transpose_a=False, transpose_b=False, transpose_output=False):
+def mx_matmul(A, B, engine, transpose_a = False, transpose_b = False, transpose_output = False):
     """ Compute A @ B on SA, you can choose a pre-transpose of A, B or the post-transpose of result"""
-    if transpose_a:
-        stream = _run_transpose_dma(A, engine)
-    else:
-        stream = A
-    stationary = anti_transpose(_run_transpose_dma(B, engine) if transpose_b else B)
-    result = _run_matmul_on_sa(stationary, stream, engine)
-    return _run_transpose_dma(result, engine) if transpose_output else result
+    stream = A
+    stationary = rot180(B) if transpose_b else anti_transpose(B)
+    result = _run_matmul_on_sa(stationary, stream, engine, transpose_stream=transpose_a)
+    return  _run_transpose_dma(result, engine) if transpose_output else result
 
 def mx_transpose(A, engine):
     """ Computes the transpose of given Tensor"""
