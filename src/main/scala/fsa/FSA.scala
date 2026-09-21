@@ -34,7 +34,9 @@ case class FSAParams(
       ISA.MxFunc.ATTENTION_LSE_NORM_SCALE -> new AttentionLseNormScale(rows, cols, ap),
       ISA.MxFunc.ATTENTION_LSE_NORM -> new AttentionLseNorm(rows, cols),
       ISA.MxFunc.TENSOR_TRANSPOSE -> new TensorTransposeExecPlan(rows, cols),
-      ISA.MxFunc.TENSOR_MULTIPLICATION -> new TensorMultiplicationExecPlan(rows, cols)
+      ISA.MxFunc.TENSOR_MULTIPLICATION -> new TensorMultiplicationExecPlan(rows, cols),
+      ISA.MxFunc.LOAD_STATIONARY_2 -> new LoadStationary2(rows, cols),
+      ISA.MxFunc.ELEMENTWISE_MUL -> new ElementwiseMul(rows, cols)
     )
   },
   unitTestBuild: Boolean = false

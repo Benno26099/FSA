@@ -92,7 +92,9 @@ def get_tests(engine, sa_rows, sa_cols):
          ("ij->ij", 1, 0),
          ("ij->i", 1, 1),
          ("ij->j", 1, 1),
-         ("ij->", 1, 1)
+         ("ij->", 1, 1),
+         ("ij,ij->ij", 2, 1),
+         ("ij,ij->", 2, 1)
         ]
 
     tests = {}

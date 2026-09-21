@@ -16,6 +16,8 @@ class MxFunc(Enum):
     ATTN_LSE_NORM = 4
     TENSOR_TRANSPOSE = 5
     TENSOR_MULTIPLICATION = 6
+    LOAD_STATIONARY2 = 7
+    ELEMENTWISE_MUL = 8
 
 class DMAFunc(Enum):
     LD_SRAM = 0

@@ -27,8 +27,8 @@ trait ExecutionPlan {
   val rows: Int
   val cols: Int
   // PE control signals are more complex than spad/acc/cmp control, use a dedicate `ControlGen` to optimize them
-  val pe_signals = (0 until 9).map(_ => ControlGen(rows)).toList
-  val mac :: acc_ui :: load_reg_li :: load_reg_ui :: flow_lr :: flow_ud :: flow_du :: update_reg :: exp2 :: Nil = pe_signals
+  val pe_signals = (0 until 11).map(_ => ControlGen(rows)).toList
+  val mac :: acc_ui :: load_reg_li :: load_reg2_li :: load_reg_ui :: mul_regs :: flow_lr :: flow_ud :: flow_du :: update_reg :: exp2 :: Nil = pe_signals
 
   def genPECtrl(timer: UInt, valid: Bool): Vec[PECtrl] = {
     val pe_ctrl = Wire(Vec(rows, new PECtrl))
@@ -190,6 +190,22 @@ class LoadStationary(val rows: Int, val cols: Int) extends ExecutionPlan {
    */
   setConflictFree(cols)
 }
+
+class LoadStationary2(val rows: Int, val cols: Int) extends ExecutionPlan {
+  // read Q from spad
+  readScratchPad(0, cols, None)
+  // release the semaphore immediately at the last cycle of reading sram
+  releaseSemaphore(cols - 1)
+  // load into systolic array
+  load_reg2_li.parallel(1, cols)
+  /*
+    Although we would occupy pe control signals until cycle `cols`,
+    the next instruction should always read sram first (with 1 cycle
+    latency), so we can start the next instruction at cycle `cols-1`
+   */
+  setConflictFree(cols)
+}
+
 
 class AttentionScoreExecPlan(val rows: Int, val cols: Int, ap: HasArithmeticParams) extends ExecutionPlan {
   /****** S = Q @ K ******/
@@ -363,5 +379,14 @@ class TensorMultiplicationExecPlan(val rows: Int, val cols: Int) extends Executi
   readAccRAM(rows + cols - 1, rows, None)
   setAccumulator(rows + cols, rows, AccumulatorCmd.ACC_SA_PLAIN)
   
+}
+
+class ElementwiseMul(val rows: Int, val cols: Int) extends ExecutionPlan {
+    
+    mul_regs.parallel(1, 1)
+    update_reg.parallel(1, 1)
+
+    setConflictFree(1)
+
 }
 

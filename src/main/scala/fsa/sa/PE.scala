@@ -4,13 +4,15 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.hierarchy._
 import fsa.arithmetic._
-
+import fsa.arithmetic.ArithmeticSyntax._
 
 class PECtrl extends Bundle {
   val mac = Bool()
   val acc_ui = Bool()
   val load_reg_li = Bool()
+  val load_reg2_li = Bool()
   val load_reg_ui = Bool()
+  val mul_regs = Bool()
   // pass through
   val flow_lr = Bool()
   val flow_ud = Bool()
@@ -19,10 +21,11 @@ class PECtrl extends Bundle {
   val update_reg = Bool()
   // compute 2^reg
   val exp2 = Bool()
+  
 
   // getElements might be dangerous, define them manually
   def getCtrlElements: Seq[Bool]= Seq(
-    mac, acc_ui, load_reg_li, load_reg_ui,
+    mac, acc_ui, load_reg_li, load_reg2_li, load_reg_ui, mul_regs,
     flow_lr, flow_ud, flow_du,
     update_reg, exp2
   )
@@ -47,6 +50,7 @@ class PE[E <: Data : Arithmetic, A <: Data : Arithmetic]
   val macUnit = Module(macGen())
 
   val reg = Reg(elemType)
+  val reg2 = Reg(elemType)
   val ctrl = io.in_ctrl.bits
   // TODO: this is actually useless, ctrl signals does not depend on fire
   val fire = io.in_ctrl.fire
@@ -71,15 +75,21 @@ class PE[E <: Data : Arithmetic, A <: Data : Arithmetic]
     }
   }
 
+  when(fire) {
+    when(ctrl.load_reg2_li){
+      reg2 := io.l_input.bits
+    }
+  }
+
   macUnit.io.in_a := reg
-  macUnit.io.in_b := io.l_input.bits
-  macUnit.io.in_c := Mux(ctrl.acc_ui, io.u_input.bits, io.d_input.bits)
+  macUnit.io.in_b := Mux(ctrl.mul_regs, reg2, io.l_input.bits)
+  macUnit.io.in_c := Mux(ctrl.mul_regs, accType.zero, Mux(ctrl.acc_ui, io.u_input.bits, io.d_input.bits))
   macUnit.io.in_cmd := Mux(ctrl.exp2, MacCMD.EXP2, MacCMD.MAC)
 
   io.out_ctrl := io.in_ctrl
 
-  io.r_output.bits := Mux(ctrl.load_reg_li, reg, io.l_input.bits)
-  io.r_output.valid := fire && (ctrl.load_reg_li || ctrl.flow_lr)
+  io.r_output.bits := Mux(ctrl.load_reg_li, reg, Mux(ctrl.load_reg2_li, reg2, io.l_input.bits))
+  io.r_output.valid := fire && (ctrl.load_reg_li || ctrl.flow_lr || ctrl.load_reg2_li)
 
   io.d_output.bits := Mux(ctrl.mac && ctrl.acc_ui, macUnit.io.out_accType, io.u_input.bits)
   io.d_output.valid := fire && (ctrl.mac && ctrl.acc_ui || ctrl.flow_ud)

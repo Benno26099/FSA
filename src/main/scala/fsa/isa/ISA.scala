@@ -72,6 +72,9 @@ object ISA {
     def ATTENTION_LSE_NORM = 4.U
     def TENSOR_TRANSPOSE = 5.U
     def TENSOR_MULTIPLICATION = 6.U
+    def LOAD_STATIONARY_2 = 7.U 
+    def ELEMENTWISE_MUL = 8.U
+
   }
 
   object DMAFunc {

@@ -175,6 +175,28 @@ def make_load_stationary(spad_tile, sem_id, acq_val, rel_val, e_itemsize):
         MatrixInstrucionAcc(addr=0, stride=0, zero=False)
     )
 
+def make_load_stationary2(spad_tile, sem_id, acq_val, rel_val, e_itemsize):
+    from fsa.instructions import (
+        MatrixInstructionHeader, MatrixInstructionSpad, MatrixInstrucionAcc,
+        MatrixInstruction, MxFunc
+    )
+    spad_row_bytes = spad_tile.shape[-1] * e_itemsize
+    spad_row0 = spad_tile.data_ptr // spad_row_bytes
+
+    return MatrixInstruction(
+        MatrixInstructionHeader(
+            semId=sem_id,
+            acquireValid=True, acquireSemValue=acq_val,
+            releaseValid=True, releaseSemValue=rel_val,
+            func=MxFunc.LOAD_STATIONARY2.value,
+            waitPrevAcc=False
+        ),
+        MatrixInstructionSpad(
+            addr=spad_row0, stride=1,
+            revInput=False, revOutput=False, delayOutput=False
+        ),
+        MatrixInstrucionAcc(addr=0, stride=0, zero=False)
+    )
 
 def make_attn_value(spad_tile, acc_tile, sem_id, rel_val, e_itemsize, a_itemsize):
     from fsa.instructions import (
@@ -224,6 +246,34 @@ def make_tensor_multiplication(spad_tile, acc_tile, sem_id, rel_val, e_itemsize,
         MatrixInstructionSpad(
             addr=spad_row0, stride=1,
             revInput=True, revOutput=False, delayOutput=True
+        ),
+        MatrixInstrucionAcc(
+            addr=acc_row0, stride=1, zero=(not accumulate)
+        )
+    )
+
+def make_elementwise_muls(spad_tile, acc_tile, sem_id, rel_val, e_itemsize, a_itemsize, accumulate=False, wait_prev_acc: bool=False):
+    from fsa.instructions import (
+        MatrixInstructionHeader, MatrixInstructionSpad, MatrixInstrucionAcc,
+        MatrixInstruction, MxFunc
+    )
+
+    spad_row_bytes = spad_tile.shape[-1] * e_itemsize
+    acc_row_bytes = acc_tile.shape[-1] * a_itemsize
+    spad_row0 = spad_tile.data_ptr // spad_row_bytes
+    acc_row0 = acc_tile.data_ptr // acc_row_bytes
+
+    return MatrixInstruction(
+        MatrixInstructionHeader(
+            semId=sem_id,
+            acquireValid=False, acquireSemValue=0,
+            releaseValid=False, releaseSemValue=rel_val,
+            func=MxFunc.ELEMENTWISE_MUL.value,
+            waitPrevAcc=wait_prev_acc
+        ),
+        MatrixInstructionSpad(
+            addr=spad_row0, stride=1,
+            revInput=False, revOutput=False, delayOutput=False
         ),
         MatrixInstrucionAcc(
             addr=acc_row0, stride=1, zero=(not accumulate)
@@ -415,11 +465,97 @@ def mx_sum(A, engine):
     "Computes total sum of Tensor. Returns Scalar"
     return mx_row_sum(A, engine).sum()
 
+def mx_hadamard(A, B, engine, stream_ones=False):
+    import fsa as F
+    from fsa.instructions import FenceInstruction
+    from fsa.kernel import Kernel
+    from fsa.config import get_config
+
+    _reset_allocator_if_configured()
+
+    cfg = get_config()
+    assert A.shape == (cfg.sa_rows, cfg.sa_cols)
+    assert B.shape == (cfg.sa_rows, cfg.sa_cols)
+    e_itemsize = cfg.e_type.itemsize
+    a_itemsize = cfg.a_type.itemsize
+    e_dtype = np.dtype("float16")
+
+    a_prime = anti_transpose(A.astype(e_dtype))
+    b_prime = anti_transpose(B.astype(e_dtype))
+    if stream_ones == True:
+        identity = np.ones(A.shape, dtype=e_dtype)
+    else:
+        identity = np.eye(A.shape[0], dtype=e_dtype)
+
+    output_shape = a_prime.shape
+
+    # Host-visible memory
+    a_mem = F.from_numpy(a_prime)
+    b_mem = F.from_numpy(b_prime)
+    i_mem = F.from_numpy(identity)
+    out_mem = F.alloc_mem(output_shape, F.fp32)
+
+    # On-chip storage
+    a_spad = F.alloc_spad(a_prime.shape)
+    b_spad = F.alloc_spad(b_prime.shape)
+    i_spad = F.alloc_spad(identity.shape)
+    acc_out = F.alloc_accumulator(output_shape)
+
+    instructions = []
+
+    instructions.append(make_dma_load(
+        i_mem, i_spad, sem_id=0, rel_val=1,
+        rows=identity.shape[0], cols=identity.shape[1], e_itemsize=e_itemsize
+    ))
+
+    instructions.append(make_dma_load(
+        a_mem, a_spad, sem_id=1, rel_val=1,
+        rows=A.shape[0], cols=A.shape[1], e_itemsize=e_itemsize
+    ))
+
+    instructions.append(make_dma_load(
+        b_mem, b_spad, sem_id=2, rel_val=1,
+        rows=B.shape[0], cols=B.shape[1], e_itemsize=e_itemsize
+    ))
+
+    instructions.append(make_load_stationary(
+        a_spad, sem_id=1, acq_val=1, rel_val=2, e_itemsize=e_itemsize
+    ))
+
+    instructions.append(make_load_stationary2(
+        b_spad, sem_id=2, acq_val=1, rel_val=2, e_itemsize=e_itemsize
+    ))
+
+    instructions.append(make_elementwise_muls(
+        a_spad, acc_out, sem_id=5, rel_val=1, e_itemsize=e_itemsize, a_itemsize=a_itemsize
+    ))
+
+    instructions.append(make_tensor_multiplication(
+        i_spad, acc_out, sem_id=4, rel_val=1,
+        e_itemsize=e_itemsize, a_itemsize=a_itemsize
+    ))
+
+    instructions.append(make_dma_store(
+        acc_out, out_mem, sem_id=4, acq_val=1, rel_val=2,
+        rows=output_shape[0], cols=output_shape[1], a_itemsize=a_itemsize
+    ))
+
+    instructions.append(FenceInstruction(mx=True, dma=True, stop=True))
+
+    kernel = Kernel(instructions=instructions, input=[a_mem, b_mem, i_mem, out_mem], output=out_mem)
+    result_tile = engine.execute(kernel)
+    result = F.to_numpy(result_tile)
+
+    return result
+
+def mx_frobenius(A, B, engine):
+    result = mx_hadamard(A, B, engine=engine, stream_ones=True)
+    return result[0, :].sum()
 
 def mx_einsum(equation: str, *operands, engine):
     """ Dispatch a 2D contractive einsum pattern. Supported patterns are: 'ij,jk->ik', 'ji,jk->ik', 
 'ij,kj->ik', 'ji,kj->ik', 'ij,jk->ki', 'ji,jk->ki', 'ij,kj->ki', 'ji,kj->ki', 
-'ij->ji', 'ij->ij', 'ij->i', 'ij->j', 'ij->'"""
+'ij->ji', 'ij->ij', 'ij->i', 'ij->j', 'ij->', 'ij,ij->ij'"""
     A = operands[0]
 
     match equation:
@@ -457,6 +593,12 @@ def mx_einsum(equation: str, *operands, engine):
             return mx_col_sum(A, engine)
         case "ij->":
             return mx_sum(A, engine)
+        case "ij,ij->ij":
+            B = operands[1]
+            return mx_hadamard(A, B, engine, stream_ones=False)
+        case "ij,ij->":
+            B = operands[1]
+            return mx_frobenius(A, B, engine)
         case _: 
             raise ValueError(f"Unsupported einsum pattern: {equation!r}.")
         
