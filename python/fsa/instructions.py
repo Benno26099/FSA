@@ -209,7 +209,7 @@ class DMAInstructionHeader(InstructionLike):
             InstructionField(self.releaseValid, 19, 19),
             InstructionField(self.releaseSemValue, 18, 16),
             InstructionField(self.func, 15, 12),
-            InstructionField(self.repeat, 11, 3)
+            InstructionField(self.repeat, 11, 0)
         ))
 
 
