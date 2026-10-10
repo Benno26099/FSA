@@ -552,53 +552,176 @@ def mx_frobenius(A, B, engine):
     result = mx_hadamard(A, B, engine=engine, stream_ones=True)
     return result[0, :].sum()
 
-def mx_einsum(equation: str, *operands, engine):
-    """ Dispatch a 2D contractive einsum pattern. Supported patterns are: 'ij,jk->ik', 'ji,jk->ik', 
-'ij,kj->ik', 'ji,kj->ik', 'ij,jk->ki', 'ji,jk->ki', 'ij,kj->ki', 'ji,kj->ki', 
-'ij->ji', 'ij->ij', 'ij->i', 'ij->j', 'ij->', 'ij,ij->ij'"""
-    A = operands[0]
+def normalise(equation: str):
+    if "..." in equation:
+        raise ValueError(f"ellipsis ('...') is not supported: {equation!r}")
+    
+    no_whitespace = "".join(equation.split())
+    if "->" in no_whitespace:
+        inputs, outputs = no_whitespace.split("->")
+        inputs = inputs.split(",")
+    else:
+        inputs = no_whitespace.split(",")
+        all_letters = "".join(inputs)
+        once = []
+        for letter in all_letters:
+            if all_letters.count(letter) == 1:
+                once.append(letter)
+        outputs = "".join(sorted(once))
+    
+    if len(inputs) > 2:
+        raise ValueError(f"at most two operands, got {len(inputs)}: {equation!r}")
+    
+    letters = set()
 
-    match equation:
-        case "ij,jk->ik":
-            B = operands[1]
-            return mx_matmul(A, B, engine)
-        case "ji,jk->ik":
-            B = operands[1]
-            return mx_matmul(A, B, engine, transpose_a=True)
-        case "ij,kj->ik":
-            B = operands[1]
-            return mx_matmul(A, B, engine, transpose_b=True)
-        case "ji,kj->ik":
-            B = operands[1]
-            return mx_matmul(A, B, engine, transpose_a=True, transpose_b=True)
-        case "ij,jk->ki":
-            B = operands[1]
-            return mx_matmul(A, B, engine, transpose_output=True)
-        case "ji,jk->ki":
-            B = operands[1]
-            return mx_matmul(A, B, engine, transpose_a=True, transpose_output=True)
-        case "ij,kj->ki":
-            B = operands[1]
-            return mx_matmul(A, B, engine, transpose_b=True, transpose_output=True)
-        case "ji,kj->ki":
-            B = operands[1]
-            return mx_matmul(A, B, engine, transpose_a=True, transpose_b=True, transpose_output=True)
-        case "ij->ji":
-            return mx_transpose(A, engine)
-        case "ij->ij":
-            return mx_identity(A, engine)
-        case "ij->i":
-            return mx_row_sum(A, engine)
-        case "ij->j":
-            return mx_col_sum(A, engine)
-        case "ij->":
-            return mx_sum(A, engine)
-        case "ij,ij->ij":
-            B = operands[1]
-            return mx_hadamard(A, B, engine, stream_ones=False)
-        case "ij,ij->":
-            B = operands[1]
-            return mx_frobenius(A, B, engine)
-        case _: 
-            raise ValueError(f"Unsupported einsum pattern: {equation!r}.")
+    for op in inputs:
+        tensors = set()
+        if len(op) > 2:
+            raise ValueError(f"operand rank > 2: {op!r}")
+        if not op.isalpha():
+            raise ValueError(f"non-letter index in operand {op!r}")
+        for letter in op:
+            if letter not in letters:
+                letters.add(letter)
+            if letter not in tensors:
+                tensors.add(letter)
+            else:
+                raise ValueError(f"letter repeated within one operand: {op!r}")
+    if len(outputs) > 2:
+        raise ValueError(f"output rank > 2: {outputs!r}")
+    
+    if len(outputs) > 0 and not outputs.isalpha():
+        raise ValueError(f"non-letter index in output {outputs!r}")
+    if len(set(outputs)) != len(outputs):
+        raise ValueError(f"letter repeated in output: {outputs!r}")
+
+    for letter in outputs:
+        if letter not in letters:
+            raise ValueError(f"output letter {letter!r} not in any input")
+    
+    descriptors = {}
+    replacements = "ijkl"
+    replacements_idx = 0
+
+    for op in inputs:
+        for letter in op:
+            if letter not in descriptors:
+                if replacements_idx < len(replacements):
+                    descriptors[letter] = replacements[replacements_idx]
+                    replacements_idx += 1
+                else:
+                    raise ValueError("Exceeded the available 'ijkl' replacement letters.")
+
+    def translate(text):
+        return "".join(descriptors.get(char, char) for char in text)
+
+    translated_operands = [translate(op) for op in inputs]
+    translated_output = translate(outputs)
+    
+    return ",".join(translated_operands) + "->" + translated_output
+   
+patterns = {
+    "ij,jk->ik": lambda ops, engine: mx_matmul(ops[0], ops[1], engine),
+    "ji,jk->ik": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_a=True),
+    "ij,kj->ik": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_b=True),
+    "ji,kj->ik": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_a=True, transpose_b=True),
+    "ij,jk->ki": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_output=True),
+    "ji,jk->ki": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_a=True, transpose_output=True),
+    "ij,kj->ki": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_b=True, transpose_output=True),
+    "ji,kj->ki": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_a=True, transpose_b=True, transpose_output=True),
+    "ij->ji":    lambda ops, engine: mx_transpose(ops[0], engine),
+    "ij->ij":    lambda ops, engine: mx_identity(ops[0], engine),
+    "ij->i":     lambda ops, engine: mx_row_sum(ops[0], engine),
+    "ij->j":     lambda ops, engine: mx_col_sum(ops[0], engine),
+    "ij->":      lambda ops, engine: mx_sum(ops[0], engine),
+    "ij,ij->ij": lambda ops, engine: mx_hadamard(ops[0], ops[1], engine, stream_ones=False),
+    "ij,ij->":   lambda ops, engine: mx_frobenius(ops[0], ops[1], engine),
+}
+
+canonical_form = {}
+
+for eq, fn in patterns.items():
+    canonical_form[normalise(eq)] = fn
+
+# Two patterns with the same canonical form would silently overwrite each other.
+assert len(canonical_form) == len(patterns), \
+    "two entries in patterns canonicalise to the same equation"
+
+
+def mx_einsum(equation: str, *operands, engine):
+    """Compute a 2D einsum on the FSA systolic array.
+
+    Supported patterns (written here with i, j, k):
+        matmul:       'ij,jk->ik', 'ji,jk->ik', 'ij,kj->ik', 'ji,kj->ik',
+                      'ij,jk->ki', 'ji,jk->ki', 'ij,kj->ki', 'ji,kj->ki'
+        elementwise:  'ij,ij->ij' (Hadamard), 'ij,ij->' (Frobenius)
+        unary:        'ij->ij', 'ij->ji', 'ij->i', 'ij->j', 'ij->'
+
+    Any consistent relabelling of the index letters is accepted
+    ('ab,bc->ac' is 'ij,jk->ik'), as is numpy's implicit-output form
+    ('ij,jk' means 'ij,jk->ik'). Operands may be any shape whose every
+    dimension is at most the SA size n: they are zero-padded to n x n and
+    the result is cropped to the shape np.einsum would return.
+
+    `engine` is keyword-only. Raises ValueError for anything outside this
+    set: more than two operands, rank > 2, repeated indices, ellipsis,
+    inconsistent or too-large dimensions, or an unsupported pattern.
+    """
+
+    canonical = normalise(equation)
+    
+    inputs, outputs = canonical.split("->")
+    individual_inputs = inputs.split(",")
         
+    if len(individual_inputs) != len(operands):
+        raise ValueError(f"{equation!r} expects {len(individual_inputs)} operands, got {len(operands)}")
+
+    if canonical not in canonical_form:
+        raise ValueError(f"unsupported einsum pattern {equation!r} (canonical {canonical!r})")
+
+    for subscript, operand in zip(individual_inputs, operands):
+        if np.ndim(operand) != len(subscript):
+            raise ValueError(f"operand {subscript!r} (canonical) expects ndim {len(subscript)}, got {np.ndim(operand)}")
+
+    from fsa.config import get_config
+    cfg = get_config()
+    n = cfg.sa_rows
+
+    sizes = {}
+    
+    for subscript, operand in zip(individual_inputs, operands):
+        for letter, size in zip(subscript, operand.shape):
+            if size > n:
+                raise ValueError(f"dimension of size {size} exceeds SA size {n}")
+            elif size < 1:
+                raise ValueError(f"cannot have empty operand")
+            elif letter in sizes and sizes[letter] != size:
+                raise ValueError(
+                    f"{equation!r}: index {letter!r} (canonical) has size "
+                    f"{sizes[letter]} in one operand and {size} in another")
+            else:
+                sizes[letter] = size
+    
+    padded = []
+
+    for operand in operands:
+        zeros = np.zeros((n, n), dtype=operand.dtype)
+        rows, cols = operand.shape
+        zeros[:rows, :cols] = operand
+        padded.append(zeros)
+
+    dispatch = canonical_form[canonical](tuple(padded), engine)
+
+    out_shape = []
+
+    for letter in outputs:
+        out_shape.append(sizes[letter])
+    
+    out_shape = tuple(out_shape)
+
+    if len(out_shape) == 2:
+        dispatch = dispatch[:out_shape[0], :out_shape[1]]
+    elif len(out_shape) == 1:
+        dispatch = dispatch[:out_shape[0]]
+
+    return dispatch

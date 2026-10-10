@@ -4,16 +4,26 @@ import sys
 import argparse
 import numpy as np
 import fsa as F
+import string
 
 import einsum
 from einsum import TestResult, print_results, mx_einsum
 
-# tensor_generator already exists in test_matmul.py (and a second copy in
-# test_transpose_dma.py). Importing rather than adding a third copy.
-from test_matmul import tensor_generator
+SEEDS = (42, 100, 69) 
 
+def shape_generator(shape, seed):
+    rng = np.random.default_rng(seed)
+    operand_shape = rng.uniform(low=-1, high=1, size=(shape))
+    operand_shape_f16 = operand_shape.astype(np.float16)
+    return operand_shape_f16
 
-SEEDS = (42, 100) 
+def random_letter_generator(equation, seed):
+    rng = np.random.default_rng(seed)
+    old = sorted({c for c in equation if c.isalpha()})
+    new = rng.choice(list(string.ascii_letters), size=len(old), replace=False)
+    mapping = dict(zip(old, new))
+    return "".join(mapping.get(c, c) for c in equation)
+
 
 class CountingEngine:
     def __init__(self, inner):
@@ -28,14 +38,15 @@ class CountingEngine:
         self.count = 0
 
 
-def run_case(engine, eq, n, expected_calls, sa_rows):
+def run_case(engine, eq, shapes, expected_calls, sa_rows, name=None):
     """Run one einsum pattern against numpy and check its invocation count.
 
     `engine` must be the CountingEngine wrapper, not the raw simulator.
     """
     # Distinct seeds per operand: with A == B an operand-order bug would pass
     # unnoticed (mx_col_sum deliberately calls mx_matmul with them swapped).
-    operands = tuple(tensor_generator(sa_rows, s) for s in SEEDS[:n])
+    
+    operands = tuple(shape_generator(shape, seed) for shape, seed in zip(shapes, SEEDS))
 
     engine.reset()
     got = mx_einsum(eq, *operands, engine=engine)   # engine is KEYWORD-ONLY
@@ -45,7 +56,7 @@ def run_case(engine, eq, n, expected_calls, sa_rows):
 
     problems = []
     # Shape first: numpy will happily broadcast a wrong-shaped result and give a
-    # misleading comparison rather than an error (cf. Bug 3 in the thesis log).
+    # misleading comparison rather than an error 
     if np.shape(got) != np.shape(expected):
         problems.append(
             f"shape mismatch: got {np.shape(got)}, expected {np.shape(expected)}"
@@ -64,7 +75,10 @@ def run_case(engine, eq, n, expected_calls, sa_rows):
             f"invocation count: expected {expected_calls}, got {calls}"
         )
 
-    name = eq if expected_calls > 0 else f"{eq}  (host passthrough, no chip pass)"
+    if name is None:
+        name = eq
+    if expected_calls == 0:
+        name += "  (host passthrough, no chip pass)"
     return TestResult(
         name=name,
         passed=not problems,
@@ -73,6 +87,25 @@ def run_case(engine, eq, n, expected_calls, sa_rows):
         error_msg="\n".join(problems),
     )
 
+def run_reject_case(engine, eq, shapes, expected_msg, name):
+    operands = tuple(shape_generator(shape, seed) for shape, seed in zip(shapes, SEEDS))
+    
+    engine.reset()
+
+    problems = []
+
+    try:
+        mx_einsum(eq, *operands, engine=engine)
+        problems.append("accepted an invalid equation")
+    except ValueError as e:
+        if expected_msg not in str(e):
+            problems.append(f"wrong rejection: expected {expected_msg!r} in {str(e)!r}")
+
+    if engine.count != 0:
+        problems.append(f"chip invoked {engine.count} times before rejecting")
+
+    return TestResult(name=name, passed=not problems, error_msg="\n".join(problems))
+    
 
 def get_tests(engine, sa_rows, sa_cols):
     """Return {test_name: callable() -> TestResult}, as test_matmul.get_tests does."""
@@ -94,17 +127,75 @@ def get_tests(engine, sa_rows, sa_cols):
          ("ij->j", 1, 1),
          ("ij->", 1, 1),
          ("ij,ij->ij", 2, 1),
-         ("ij,ij->", 2, 1)
+         ("ij,ij->", 2, 1),
+         ("ij,jk", 2, 1),
+         ("ji", 1, 1),
+         ("ij", 1, 0),
+         ("ij,ij", 2, 1)
         ]
+
+
+    RECT_CASES = [ # (equation, operand shapes, expected_invocations)
+         ("ij,jk->ik", [(3, 4), (4, 2)], 1),
+         ("ji,kj->ki", [(4, 3), (2, 4)], 2),
+         ("ij,jk->ki", [(3, 4), (4, 2)], 2),
+         ("ij,ij->ij", [(2, 3), (2, 3)], 1),
+         ("ij->ji",    [(3, 2)],         1),
+         ("ij->i",     [(3, 2)],         1),
+         ("ij->j",     [(3, 2)],         1),
+         ("ij->",      [(3, 2)],         1),
+         ("ij,ij->",   [(2, 3), (2, 3)], 1),
+         ("ij,jk->ik", [(1, 4), (4, 1)], 1),   
+         ("ab,bc->ac", [(2, 3), (3, 4)], 1),
+        ]
+
+    # Inputs mx_einsum must refuse, before any chip invocation. Shapes scale
+    # with the SA (N), so the list is valid at every size.
+    N = sa_rows
+    REJECT_CASES = [
+        ("ijk,kl->il",   [(N, N), (N, N)],          "operand rank > 2"),
+        ("ii->i",        [(N, N)],                  "repeated within one operand"),
+        ("ij,jk,kl->il", [(N, N)] * 3,              "at most two operands"),
+        ("ij,jk->ikj",   [(N, N), (N, N)],          "output rank > 2"),
+        ("ij->k",        [(N, N)],                  "not in any input"),
+        ("...ij->ij",    [(N, N)],                  "ellipsis"),
+        ("ij,jk->ik",    [(N, N)],                  "expects 2 operands"),
+        ("ij->ij",       [(N,)],                    "expects ndim"),
+        ("ij,jk->i",     [(N, N), (N, N)],          "unsupported einsum pattern"),
+        ("ij,jk->ik",    [(3, 4), (3, 2)],          "has size"),
+        ("ij->ij",       [(N + 1, N + 1)],          "exceeds SA size")
+    ]
 
     tests = {}
     for eq, n, expected_calls in CASES:
-        # Default arguments bind the CURRENT values. A bare `lambda:` would
-        # capture the loop variables themselves, so all 13 entries would run
-        # the last case -- silently, and all green.
         tests[eq] = (
-            lambda eq=eq, n=n, c=expected_calls:
-                run_case(engine, eq, n, c, sa_rows)
+            lambda eq=eq, shapes=[(sa_rows, sa_rows)] * n, c=expected_calls:
+                run_case(engine, eq, shapes, c, sa_rows)
+        )
+
+    for eq, shapes, expected_calls in RECT_CASES:
+        name = f"{eq}  [{', '.join('x'.join(map(str, s)) for s in shapes)}]"
+        tests[name] = (
+            lambda eq=eq, shapes=shapes, c=expected_calls, name=name:
+                run_case(engine, eq, shapes, c, sa_rows, name=name)
+        )
+
+    for eq, shapes, msg in REJECT_CASES:
+        reject_name = f"reject: {eq}  [{', '.join('x'.join(map(str, s)) for s in shapes)}]"
+        tests[reject_name] = (
+            lambda eq=eq, shapes=shapes, msg=msg, name=reject_name:
+                run_reject_case(engine, eq, shapes, msg, name)
+        )
+
+    for seed, (eq, n, expected_calls) in enumerate(CASES):
+        if "->" not in eq:
+            continue
+        relabelled = random_letter_generator(eq, seed)
+        name = f"{relabelled}  (relabel of {eq})"
+        tests[name] = (
+            lambda eq=relabelled, shapes=[(sa_rows, sa_rows)] * n,
+                   c=expected_calls, name=name:
+                run_case(engine, eq, shapes, c, sa_rows, name=name)
         )
     return tests
 
@@ -160,9 +251,7 @@ if __name__ == "__main__":
 
     from fsa.config import get_config
     F.init(config_file)
-    # REQUIRED: without this einsum._reset_allocator_if_configured is a no-op,
-    # the allocator never resets between kernels, and the run dies partway
-    # through with "allocation failed: not enough memory".
+    
     einsum.set_config_file(config_file)
     cfg = get_config()
     sa_rows, sa_cols = cfg.sa_rows, cfg.sa_cols
@@ -173,8 +262,6 @@ if __name__ == "__main__":
         vcdfile=args.vcdfile,
     )
     
-    # Pass the WRAPPER, not the raw simulator -- otherwise the counter never
-    # sees anything and every case reports 0 invocations.
     counting = CountingEngine(engine)
 
     tests = get_tests(counting, sa_rows, sa_cols)
