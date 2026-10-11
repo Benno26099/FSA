@@ -578,7 +578,7 @@ def normalise(equation: str):
         tensors = set()
         if len(op) > 2:
             raise ValueError(f"operand rank > 2: {op!r}")
-        if not op.isalpha():
+        if op != "" and not op.isalpha():
             raise ValueError(f"non-letter index in operand {op!r}")
         for letter in op:
             if letter not in letters:
@@ -619,55 +619,140 @@ def normalise(equation: str):
     translated_output = translate(outputs)
     
     return ",".join(translated_operands) + "->" + translated_output
-   
-patterns = {
-    "ij,jk->ik": lambda ops, engine: mx_matmul(ops[0], ops[1], engine),
-    "ji,jk->ik": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_a=True),
-    "ij,kj->ik": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_b=True),
-    "ji,kj->ik": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_a=True, transpose_b=True),
-    "ij,jk->ki": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_output=True),
-    "ji,jk->ki": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_a=True, transpose_output=True),
-    "ij,kj->ki": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_b=True, transpose_output=True),
-    "ji,kj->ki": lambda ops, engine: mx_matmul(ops[0], ops[1], engine, transpose_a=True, transpose_b=True, transpose_output=True),
-    "ij->ji":    lambda ops, engine: mx_transpose(ops[0], engine),
-    "ij->ij":    lambda ops, engine: mx_identity(ops[0], engine),
-    "ij->i":     lambda ops, engine: mx_row_sum(ops[0], engine),
-    "ij->j":     lambda ops, engine: mx_col_sum(ops[0], engine),
-    "ij->":      lambda ops, engine: mx_sum(ops[0], engine),
-    "ij,ij->ij": lambda ops, engine: mx_hadamard(ops[0], ops[1], engine, stream_ones=False),
-    "ij,ij->":   lambda ops, engine: mx_frobenius(ops[0], ops[1], engine),
-}
 
-canonical_form = {}
+def roles_helper(individual_inputs, output):
 
-for eq, fn in patterns.items():
-    canonical_form[normalise(eq)] = fn
+    a = individual_inputs[0]
+    if len(individual_inputs) == 2:
+        b = individual_inputs[1]
+    else:
+        b = ""
 
-# Two patterns with the same canonical form would silently overwrite each other.
-assert len(canonical_form) == len(patterns), \
-    "two entries in patterns canonicalise to the same equation"
+    set_a = set(a)
+
+    set_b = set(b)
+
+    all_letters = set_a | set_b
+
+    dict_roles = {}
+
+    for letter in all_letters:
+        in_a = letter in set_a
+        in_b = letter in set_b
+        in_out = letter in output
+
+        if in_a and in_b:
+            if in_out:
+                dict_roles[letter] = "E"
+            else: 
+                dict_roles[letter] = "C"
+
+        else:
+            if in_out:
+                if in_a:
+                    dict_roles[letter] = "Fa"
+                else:
+                    dict_roles[letter] = "Fb"
+            else:
+                if in_a:
+                    dict_roles[letter] = "Ra"
+                else:
+                    dict_roles[letter] = "Rb"
+
+    return dict_roles
+
+def placement_helper(operand, letters, row, col, n):
+    tile = np.zeros((n, n), dtype=operand.dtype)
+    transpose = False
+    
+    if len(letters) == 2:
+        rows, cols = operand.shape
+        tile[:rows, :cols] = operand
+        transpose =  letters != row + col
+    elif len(letters) == 1:
+        if row == col:
+            rows = operand.shape[0]
+            for k in range(rows):
+                tile[k, k] = operand[k]
+        elif letters == row:
+            rows = operand.shape[0]
+            tile[:rows, 0] = operand
+        else:
+            cols = operand.shape[0]
+            tile[0, :cols] = operand
+    elif len(letters) == 0:
+        tile[0, 0] = operand
+    
+
+    return tile, transpose
+
+def reduction_helper(operand, letters, roles, sizes, n, engine, cast=True):
+    kept = ""
+    r_letters = ""
+    for letter in letters:
+        if not roles[letter].startswith("R"):
+            kept = kept + letter
+        else:
+            r_letters = r_letters + letter
+    if r_letters == "":
+        return operand, letters
+    else:
+        if len(letters) == 2:
+            tile, _ = placement_helper(operand, letters, letters[0], letters[1], n)
+            if len(r_letters) == 2:
+                result = mx_sum(tile, engine)
+            elif r_letters == letters[1]:
+                result = mx_row_sum(tile, engine)
+            else:
+                result = mx_col_sum(tile, engine)
+        elif len(letters) == 1:
+            tile, _ = placement_helper(operand, letters, None, letters, n)
+            result = mx_row_sum(tile, engine)[0]
+
+    dtype = operand.dtype if cast else None
+    if len(kept) == 1:
+        result = result[:sizes[kept]]
+        if cast:
+            result = result.astype(dtype)
+    if len(kept) == 0:
+        result = np.asarray(result, dtype=dtype)
+
+    return result, kept
 
 
 def mx_einsum(equation: str, *operands, engine):
     """Compute a 2D einsum on the FSA systolic array.
 
-    Supported patterns (written here with i, j, k):
-        matmul:       'ij,jk->ik', 'ji,jk->ik', 'ij,kj->ik', 'ji,kj->ik',
-                      'ij,jk->ki', 'ji,jk->ki', 'ij,kj->ki', 'ji,kj->ki'
-        elementwise:  'ij,ij->ij' (Hadamard), 'ij,ij->' (Frobenius)
-        unary:        'ij->ij', 'ij->ji', 'ij->i', 'ij->j', 'ij->'
+    Supported: every einsum with one or two operands of rank 0, 1 or 2, no
+    index repeated within an operand, and an output of rank <= 2 drawn from
+    the inputs -- 137 equations up to renaming of letters. Scalars are
+    rank-0 operands (an empty subscript, e.g. ',ij->ij').
+
+    Dispatch is by index role, not by pattern:
+      1. Each letter gets a role: C (contracted), E (elementwise),
+         Fa/Fb (free), Ra/Rb (reduced within one operand).
+      2. R letters are summed out first, one chip pass per operand that
+         has any (row/column/total sum).
+      3. What remains is one core step: a matmul (plain, mat-vec, dot,
+         outer, broadcast by diag(v), scaling by s*I, diagonal or trace
+         read), a Hadamard (plus a transpose pass if the layouts differ),
+         or, for one operand, a transpose or nothing.
+    Operand transposes are done on chip (transpose flags); output order is
+    handled by swapping the operands, so neither costs an extra pass.
 
     Any consistent relabelling of the index letters is accepted
     ('ab,bc->ac' is 'ij,jk->ik'), as is numpy's implicit-output form
     ('ij,jk' means 'ij,jk->ik'). Operands may be any shape whose every
-    dimension is at most the SA size n: they are zero-padded to n x n and
+    dimension is at most the SA size n: they are placed in n x n tiles and
     the result is cropped to the shape np.einsum would return.
 
-    `engine` is keyword-only. Raises ValueError for anything outside this
-    set: more than two operands, rank > 2, repeated indices, ellipsis,
-    inconsistent or too-large dimensions, or an unsupported pattern.
-    """
+    `engine` is keyword-only. Raises ValueError for anything outside the
+    class: more than two operands, rank > 2, repeated indices, ellipsis,
+    or inconsistent or too-large dimensions.
 
+    Docstring Co-Authored by Claude Opus 5.5
+    """
+    operands = [np.asarray(x) for x in operands]
     canonical = normalise(equation)
     
     inputs, outputs = canonical.split("->")
@@ -675,8 +760,51 @@ def mx_einsum(equation: str, *operands, engine):
         
     if len(individual_inputs) != len(operands):
         raise ValueError(f"{equation!r} expects {len(individual_inputs)} operands, got {len(operands)}")
+    
+    roles = roles_helper(individual_inputs, outputs)
+    reduced_inputs = []
 
-    if canonical not in canonical_form:
+   
+    for op in individual_inputs:
+        kept = ""
+        for letter in op:
+            if not roles[letter].startswith("R"):
+                kept = kept + letter
+        reduced_inputs.append(kept)
+
+        
+
+    reduced_roles = roles_helper(reduced_inputs, outputs)
+
+
+    values = list(reduced_roles.values())
+    n_C = values.count("C")
+    n_E = values.count("E")
+    n_Fa = values.count("Fa")
+    n_Fb = values.count("Fb")
+
+    rule = None
+    if len(individual_inputs) == 2:
+        if n_E == 2:
+            rule = "hadamard"
+        elif n_E == 1 and n_C == 1:
+            rule = "diag"
+        elif n_E == 1 and n_Fa + n_Fb == 1:
+            rule = "broadcast"
+        elif n_E == 1:
+            rule = "vec_hadamard"
+        elif n_C == 2:
+            rule = "trace"
+        elif n_Fa <= 1 and n_Fb <= 1:
+            rule = "matmul"
+        elif n_Fa == 2 or n_Fb == 2:
+            rule = "sI"
+
+    else:
+        rule = "unary"
+        
+    # Unreachable for any equation normalise accepts; kept as a guard.
+    if rule is None:
         raise ValueError(f"unsupported einsum pattern {equation!r} (canonical {canonical!r})")
 
     for subscript, operand in zip(individual_inputs, operands):
@@ -701,22 +829,159 @@ def mx_einsum(equation: str, *operands, engine):
                     f"{sizes[letter]} in one operand and {size} in another")
             else:
                 sizes[letter] = size
+
+    new_operands = []
+    new_inputs = []
+    for operand, letters in zip(operands, individual_inputs):
+        reduced, kept = reduction_helper(operand, letters, roles, sizes, n, engine,
+                                         cast=len(individual_inputs) == 2)
+        new_operands.append(reduced)
+        new_inputs.append(kept)
+
+    operands = new_operands
+    individual_inputs = new_inputs
+    roles = reduced_roles
+
+    if rule in ("matmul", "diag", "trace", "broadcast", "vec_hadamard", "sI"):
+        if rule == "matmul":
+            c, fa, fb = None, None, None
+
+            for letter, role in roles.items():
+                if role == "C":
+                    c = letter
+                elif role == "Fa":
+                    fa = letter
+                elif role == "Fb":
+                    fb = letter
+
+            swap = fa != None and fb != None and outputs == fb + fa
+
+            if swap:
+                first_tile, first_t = placement_helper(operands[1], individual_inputs[1], fb, c, n)
+                second_tile, second_t = placement_helper(operands[0], individual_inputs[0], c, fa, n)
+                row_letter = fb
+            else:
+                first_tile, first_t = placement_helper(operands[0], individual_inputs[0], fa, c, n)
+                second_tile, second_t = placement_helper(operands[1], individual_inputs[1], c, fb, n)
+                row_letter = fa
+
+        elif rule == "diag":
+            c, e = None, None
+            for letter, role in roles.items():
+                if role == "C":
+                    c = letter
+                elif role == "E":
+                    e = letter
+         
+            first_tile, first_t = placement_helper(operands[1], individual_inputs[1], e, c, n)
+            second_tile, second_t = placement_helper(operands[0], individual_inputs[0], c, e, n)
+            
+
+        elif rule == "trace":
     
-    padded = []
+            c1, c2 = individual_inputs[0][0], individual_inputs[0][1]
+            first_tile, first_t = placement_helper(operands[1], individual_inputs[1], c1, c2, n)
+            second_tile, second_t = placement_helper(operands[0], individual_inputs[0], c2, c1, n)
 
-    for operand in operands:
-        zeros = np.zeros((n, n), dtype=operand.dtype)
-        rows, cols = operand.shape
-        zeros[:rows, :cols] = operand
-        padded.append(zeros)
+        elif rule == "broadcast":
+            e, f, m = None, None, None
 
-    dispatch = canonical_form[canonical](tuple(padded), engine)
+            for letter, role in roles.items():
+                if role == "E":
+                    e = letter
+                elif role == "Fa":
+                    f = letter
+                    m = 0
+                elif role == "Fb":
+                    f = letter
+                    m = 1
+
+            if outputs == e + f:
+                first_tile, first_t = placement_helper(operands[1 - m], individual_inputs[1 - m], e, e, n)
+                second_tile, second_t = placement_helper(operands[m], individual_inputs[m], e, f, n)
+            else:
+                first_tile, first_t = placement_helper(operands[m], individual_inputs[m], f, e, n)
+                second_tile, second_t = placement_helper(operands[1 - m], individual_inputs[1 - m], e, e, n)
+
+        elif rule == "vec_hadamard":
+            e = None
+                       
+            for letter, role in roles.items():
+                if role == "E":
+                    e = letter
+            
+            first_tile, first_t = placement_helper(operands[0], individual_inputs[0], e, e, n)
+            second_tile, second_t = placement_helper(operands[1], individual_inputs[1], e, None, n)
+            row_letter = e
+
+        elif rule == "sI":
+            fa, fb, m = None, None, None
+            
+            for letter, role in roles.items():
+                if role == "Fa":
+                    fa = letter
+                    m = 0
+                elif role == "Fb":
+                    fb = letter
+                    m = 1
+
+            first_tile, first_t = placement_helper(operands[m], individual_inputs[m], outputs[0], outputs[1], n)
+
+            second_tile, second_t = np.eye(n, dtype=operands[1-m].dtype) * operands[1-m], False
+
+        result = mx_matmul(first_tile, second_tile, engine, transpose_a=first_t, transpose_b=second_t)
+
+        if rule == "diag":
+            dispatch = np.diagonal(result)
+        elif rule == "trace":
+            dispatch = np.trace(result)
+        elif len(outputs) == 2:
+            dispatch = result
+        elif len(outputs) == 1:
+            if outputs == row_letter:
+                dispatch = result[:, 0]
+            else:
+                dispatch = result[0, :]
+        else:
+            dispatch = result[0, 0]
+
+    elif rule == "hadamard":
+        a, b = individual_inputs[0], individual_inputs[1]
+
+        if a == b:
+            target = a
+        else:
+            target = outputs
+
+        A_tile, A_t = placement_helper(operands[0], a, target[0], target[1], n)
+        B_tile, B_t = placement_helper(operands[1], b, target[0], target[1], n)    
+
+        if A_t:
+            A_tile = mx_transpose(A_tile, engine)   
+        if B_t:
+            B_tile = mx_transpose(B_tile, engine) 
+
+        result = mx_hadamard(A_tile, B_tile, engine)
+
+        if outputs != target:
+            result = mx_transpose(result, engine)
+
+        dispatch = result
+    elif rule == "unary":
+        reduced_operand = operands[0]
+        letters = individual_inputs[0]
+
+        if letters != outputs:
+            tile, _ = placement_helper(reduced_operand, letters, letters[0], letters[1], n)
+            dispatch = mx_transpose(tile, engine)
+        else:
+            dispatch  = reduced_operand
 
     out_shape = []
 
     for letter in outputs:
         out_shape.append(sizes[letter])
-    
+
     out_shape = tuple(out_shape)
 
     if len(out_shape) == 2:

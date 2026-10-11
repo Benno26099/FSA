@@ -52,7 +52,9 @@ def run_case(engine, eq, shapes, expected_calls, sa_rows, name=None):
     got = mx_einsum(eq, *operands, engine=engine)   # engine is KEYWORD-ONLY
     calls = engine.count
 
-    expected = np.einsum(eq, *operands)
+    # fp64 reference: np.einsum on fp16 operands accumulates in fp16, which on
+    # long sums (16x16 and up) is less accurate than the chip's fp32 accumulate.
+    expected = np.einsum(eq, *(o.astype(np.float64) for o in operands))
 
     problems = []
     # Shape first: numpy will happily broadcast a wrong-shaped result and give a
@@ -117,10 +119,10 @@ def get_tests(engine, sa_rows, sa_cols):
          ("ji,jk->ik", 2, 1),
          ("ij,kj->ik", 2, 1),
          ("ji,kj->ik", 2, 1),
-         ("ij,jk->ki", 2, 2),
-         ("ji,jk->ki", 2, 2),
-         ("ij,kj->ki", 2, 2),
-         ("ji,kj->ki", 2, 2),
+         ("ij,jk->ki", 2, 1),
+         ("ji,jk->ki", 2, 1),
+         ("ij,kj->ki", 2, 1),
+         ("ji,kj->ki", 2, 1),
          ("ij->ji", 1, 1),
          ("ij->ij", 1, 0),
          ("ij->i", 1, 1),
@@ -137,8 +139,8 @@ def get_tests(engine, sa_rows, sa_cols):
 
     RECT_CASES = [ # (equation, operand shapes, expected_invocations)
          ("ij,jk->ik", [(3, 4), (4, 2)], 1),
-         ("ji,kj->ki", [(4, 3), (2, 4)], 2),
-         ("ij,jk->ki", [(3, 4), (4, 2)], 2),
+         ("ji,kj->ki", [(4, 3), (2, 4)], 1),
+         ("ij,jk->ki", [(3, 4), (4, 2)], 1),
          ("ij,ij->ij", [(2, 3), (2, 3)], 1),
          ("ij->ji",    [(3, 2)],         1),
          ("ij->i",     [(3, 2)],         1),
@@ -147,10 +149,53 @@ def get_tests(engine, sa_rows, sa_cols):
          ("ij,ij->",   [(2, 3), (2, 3)], 1),
          ("ij,jk->ik", [(1, 4), (4, 1)], 1),   
          ("ab,bc->ac", [(2, 3), (3, 4)], 1),
+         ("ij,j->i",   [(3, 4), (4,)],   1),
+         ("ij,i->j",   [(3, 2), (3,)],   1),
+         ("i,ij->j",   [(3,), (3, 2)],   1),
+         ("j,ij->i",   [(4,), (3, 4)],   1),
+         ("i,i->",     [(3,), (3,)],     1),
+         ("i,j->ij",   [(3,), (2,)],     1),
+         ("i,j->ji",   [(3,), (2,)],     1),
+         # diagonal read 
+         ("ij,ij->i",  [(3, 4), (3, 4)], 1),
+         ("ij,ij->j",  [(3, 4), (3, 4)], 1),
+         ("ij,ji->i",  [(3, 4), (4, 3)], 1),
+         ("ij,ji->j",  [(3, 4), (4, 3)], 1),
+         # trace 
+         ("ij,ji->",   [(3, 4), (4, 3)], 1),
+         # broadcast diag(v) 
+         ("ij,j->ij",  [(3, 4), (4,)],   1),
+         ("ij,j->ji",  [(3, 4), (4,)],   1),
+         ("i,ij->ji",  [(3,), (3, 4)],   1),
+         # vector Hadamard (E=1)
+         ("i,i->i",    [(3,), (3,)],     1),
+         # Hadamard with transposes 
+         ("ij,ij->ji", [(2, 3), (2, 3)], 2),
+         ("ij,ji->ij", [(2, 3), (3, 2)], 2),
+         ("ij,ji->ji", [(2, 3), (3, 2)], 2),
+         # pre-reduction of R letters (+1 pass per operand that has any)
+         ("ij,jk->i",  [(3, 4), (4, 2)], 2),   # row-sum B, then mat-vec
+         ("ij,jk->k",  [(3, 4), (4, 2)], 2),   # col-sum A, then vec-mat
+         ("ij,jk->",   [(3, 4), (4, 2)], 3),   # reduce both, then dot
+         ("ij,kl->ik", [(3, 4), (2, 3)], 3),   # reduce both, then outer
+         ("ij,ik->ij", [(3, 4), (3, 2)], 2),   # row-sum B, then broadcast
+         ("ij,i->i",   [(3, 4), (3,)],   2),   # row-sum A, then vector Hadamard
+         ("i,jk->j",   [(3,), (2, 4)],   3),   # sum u, row-sum B, then scale
+         # s*I (two free letters vs a scalar from a reduction) -- needs 3d
+         ("ij,k->ij",  [(3, 4), (2,)],   2),
+         ("ij,kl->ji", [(3, 4), (2, 3)], 2),
+         # unary through the pipeline
+         ("i->i",      [(3,)],           0),
+         ("i->",       [(3,)],           1),
+         ("->",        [()],             0),
+         # scalar (rank-0) operands
+         (",ij->ij",   [(), (3, 4)],     1),   # s*I
+         ("ij,->ji",   [(3, 4), ()],     1),   # s*I, transposed output
+         (",i->i",     [(), (3,)],       1),   # scalar x vector (matmul)
+         (",->",       [(), ()],         1),   # scalar x scalar (1x1 matmul)
+         (",ij->i",    [(), (3, 4)],     2),   # row-sum, then scale
         ]
 
-    # Inputs mx_einsum must refuse, before any chip invocation. Shapes scale
-    # with the SA (N), so the list is valid at every size.
     N = sa_rows
     REJECT_CASES = [
         ("ijk,kl->il",   [(N, N), (N, N)],          "operand rank > 2"),
@@ -161,7 +206,8 @@ def get_tests(engine, sa_rows, sa_cols):
         ("...ij->ij",    [(N, N)],                  "ellipsis"),
         ("ij,jk->ik",    [(N, N)],                  "expects 2 operands"),
         ("ij->ij",       [(N,)],                    "expects ndim"),
-        ("ij,jk->i",     [(N, N), (N, N)],          "unsupported einsum pattern"),
+        ("i1->i",        [(N, N)],                  "non-letter index"),
+        (",ij->ij",      [(N, N), (N, N)],          "expects ndim"),   # scalar given a matrix
         ("ij,jk->ik",    [(3, 4), (3, 2)],          "has size"),
         ("ij->ij",       [(N + 1, N + 1)],          "exceeds SA size")
     ]
