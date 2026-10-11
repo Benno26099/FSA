@@ -184,9 +184,8 @@ class LoadStationary(val rows: Int, val cols: Int) extends ExecutionPlan {
   // load into systolic array
   load_reg_li.parallel(1, cols)
   /*
-    Although we would occupy pe control signals until cycle `cols`,
-    the next instruction should always read sram first (with 1 cycle
-    latency), so we can start the next instruction at cycle `cols-1`
+    The next instruction may only start once the stationary registers are loaded:
+    load_reg_li writes them through cycle cols. 
    */
   setConflictFree(cols)
 }
@@ -199,9 +198,8 @@ class LoadStationary2(val rows: Int, val cols: Int) extends ExecutionPlan {
   // load into systolic array
   load_reg2_li.parallel(1, cols)
   /*
-    Although we would occupy pe control signals until cycle `cols`,
-    the next instruction should always read sram first (with 1 cycle
-    latency), so we can start the next instruction at cycle `cols-1`
+    The next instruction may only start once the stationary registers are loaded:
+    load_reg_li writes them through cycle cols. 
    */
   setConflictFree(cols)
 }
