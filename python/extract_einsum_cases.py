@@ -1,26 +1,3 @@
-#!/usr/bin/env python
-"""Extract FSA-executable test cases from the benchmark.einsum.org instances.
-
-IMPORTANT: run this with miniforge's base python, NOT `uv run python` --
-`einsum_benchmark` and `opt_einsum` are installed in the base env only:
-
-    ~/miniforge3/bin/python extract_einsum_cases.py --mode summary
-
-Background (see docs/thesis/HANDOFF.md section 9): no instance in the suite is
-a single 2-operand contraction -- they are all tensor networks, the smallest
-with 26 tensors. The unit of work FSA can actually execute is the *pairwise
-contraction step* of a precomputed contraction path, so that is what this
-extracts.
-
-Modes:
-  summary  -- reproduce the coverage breakdown (no output file)
-  extract  -- write one JSONL record per FSA-executable step
-
-Each extracted record carries the canonical einsum equation (relabelled to the
-pattern names mx_einsum dispatches on), the operand shapes, and provenance back
-to the instance and step index.
-"""
-
 import argparse
 import json
 import os
@@ -31,7 +8,7 @@ from collections import Counter, defaultdict
 
 DEFAULT_INSTANCES = "/mnt/c/Users/benac/Downloads/instances/instances"
 
-# Patterns mx_einsum can dispatch, as of c700418.
+# The old pattern table mx_einsum dispatched on
 SUPPORTED = {
     # two rank-2 operands, one contracted index
     "ij,jk->ik", "ji,jk->ik", "ij,kj->ik", "ji,kj->ik",
@@ -54,14 +31,10 @@ def parse_eq(eq):
 
 def canonical(terms, out):
     """Relabel a step to one of SUPPORTED, or return None.
-
-    Index *letters* in the benchmark are arbitrary (and often non-ASCII), so a
-    step is classified by the structure of its index sets, not by its labels.
     """
     if out is None:
         return None
-    # FSA has no diagonal/trace path (A2 was dropped on the data), so any term
-    # with a repeated index is out.
+
     for t in list(terms) + [out]:
         if len(set(t)) != len(t):
             return None
@@ -91,15 +64,17 @@ def canonical(terms, out):
 
     sa, sb, so = set(a), set(b), set(out)
 
-    # Elementwise: identical index sets on both operands.
+    # Elementwise: identical index sets on both operands. 
     if sa == sb:
+        if b != a:
+            return None
         if so == sa and out == a:
             return "ij,ij->ij"
         if out == "":
             return "ij,ij->"
         return None
 
-    # Matmul: exactly one shared index, contracted away; output is the other two.
+    # Matmul
     shared = sa & sb
     if len(shared) != 1:
         return None
@@ -111,7 +86,7 @@ def canonical(terms, out):
     if so != {free_a, free_b} or len(out) != 2:
         return None
 
-    # Transpose variant is decided by where the contracted index sits.
+   
     lhs_a = "ij" if a[1] == k else "ji"     # contracted index trailing -> 'ij'
     lhs_b = "jk" if b[0] == k else "kj"     # contracted index leading  -> 'jk'
     rhs = "ik" if out[0] == free_a else "ki"
@@ -134,8 +109,6 @@ def classify(terms, out, dims, sa_size):
 
     eq = canonical(terms, out)
     if eq is None:
-        # Split out the rank-3+ outputs: these are outside 2D scope entirely,
-        # as opposed to 2D steps FSA merely cannot express yet.
         if len(terms) == 2 and out is not None and len(out) > 2:
             return "rank2-out-rank3+", None
         return "rank2-unsupported", None
@@ -144,6 +117,36 @@ def classify(terms, out, dims, sa_size):
     if len(terms) == 1:
         return "unary", eq
     return "matmul", eq
+
+
+def planner_canonical(terms, out):
+    """Canonical equation of a step in the planner's class, or None if outside it.
+    """
+    if out is None or len(terms) > 2 or len(out) > 2:
+        return None
+    for t in list(terms) + [out]:
+        if len(t) > 2 or len(set(t)) != len(t):
+            return None
+    letters = "".join(terms)
+    if not set(out) <= set(letters):
+        return None
+    rename = {}
+    for c in letters:
+        rename.setdefault(c, "ijkl"[len(rename)])
+    return ",".join("".join(rename[c] for c in t) for t in terms) + "->" + \
+        "".join(rename[c] for c in out)
+
+
+def planner_group(terms):
+    """Reporting group for an in-class step, by operand ranks."""
+    ranks = sorted(len(t) for t in terms)
+    if ranks[-1] <= 1:
+        return "scalar/vector"
+    if ranks == [1, 2] or ranks == [0, 2]:
+        return "mat-vec/scaling"
+    if ranks == [2, 2]:
+        return "real 2D"
+    return "unary"
 
 
 def index_sizes(format_string, tensors):
@@ -162,7 +165,7 @@ def iter_steps(path):
 
     fs, tensors, path_metas, _ = pickle.load(open(path, "rb"))
     sizes = index_sizes(fs, tensors)
-    # path_metas is (opt_flops, opt_size); element 0 of each is the linear path.
+
     linear = path_metas[0][0]
     ssa = to_ssa_path(linear)
     annotated = to_annotated_ssa_path(fs, ssa, is_ascii=False)
@@ -187,6 +190,9 @@ def main():
                     help="extract mode: cap per (family, pattern) stratum. "
                          "0 = no cap, which is ~1M records.")
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--distinct", action="store_true",
+                    help="extract mode: one record per distinct (equation, shapes), "
+                         "with the number of steps it stands for. Ignores --sample.")
     ap.add_argument("--limit-instances", type=int, default=0,
                     help="debug: only read the first N instance files")
     args = ap.parse_args()
@@ -205,7 +211,12 @@ def main():
     patterns = Counter()
     per_family = defaultdict(Counter)
     strata = defaultdict(list)
+    distinct = {}
     total = 0
+
+    planner = Counter()
+    planner_eqs = Counter()
+    planner_family = defaultdict(Counter)
 
     for n, fname in enumerate(files, 1):
         name = fname[:-4]
@@ -223,14 +234,33 @@ def main():
             bucket, eq = classify(terms, out, sizes, args.sa_size)
             buckets[bucket] += 1
             per_family[fam][bucket] += 1
-            if eq is None:
+            if eq is not None:
+                patterns[eq] += 1
+
+            ceq = planner_canonical(terms, out)
+            if ceq is None or any(sizes[c] > args.sa_size for t in terms for c in t):
                 continue
-            patterns[eq] += 1
-            if args.mode == "extract":
+            group = planner_group(terms)
+            planner[group] += 1
+            planner_eqs[ceq] += 1
+            planner_family[fam][group] += 1
+            if args.mode == "extract" and args.distinct:
                 shapes = [[sizes[c] for c in t] for t in terms]
-                strata[(fam, eq)].append({
-                    "instance": name, "family": fam, "step": k,
-                    "equation": eq, "raw_equation": ",".join(terms) + "->" + out,
+                key = (ceq, str(shapes))
+                if key not in distinct:
+                    distinct[key] = {
+                        "instance": name, "family": fam, "step": k, "group": group,
+                        "equation": ceq, "raw_equation": ",".join(terms) + "->" + out,
+                        "shapes": shapes, "count": 0, "families": [],
+                    }
+                distinct[key]["count"] += 1
+                if fam not in distinct[key]["families"]:
+                    distinct[key]["families"].append(fam)
+            elif args.mode == "extract":
+                shapes = [[sizes[c] for c in t] for t in terms]
+                strata[(fam, ceq)].append({
+                    "instance": name, "family": fam, "step": k, "group": group,
+                    "equation": ceq, "raw_equation": ",".join(terms) + "->" + out,
                     "shapes": shapes,
                 })
 
@@ -243,10 +273,6 @@ def main():
     for eq, c in patterns.most_common():
         print(f"    {eq:<14} {c:>10,}")
 
-    # 'Real 2D work' excludes steps whose OUTPUT is rank 3+ (rank2 x rank2 ->
-    # rank3/rank4 outer-ish contractions). Those are outside the 2D scope by
-    # construction, so counting them in the denominator understates coverage.
-    # This matches the denominator used in HANDOFF.md section 9.
     rank2 = (buckets["elementwise"] + buckets["matmul"]
              + buckets["rank2-unsupported"])
     if rank2 > 0:
@@ -254,7 +280,35 @@ def main():
         covered = buckets["elementwise"] + buckets["matmul"]
         print(f"  Of which FSA executes: {covered:,} ({100*covered/rank2:.1f}%)")
 
-    if args.mode == "extract":
+    in_class = sum(planner.values())
+    nontrivial = in_class - planner["scalar/vector"]
+    print(f"\nRole planner (Task 3b): steps in the 2D class with dims <= {args.sa_size}")
+    for g in ("real 2D", "mat-vec/scaling", "unary", "scalar/vector"):
+        print(f"  {g:<20} {planner[g]:>10,}  {100*planner[g]/max(total,1):5.1f}%")
+    print(f"\n  IN CLASS             {in_class:>10,}  {100*in_class/max(total,1):5.1f}%")
+    print(f"  excl. scalar/vector  {nontrivial:>10,}  {100*nontrivial/max(total,1):5.1f}%")
+    if rank2 > 0:
+
+        print(f"  real 2D covered: {planner['real 2D']:,} / {planner['real 2D']:,} (100.0%)"
+              f"  [old table: {covered:,} / {rank2:,}; {rank2 - planner['real 2D']:,}"
+              f" of those are scalar x matrix]")
+    print(f"  distinct canonical equations seen: {len(planner_eqs)} of 137")
+    for eq, c in planner_eqs.most_common(20):
+        print(f"    {eq:<14} {c:>10,}")
+    print("\n  per family (in class excl. scalar/vector / all steps):")
+    for fam in sorted(per_family):
+        fam_total = sum(per_family[fam].values())
+        fam_nt = sum(planner_family[fam].values()) - planner_family[fam]["scalar/vector"]
+        print(f"    {fam:<6} {fam_nt:>9,} / {fam_total:>9,}  {100*fam_nt/max(fam_total,1):5.1f}%")
+
+    if args.mode == "extract" and args.distinct:
+        recs = sorted(distinct.values(), key=lambda r: -r["count"])
+        with open(args.out, "w") as fh:
+            for r in recs:
+                fh.write(json.dumps(r) + "\n")
+        print(f"\nWrote {len(recs):,} distinct (equation, shapes) records to {args.out}, "
+              f"standing for {sum(r['count'] for r in recs):,} steps.")
+    elif args.mode == "extract":
         written = 0
         with open(args.out, "w") as fh:
             for key, recs in sorted(strata.items(), key=lambda kv: str(kv[0])):

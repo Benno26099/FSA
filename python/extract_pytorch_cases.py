@@ -1,35 +1,9 @@
-#!/usr/bin/env python
-"""Extract the 2D contractive subset of PyTorch's einsum test cases.
-
-Runs under the project venv (`uv run python`) -- numpy only.
-
-Source: pytorch/pytorch, test/test_linalg.py, `test_einsum`, tag v2.6.0
-(matching the torch 2.6.0 in this project's venv). PyTorch ships no tests in
-its pip wheel, so the case list below is transcribed from that file rather than
-imported. The upstream comment credits the cases to
-https://gist.github.com/rockt/15ee013889d65342088e9260a377dc8f -- the widely
-cited einsum tutorial gist, which is what makes these *recognisable* cases
-rather than ones we invented.
-
-Deliberately excluded:
-  test_einsum_random        -- generates random equations, not a fixed set
-  test_einsum_sublist_format -- the same cases through a different API
-  test_einsum_corner_cases / _error_cases -- exercise error handling and
-                               degenerate shapes, not contraction patterns
-
-Classification reuses canonical() from extract_einsum_cases.py, so a case is
-only emitted if it maps onto a pattern mx_einsum actually dispatches.
-"""
-
 import argparse
 import json
 import sys
 
-from extract_einsum_cases import parse_eq, canonical
+from extract_einsum_cases import parse_eq, planner_canonical
 
-# (equation, [operand shapes]) exactly as test_einsum instantiates them.
-#   x (5,)   y (7,)    A (3,5)   B (2,5)   C (2,3,5)  D (2,5,7)
-#   E (7,9)  F (2,3,3,5)  G (5,4,6)  H (4,4)  I (2,3,2)
 PYTORCH_CASES = [
     # Vector operations
     ("i->",            [(5,)],              "sum"),
@@ -53,24 +27,21 @@ PYTORCH_CASES = [
     ("ijk,jk->ij",     [(2, 3, 5), (3, 5)],     "double indices"),
     ("ijk,ik->j",      [(2, 3, 5), (2, 5)],     "non contiguous"),
     ("ijk,ik->jk",     [(2, 3, 5), (2, 5)],     "non contiguous, double indices"),
-    # Diagonals -- all rejected (FSA has no diagonal path; A2 dropped on the data)
+    # Diagonals -- all rejected 
     ("ii->",           [(4, 4)],            "trace"),
     ("ii->i",          [(4, 4)],            "diagonal"),
     ("iji->j",         [(2, 3, 2)],         "non-contiguous trace"),
-    # Ellipsis forms -- resolved against the concrete shapes below
+    # Ellipsis forms 
     ("i...->...",      [(4, 4)],            "ellipsis sum"),
     ("ki,...k->i...",  [(5, 3), (2, 5)],    "ellipsis, A.t() and B"),
     ("k...,jk->...",   [(5, 3), (2, 5)],    "ellipsis, A.t() and B"),
 ]
 
-_LABELS = "ZYXWVUTSRQPON"  # fresh labels for ellipsis dims, unlikely to collide
+_LABELS = "ZYXWVUTSRQPON"  # fresh labels for ellipsis dims
 
 
 def resolve_ellipsis(eq, shapes):
     """Replace '...' with concrete fresh labels, using the operand shapes.
-
-    Returns (terms, out) with no ellipsis, or None if the equation cannot be
-    resolved (ragged broadcast etc. -- not worth handling for this subset).
     """
     terms, out = parse_eq(eq)
     if out is None:
@@ -144,9 +115,15 @@ def main():
         if any(len(t) > 2 for t in terms):
             rejected.append((eq, note, "operand rank > 2"))
             continue
-        canon = canonical(terms, out)
+        if any(len(set(t)) != len(t) for t in terms + [out]):
+            rejected.append((eq, note, "repeated index (diagonal)"))
+            continue
+        if len(out) > 2:
+            rejected.append((eq, note, "output rank > 2"))
+            continue
+        canon = planner_canonical(terms, out)
         if canon is None:
-            rejected.append((eq, note, "not a pattern mx_einsum dispatches"))
+            rejected.append((eq, note, "outside the 2D class"))
             continue
         kept.append({
             "suite": "pytorch",
