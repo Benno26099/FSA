@@ -872,16 +872,21 @@ def mx_einsum(equation: str, *operands, engine):
                     c = letter
                 elif role == "E":
                     e = letter
-         
-            first_tile, first_t = placement_helper(operands[1], individual_inputs[1], e, c, n)
-            second_tile, second_t = placement_helper(operands[0], individual_inputs[0], c, e, n)
-            
+
+            swap = individual_inputs[0] == e + c
+
+            if swap: 
+                first_tile, first_t = placement_helper(operands[0], individual_inputs[0], e, c, n)
+                second_tile, second_t = placement_helper(operands[1], individual_inputs[1], c, e, n)
+            else:
+                first_tile, first_t = placement_helper(operands[1], individual_inputs[1], e, c, n)
+                second_tile, second_t = placement_helper(operands[0], individual_inputs[0], c, e, n)
 
         elif rule == "trace":
     
             c1, c2 = individual_inputs[0][0], individual_inputs[0][1]
-            first_tile, first_t = placement_helper(operands[1], individual_inputs[1], c1, c2, n)
-            second_tile, second_t = placement_helper(operands[0], individual_inputs[0], c2, c1, n)
+            first_tile, first_t = placement_helper(operands[0], individual_inputs[0], c1, c2, n)
+            second_tile, second_t = placement_helper(operands[1], individual_inputs[1], c2, c1, n)
 
         elif rule == "broadcast":
             e, f, m = None, None, None
