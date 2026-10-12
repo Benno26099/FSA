@@ -860,6 +860,10 @@ def mx_einsum(equation: str, *operands, engine):
                 first_tile, first_t = placement_helper(operands[1], individual_inputs[1], fb, c, n)
                 second_tile, second_t = placement_helper(operands[0], individual_inputs[0], c, fa, n)
                 row_letter = fb
+            elif fb is None and fa is not None and individual_inputs[1] == c and individual_inputs[0] == c + fa:
+                first_tile, first_t = placement_helper(operands[1], individual_inputs[1], None, c, n)
+                second_tile, second_t = placement_helper(operands[0], individual_inputs[0], c, fa, n)
+                row_letter = None
             else:
                 first_tile, first_t = placement_helper(operands[0], individual_inputs[0], fa, c, n)
                 second_tile, second_t = placement_helper(operands[1], individual_inputs[1], c, fb, n)
