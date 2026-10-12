@@ -1,5 +1,7 @@
 import struct
 import os
+import re
+import sys
 import subprocess
 import numpy as np
 from abc import ABC, abstractmethod
@@ -93,7 +95,15 @@ class VerilatorSimulator(BaseEngine):
             output_filenames.append(out_filename)
             sim_cmd.append(f'+dump-mem={out_filename}:{hex(out.data_ptr)}:{hex(out.size)}')
         print(f'Start simulation with cmd: {sim_cmd}')
-        subprocess.run(sim_cmd, check=True)
+       
+        result = subprocess.run(sim_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        print(result.stdout, end='')
+        print(result.stderr, end='', file=sys.stderr)
+        result.check_returncode()
+        self.last_counters = {
+            m.group(1): int(m.group(2))
+            for m in re.finditer(r'FSA: (\w+) =\s+(\d+)', result.stderr)
+        }
         for (out, out_filename) in zip(output_list, output_filenames):
             arr = np.fromfile(out_filename, dtype=to_numpy_dtype(out.dtype))
             out.data = arr.tobytes(order='C')
