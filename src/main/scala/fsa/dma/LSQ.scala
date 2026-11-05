@@ -1,3 +1,6 @@
+// AI assistance: edited with Claude (Anthropic; Claude Code, Claude Opus 5/5.5):
+// the store-release fix (release only after every write acknowledgement) was written with Claude. Reviewed, run and validated by Ben Colbourne.
+// See the thesis's Statement on the Use of Generative AI.
 package fsa.dma
 
 import chisel3._
@@ -90,6 +93,9 @@ class StoreQueue
 
   val awEntry = entries(awPtr.value)
 
+  // write transactions issued (AW) but not yet acknowledged (B)
+  val flight = RegInit(0.U((log2Up(nInflight) + DMA_REPEAT_BITS).W))
+
   aw.valid := valid(awPtr) && awEntry.req.repeat =/= 0.U
   aw.bits.addr := awEntry.req.memAddr
   aw.bits.addr := awEntry.req.memAddr
@@ -102,12 +108,26 @@ class StoreQueue
   aw.bits.prot := 0.U
   aw.bits.qos := 0.U
 
+  /* Retire a store only once memory has acknowledged it: all accumulator reads done,
+     all of its AWs issued, and no write still awaiting its B response (Bug 10). */
+  io.semRelease.valid := valid(deqPtr) && deqEntry.rRepeat === 0.U &&
+    deqEntry.req.repeat === 0.U && flight === 0.U
+
   when(aw.fire) {
     awEntry.req.repeat := awEntry.req.repeat - 1.U
     awEntry.req.memAddr := (awEntry.req.memAddr.asSInt + awEntry.req.memStride).asUInt
+    flight := flight + 1.U
     when(awEntry.req.repeat === 1.U) {
       awPtr.inc()
     }
+  }
+
+  when (b.fire) {
+    flight := flight - 1.U
+  }
+
+  when (b.fire && aw.fire) {
+    flight := flight
   }
 
   val beatBits = edge.slave.beatBytes * 8

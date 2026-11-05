@@ -1,0 +1,20 @@
+Tue 20 Oct 2026 22:39:06 AEDT
+ 22:39:06 up 8 days,  8:39,  3 users,  load average: 0.00, 0.05, 0.04
+benc     pts/1        2026-10-14 21:00 (tmux(73259).%0)
+benc     pts/2        2026-10-14 22:33 (10.196.128.41)
+benc     pts/3        2026-10-14 23:26 (tmux(73259).%1)
+top - 22:39:06 up 8 days,  8:39,  3 users,  load average: 0.00, 0.05, 0.04
+Tasks: 303 total,   1 running, 302 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.5 us,  1.0 sy,  0.0 ni, 98.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :  15941.3 total,  11644.2 free,    621.4 used,   3675.7 buff/cache
+MiB Swap:   2048.0 total,   2039.7 free,      8.2 used.  14986.1 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 286492 benc      20   0   12200   4080   3280 R  12.5   0.0   0:00.02 top
+    612 root      20   0       0      0      0 S   6.2   0.0  63:04.30 nv_queue
+      1 root      20   0  168512  12060   8536 S   0.0   0.1   2:53.33 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.43 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par+
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_perc+

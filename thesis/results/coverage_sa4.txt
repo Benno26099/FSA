@@ -1,0 +1,25 @@
+
+Total pairwise contraction steps: 1,615,342
+SA size filter: dims <= 4
+
+  scalar/vector           701,256   43.4%
+  rank>2                  618,103   38.3%
+  elementwise             154,112    9.5%
+  mat-vec                  52,488    3.2%
+  matmul                   46,848    2.9%
+  rank2-unsupported        22,109    1.4%
+  rank2-out-rank3+         18,320    1.1%
+  dim>sa                    2,068    0.1%
+  repeated-index               38    0.0%
+
+  FSA-EXECUTABLE          200,960   12.4%
+
+    ij,ij->ij         154,094
+    ji,jk->ik          23,596
+    ji,kj->ik          13,671
+    ij,jk->ik           5,909
+    ij,kj->ik           3,672
+    ij,ij->                18
+
+  Both operands rank 2, output rank <= 2 ('real 2D work'): 223,069
+  Of which FSA executes: 200,960 (90.1%)

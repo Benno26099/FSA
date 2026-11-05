@@ -1,0 +1,10 @@
+suite,op,k,instance,family,step,group,equation,raw_equation,count,shapes,passed,symmetric_ok,passes,max_abs_err,rel_err,execTime,mxActive,dmaActive,mxInst,dmaInst,error
+fusemax,(33) QK,,,3-pass,,in class,"ij,ik->kj","ep,em->mp",,8x8 8x8,True,,1,2.980232238769531e-07,1.2807286177810674e-07,218,33,107,2,3,
+fusemax,(36) SD,,,3-pass,,in class,ij->j,mp->p,,8x8,True,,1,0.0,0.0,218,33,35,2,3,
+fusemax,(38) AV,,,3-pass,,in class,"ij,ki->kj","mp,fm->fp",,8x8 8x8,True,,1,1.126900315284729e-07,6.004183588093523e-08,218,33,35,2,3,
+fusemax,(31) SNV,,,division-reduced,,in class,"ij,ki->kj","mp,fm->fp",,8x8 8x8,True,,1,1.126900315284729e-07,6.004183588093523e-08,218,33,35,2,3,
+fusemax,(44) BQK,,,1-pass,,in class,"ij,ik->kj","ep,eM->Mp",,8x8 8x4,True,,1,9.639188647270203e-08,4.717003111220403e-08,218,33,107,2,3,
+fusemax,(48) SLD,,,1-pass,,in class,ij->j,Mp->p,,4x8,True,,1,0.0,0.0,218,33,35,2,3,
+fusemax,(49) SLNV,,,1-pass,,in class,"ij,ki->kj","Mp,fM->fp",,4x8 8x4,True,,1,7.660128176212311e-08,4.61251707186501e-08,218,33,35,2,3,
+fusemax,(51) SPD,,,1-pass,,in class,"i,i->i","p,p->p",,8 8,True,,1,0.0,0.0,218,33,35,2,3,
+fusemax,(53) SPNV,,,1-pass,,in class,"ij,j->ij","fp,p->fp",,8x8 8,True,,1,0.0,0.0,218,33,35,2,3,

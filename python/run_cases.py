@@ -1,3 +1,6 @@
+# AI assistance: written with Claude (Anthropic; Claude Code, Claude Opus 5/5.5),
+# then reviewed, run and validated by Ben Colbourne. See the thesis's
+# Statement on the Use of Generative AI.
 
 import os
 import sys
@@ -9,7 +12,8 @@ import fsa as F
 
 import einsum
 from einsum import mx_einsum
-from dispatcher import CountingEngine, shape_generator, reinit_fsa, SEEDS
+from dispatcher import CountingEngine, reinit_fsa
+from cases import make_operands
 
 COUNTERS = ("execTime", "mxActive", "dmaActive", "mxInst", "dmaInst")
 
@@ -25,33 +29,6 @@ class PerfEngine(CountingEngine):
         for name in COUNTERS:
             self.totals[name] += self.inner.last_counters.get(name, 0)
         return result
-
-
-def make_operands(record, shapes):
-    """Operands for one case: random per SEEDS, or as the record's 'operands' list asks.
-
-    'operands' (BLAS3) gives each operand a generator: random, symmetric
-    ((X + X^T) / 2), triu / tril, or alias (the same tensor as an earlier operand).
-    """
-    if "operands" not in record:
-        return tuple(shape_generator(shape, seed) for shape, seed in zip(shapes, SEEDS))
-    operands = []
-    for spec, shape in zip(record["operands"], shapes):
-        gen = spec["gen"]
-        if gen == "alias":
-            operands.append(operands[spec["index"]])
-            continue
-        x = shape_generator(shape, spec["seed"])
-        if gen == "symmetric":
-            x = ((x.astype(np.float32) + x.T.astype(np.float32)) / 2).astype(x.dtype)
-        elif gen == "triu":
-            x = np.triu(x)
-        elif gen == "tril":
-            x = np.tril(x)
-        elif gen != "random":
-            raise ValueError(f"unknown operand generator {gen!r}")
-        operands.append(x)
-    return tuple(operands)
 
 
 def run_record(engine, record):

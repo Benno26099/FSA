@@ -1,0 +1,16 @@
+suite,op,k,instance,family,step,group,equation,raw_equation,count,shapes,passed,symmetric_ok,passes,max_abs_err,rel_err,execTime,mxActive,dmaActive,mxInst,dmaInst,error
+vecmat,"ij,i->j",,,,,,"ij,i->j","ij,i->j",,16x16 16,True,,1,2.2351741790771484e-07,7.657264828474562e-08,240,65,66,2,3,
+vecmat,"ij,ik->j",,,,,,"ij,ik->j","ij,ik->j",,16x16 16x16,True,,2,0.004974378272891045,0.0003163433200530968,480,130,132,4,6,
+vecmat,"ij,ki->j",,,,,,"ij,ki->j","ij,ki->j",,16x16 16x16,True,,2,0.0019806111813522875,0.00021584661431799364,480,130,132,4,6,
+suite,op,k,instance,family,step,group,equation,raw_equation,count,shapes,passed,symmetric_ok,passes,max_abs_err,rel_err,execTime,mxActive,dmaActive,mxInst,dmaInst,error
+vecmat,"ij,i->j",,,,,,"ij,i->j","ij,i->j",,32x32 32,True,,1,5.699694156646729e-07,1.1543123396366263e-07,341,129,148,2,3,
+vecmat,"ij,ik->j",,,,,,"ij,ik->j","ij,ik->j",,32x32 32x32,True,,2,0.005392061517341062,0.0002036182388649464,682,258,296,4,6,
+vecmat,"ij,ki->j",,,,,,"ij,ki->j","ij,ki->j",,32x32 32x32,True,,2,0.004762300755828619,0.00024743671601809466,682,258,296,4,6,
+suite,op,k,instance,family,step,group,equation,raw_equation,count,shapes,passed,symmetric_ok,passes,max_abs_err,rel_err,execTime,mxActive,dmaActive,mxInst,dmaInst,error
+vecmat,"ij,i->j",,,,,,"ij,i->j","ij,i->j",,4x4 4,True,,1,0.0,0.0,210,17,16,2,3,
+vecmat,"ij,ik->j",,,,,,"ij,ik->j","ij,ik->j",,4x4 4x4,True,,2,0.0006199032068252563,0.00021429251268471718,420,34,32,4,6,
+vecmat,"ij,ki->j",,,,,,"ij,ki->j","ij,ki->j",,4x4 4x4,True,,2,0.0002792775630950928,0.00012566085426772406,420,34,32,4,6,
+suite,op,k,instance,family,step,group,equation,raw_equation,count,shapes,passed,symmetric_ok,passes,max_abs_err,rel_err,execTime,mxActive,dmaActive,mxInst,dmaInst,error
+vecmat,"ij,i->j",,,,,,"ij,i->j","ij,i->j",,8x8 8,True,,1,5.960464477539063e-08,7.786038115381688e-08,218,33,35,2,3,
+vecmat,"ij,ik->j",,,,,,"ij,ik->j","ij,ik->j",,8x8 8x8,True,,2,0.0008902968838810921,0.00016119720900990308,436,66,70,4,6,
+vecmat,"ij,ki->j",,,,,,"ij,ki->j","ij,ki->j",,8x8 8x8,True,,2,0.0013740146532654762,0.00032731382649800353,436,66,70,4,6,

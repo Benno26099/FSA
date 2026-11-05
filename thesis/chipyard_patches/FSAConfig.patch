@@ -1,0 +1,25 @@
+AI assistance: written with Claude (Anthropic; Claude Code, Claude Opus 5/5.5),
+then reviewed, run and validated by Ben Colbourne. See the thesis's
+Statement on the Use of Generative AI.
+
+Upstream-FSA baseline configurations for chipyard-fsa (VCA-EPFL fork, commit 54671054).
+Apply from the chipyard-fsa root with: git apply generators/fsa/thesis/chipyard_patches/FSAConfig.patch
+
+diff --git a/generators/chipyard/src/main/scala/config/FSAConfig.scala b/generators/chipyard/src/main/scala/config/FSAConfig.scala
+index b8d3c271..cface58f 100644
+--- a/generators/chipyard/src/main/scala/config/FSAConfig.scala
++++ b/generators/chipyard/src/main/scala/config/FSAConfig.scala
+@@ -244,6 +244,13 @@ class FSA32X32Fp16Config extends FSAConfig(Configs.fsa32x32)
+ class FSA64X64Fp16Config extends FSAConfig(Configs.fsa64x64)
+ class FSA128X128Fp16Config extends FSAConfig(Configs.fsa128x128)
+ 
++// Upstream FSA baseline (commit f4051d9): identical to the configs above; the separate names keep
++// the upstream simulators apart from the extended ones. Elaborate with the upstream Scala sources.
++class FSA4X4Fp16UpstreamConfig extends FSAConfig(Configs.fsa4x4)
++class FSA8X8Fp16UpstreamConfig extends FSAConfig(Configs.fsa8x8)
++class FSA16X16Fp16UpstreamConfig extends FSAConfig(Configs.fsa16x16)
++class FSA32X32Fp16UpstreamConfig extends FSAConfig(Configs.fsa32x32)
++
+ class AXI4FSA4X4Fp16Config extends FSADirectAXI4Config(Configs.fsa4x4)
+ class AXI4FSA8X8Fp16Config extends FSADirectAXI4Config(Configs.fsa8x8)
+ class AXI4FSA16X16Fp16Config extends FSADirectAXI4Config(Configs.fsa16x16)

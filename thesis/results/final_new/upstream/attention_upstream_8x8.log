@@ -1,0 +1,17 @@
+testing $random e23cbb39
+FSA: dmaActive =         38
+FSA: dmaInst =          4
+FSA: execTime =        128
+FSA: fence =          1
+FSA: mxActive =         90
+FSA: mxBubble =         16
+FSA: mxInst =          5
+FSA: rawInst =         32
+*** PASSED *** Completed after                 5787 simulation cycles
+[fsa] Memory dump configured: /tmp/attn_upstream_8/0x80000180.bin, start=0x80000180, size=256
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA8X8Fp16UpstreamConfig/gen-collateral/TestDriver.v:158: Verilog $finish
+Using simulator binary: /home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA8X8Fp16UpstreamConfig-debug
+Loading config from: /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA8X8Fp16UpstreamConfig/chipyard.harness.TestHarness.FSA8X8Fp16UpstreamConfig.FSAConfig.json
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA8X8Fp16UpstreamConfig-debug', '/tmp/attn_upstream_8/inst.bin', '+loadmem=/tmp/attn_upstream_8/mem.elf', '+max-cycles=2000000', '+verbose', '+dump-mem=/tmp/attn_upstream_8/0x80000180.bin:0x80000180:0x100']
+Comparing with Torch...
+Error of FSA vs torch: {'MAE': np.float32(0.00010121381), 'MSE': np.float32(1.5525679e-08), 'MaxErr': np.float32(0.00029474497), 'RelErr': np.float32(0.00019875)}

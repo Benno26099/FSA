@@ -1,0 +1,65 @@
+
+Total pairwise contraction steps: 1,615,342
+SA size filter: dims <= 8
+
+  scalar/vector           701,284   43.4%
+  rank>2                  618,103   38.3%
+  elementwise             127,308    7.9%
+  mat-vec                  52,829    3.3%
+  rank2-unsupported        48,931    3.0%
+  matmul                   47,013    2.9%
+  rank2-out-rank3+         18,329    1.1%
+  dim>sa                    1,507    0.1%
+  repeated-index               38    0.0%
+
+  FSA-EXECUTABLE          174,321   10.8%
+
+    ij,ij->ij         127,299
+    ji,jk->ik          23,654
+    ji,kj->ik          13,708
+    ij,jk->ik           5,947
+    ij,kj->ik           3,704
+    ij,ij->                 9
+
+  Both operands rank 2, output rank <= 2 ('real 2D work'): 223,252
+  Of which FSA executes: 174,321 (78.1%)
+
+Role planner (Task 3b): steps in the 2D class with dims <= 8
+  real 2D                 223,222   13.8%
+  mat-vec/scaling          52,281    3.2%
+  unary                         0    0.0%
+  scalar/vector           701,284   43.4%
+
+  IN CLASS                976,787   60.5%
+  excl. scalar/vector     275,503   17.1%
+  real 2D covered: 223,222 / 223,222 (100.0%)  [old table: 174,321 / 223,252; 30 of those are scalar x matrix]
+  distinct canonical equations seen: 58 of 137
+    i,->              506,791
+    ij,ij->ij         127,299
+    ,->                94,872
+    i,i->              92,328
+    ij,ji->ij          26,802
+    ij,ik->jk          23,654
+    ij,j->i            22,549
+    ij,ij->j           20,794
+    ij,ki->jk          13,708
+    ij,i->ij           11,203
+    ij,j->ij            7,814
+    ij,jk->ik           5,947
+    ij,kj->ik           3,704
+    i,ji->ij            3,057
+    i,ij->ij            2,884
+    i,j->               2,679
+    i,j->ij             2,664
+    ij,i->j             2,411
+    i,ji->j             1,706
+    i,i->i              1,675
+
+  per family (in class excl. scalar/vector / all steps):
+    gm           496 /     7,172    6.9%
+    lm             0 /     2,135    0.0%
+    mc       241,438 / 1,199,188   20.1%
+    qc        18,209 /    61,740   29.5%
+    rnd        1,416 /     9,093   15.6%
+    str           32 /     6,743    0.5%
+    wmc       13,912 /   329,271    4.2%

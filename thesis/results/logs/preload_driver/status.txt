@@ -1,0 +1,11 @@
+14:41 dispatcher 4x4: 74/93 tests passed
+14:41 test_matmul 4x4: 6/7 tests passed
+14:41 test_transpose_dma 4x4: 3/13 tests passed
+14:41 dispatcher 8x8: 93/93 tests passed
+14:41 test_matmul 8x8: 7/7 tests passed
+14:41 test_transpose_dma 8x8: 12/13 tests passed
+14:43 test_einsum_class 4x4: 230/263 tests passed
+14:43 attention 4x4: rc=0 'MAE': np.float32(9.6587464e-05) execTime =         89
+14:44 test_einsum_class 8x8: 270/270 tests passed
+14:44 attention 8x8: rc=0 'MAE': np.float32(0.00010121381) execTime =        129
+14:44 DONE

@@ -1,0 +1,28 @@
+4x4: 976,244 in-class benchmark steps, 223,039 of them real 2D (both operands rank 2); 54 distinct equations occur
+  without                  equations    steps lost  % in-class  real-2D lost  % real 2D
+  elementwise multiply         4 /137       154,094       15.8%       154,094      69.1%
+  transposed load             21 /137        84,861        8.7%        84,861      38.0%
+  scalar operands             16 /137       601,890       61.7%             0       0.0%
+  all three                   36 /137       814,045       83.4%       212,155      95.1%
+  largest dependent equations: i,-> 506,791, ij,ij->ij 127,294, ,-> 94,872, ij,ji->ij 26,800, ij,ik->jk 23,596, ij,ij->j 20,794
+8x8: 976,787 in-class benchmark steps, 223,222 of them real 2D (both operands rank 2); 58 distinct equations occur
+  without                  equations    steps lost  % in-class  real-2D lost  % real 2D
+  elementwise multiply         4 /137       154,101       15.8%       154,101      69.0%
+  transposed load             21 /137        84,958        8.7%        84,958      38.1%
+  scalar operands             16 /137       601,890       61.6%             0       0.0%
+  all three                   36 /137       814,147       83.3%       212,257      95.1%
+  largest dependent equations: i,-> 506,791, ij,ij->ij 127,299, ,-> 94,872, ij,ji->ij 26,802, ij,ik->jk 23,654, ij,ij->j 20,794
+16x16: 976,967 in-class benchmark steps, 223,289 of them real 2D (both operands rank 2); 58 distinct equations occur
+  without                  equations    steps lost  % in-class  real-2D lost  % real 2D
+  elementwise multiply         4 /137       154,105       15.8%       154,105      69.0%
+  transposed load             21 /137        84,997        8.7%        84,997      38.1%
+  scalar operands             16 /137       601,892       61.6%             0       0.0%
+  all three                   36 /137       814,190       83.3%       212,298      95.1%
+  largest dependent equations: i,-> 506,791, ij,ij->ij 127,301, ,-> 94,872, ij,ji->ij 26,804, ij,ik->jk 23,674, ij,ij->j 20,794
+32x32: 977,129 in-class benchmark steps, 223,429 of them real 2D (both operands rank 2); 58 distinct equations occur
+  without                  equations    steps lost  % in-class  real-2D lost  % real 2D
+  elementwise multiply         4 /137       154,109       15.8%       154,109      69.0%
+  transposed load             21 /137        85,055        8.7%        85,055      38.1%
+  scalar operands             16 /137       601,892       61.6%             0       0.0%
+  all three                   36 /137       814,251       83.3%       212,359      95.0%
+  largest dependent equations: i,-> 506,791, ij,ij->ij 127,304, ,-> 94,872, ij,ji->ij 26,805, ij,ik->jk 23,710, ij,ij->j 20,794

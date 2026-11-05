@@ -1,0 +1,137 @@
+[1/64] ij,jk->ik  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[2/64] ij,jk->ik  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[3/64] ij,jk->ik  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[4/64] ij,jk->ik  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[5/64] ij,j->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[6/64] ij,j->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[7/64] ij,j->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[8/64] ij,j->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[9/64] i,j->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[10/64] i,j->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[11/64] i,j->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[12/64] i,j->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[13/64] i,i->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[14/64] i,i->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[15/64] i,i->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[16/64] i,i->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[17/64] ij,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000060.bin, start=0x80000060, size=64
+[18/64] ij,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000060.bin, start=0x80000060, size=64
+[19/64] ij,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000060.bin, start=0x80000060, size=64
+[20/64] ij,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000060.bin, start=0x80000060, size=64
+[21/64] ij,ij->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[22/64] ij,ij->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[23/64] ij,ij->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[24/64] ij,ij->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[25/64] i,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[26/64] i,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[27/64] i,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[28/64] i,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[29/64] i,i->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[30/64] i,i->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[31/64] i,i->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[32/64] i,i->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[33/64] ,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[34/64] ,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[35/64] ,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[36/64] ,ij->ij  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[37/64] ij,ji->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[38/64] ij,ji->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[39/64] ij,ji->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[40/64] ij,ji->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[41/64] ij,ji->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[42/64] ij,ji->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[43/64] ij,ji->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[44/64] ij,ji->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[45/64] ij->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[46/64] ij->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[47/64] ij->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[48/64] ij->i  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[49/64] ij->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[50/64] ij->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[51/64] ij->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[52/64] ij->  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[53/64] ij,kl->ik  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[54/64] ij,kl->ik  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[55/64] ij,kl->ik  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[56/64] ij,kl->ik  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[57/64] ij->ji  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[58/64] ij->ji  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[59/64] ij->ji  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[60/64] ij->ji  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[61/64] ij,ik->jk  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[62/64] ij,ik->jk  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[63/64] ij,ik->jk  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+[64/64] ij,ik->jk  
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/01376ca0-be87-4934-939e-e6a6d7448e6b/scratchpad/scaling/out4/0x80000040.bin, start=0x80000040, size=64
+64/64 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/scaling_cases_sa4_4x4.csv

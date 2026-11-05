@@ -1,0 +1,128 @@
+{"suite": "scaling", "op": "matmul", "k": 1, "family": "matmul", "group": "core", "equation": "ij,jk->ik", "raw_equation": "ij,jk->ik", "shapes": [[1, 1], [1, 1]], "count": 1}
+{"suite": "scaling", "op": "matmul", "k": 2, "family": "matmul", "group": "core", "equation": "ij,jk->ik", "raw_equation": "ij,jk->ik", "shapes": [[2, 2], [2, 2]], "count": 1}
+{"suite": "scaling", "op": "matmul", "k": 3, "family": "matmul", "group": "core", "equation": "ij,jk->ik", "raw_equation": "ij,jk->ik", "shapes": [[3, 3], [3, 3]], "count": 1}
+{"suite": "scaling", "op": "matmul", "k": 4, "family": "matmul", "group": "core", "equation": "ij,jk->ik", "raw_equation": "ij,jk->ik", "shapes": [[4, 4], [4, 4]], "count": 1}
+{"suite": "scaling", "op": "matmul", "k": 5, "family": "matmul", "group": "core", "equation": "ij,jk->ik", "raw_equation": "ij,jk->ik", "shapes": [[5, 5], [5, 5]], "count": 1}
+{"suite": "scaling", "op": "matmul", "k": 6, "family": "matmul", "group": "core", "equation": "ij,jk->ik", "raw_equation": "ij,jk->ik", "shapes": [[6, 6], [6, 6]], "count": 1}
+{"suite": "scaling", "op": "matmul", "k": 7, "family": "matmul", "group": "core", "equation": "ij,jk->ik", "raw_equation": "ij,jk->ik", "shapes": [[7, 7], [7, 7]], "count": 1}
+{"suite": "scaling", "op": "matmul", "k": 8, "family": "matmul", "group": "core", "equation": "ij,jk->ik", "raw_equation": "ij,jk->ik", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"suite": "scaling", "op": "mat-vec", "k": 1, "family": "matmul", "group": "core", "equation": "ij,j->i", "raw_equation": "ij,j->i", "shapes": [[1, 1], [1]], "count": 1}
+{"suite": "scaling", "op": "mat-vec", "k": 2, "family": "matmul", "group": "core", "equation": "ij,j->i", "raw_equation": "ij,j->i", "shapes": [[2, 2], [2]], "count": 1}
+{"suite": "scaling", "op": "mat-vec", "k": 3, "family": "matmul", "group": "core", "equation": "ij,j->i", "raw_equation": "ij,j->i", "shapes": [[3, 3], [3]], "count": 1}
+{"suite": "scaling", "op": "mat-vec", "k": 4, "family": "matmul", "group": "core", "equation": "ij,j->i", "raw_equation": "ij,j->i", "shapes": [[4, 4], [4]], "count": 1}
+{"suite": "scaling", "op": "mat-vec", "k": 5, "family": "matmul", "group": "core", "equation": "ij,j->i", "raw_equation": "ij,j->i", "shapes": [[5, 5], [5]], "count": 1}
+{"suite": "scaling", "op": "mat-vec", "k": 6, "family": "matmul", "group": "core", "equation": "ij,j->i", "raw_equation": "ij,j->i", "shapes": [[6, 6], [6]], "count": 1}
+{"suite": "scaling", "op": "mat-vec", "k": 7, "family": "matmul", "group": "core", "equation": "ij,j->i", "raw_equation": "ij,j->i", "shapes": [[7, 7], [7]], "count": 1}
+{"suite": "scaling", "op": "mat-vec", "k": 8, "family": "matmul", "group": "core", "equation": "ij,j->i", "raw_equation": "ij,j->i", "shapes": [[8, 8], [8]], "count": 1}
+{"suite": "scaling", "op": "outer", "k": 1, "family": "matmul", "group": "core", "equation": "i,j->ij", "raw_equation": "i,j->ij", "shapes": [[1], [1]], "count": 1}
+{"suite": "scaling", "op": "outer", "k": 2, "family": "matmul", "group": "core", "equation": "i,j->ij", "raw_equation": "i,j->ij", "shapes": [[2], [2]], "count": 1}
+{"suite": "scaling", "op": "outer", "k": 3, "family": "matmul", "group": "core", "equation": "i,j->ij", "raw_equation": "i,j->ij", "shapes": [[3], [3]], "count": 1}
+{"suite": "scaling", "op": "outer", "k": 4, "family": "matmul", "group": "core", "equation": "i,j->ij", "raw_equation": "i,j->ij", "shapes": [[4], [4]], "count": 1}
+{"suite": "scaling", "op": "outer", "k": 5, "family": "matmul", "group": "core", "equation": "i,j->ij", "raw_equation": "i,j->ij", "shapes": [[5], [5]], "count": 1}
+{"suite": "scaling", "op": "outer", "k": 6, "family": "matmul", "group": "core", "equation": "i,j->ij", "raw_equation": "i,j->ij", "shapes": [[6], [6]], "count": 1}
+{"suite": "scaling", "op": "outer", "k": 7, "family": "matmul", "group": "core", "equation": "i,j->ij", "raw_equation": "i,j->ij", "shapes": [[7], [7]], "count": 1}
+{"suite": "scaling", "op": "outer", "k": 8, "family": "matmul", "group": "core", "equation": "i,j->ij", "raw_equation": "i,j->ij", "shapes": [[8], [8]], "count": 1}
+{"suite": "scaling", "op": "dot", "k": 1, "family": "matmul", "group": "core", "equation": "i,i->", "raw_equation": "i,i->", "shapes": [[1], [1]], "count": 1}
+{"suite": "scaling", "op": "dot", "k": 2, "family": "matmul", "group": "core", "equation": "i,i->", "raw_equation": "i,i->", "shapes": [[2], [2]], "count": 1}
+{"suite": "scaling", "op": "dot", "k": 3, "family": "matmul", "group": "core", "equation": "i,i->", "raw_equation": "i,i->", "shapes": [[3], [3]], "count": 1}
+{"suite": "scaling", "op": "dot", "k": 4, "family": "matmul", "group": "core", "equation": "i,i->", "raw_equation": "i,i->", "shapes": [[4], [4]], "count": 1}
+{"suite": "scaling", "op": "dot", "k": 5, "family": "matmul", "group": "core", "equation": "i,i->", "raw_equation": "i,i->", "shapes": [[5], [5]], "count": 1}
+{"suite": "scaling", "op": "dot", "k": 6, "family": "matmul", "group": "core", "equation": "i,i->", "raw_equation": "i,i->", "shapes": [[6], [6]], "count": 1}
+{"suite": "scaling", "op": "dot", "k": 7, "family": "matmul", "group": "core", "equation": "i,i->", "raw_equation": "i,i->", "shapes": [[7], [7]], "count": 1}
+{"suite": "scaling", "op": "dot", "k": 8, "family": "matmul", "group": "core", "equation": "i,i->", "raw_equation": "i,i->", "shapes": [[8], [8]], "count": 1}
+{"suite": "scaling", "op": "hadamard", "k": 1, "family": "hadamard", "group": "core", "equation": "ij,ij->ij", "raw_equation": "ij,ij->ij", "shapes": [[1, 1], [1, 1]], "count": 1}
+{"suite": "scaling", "op": "hadamard", "k": 2, "family": "hadamard", "group": "core", "equation": "ij,ij->ij", "raw_equation": "ij,ij->ij", "shapes": [[2, 2], [2, 2]], "count": 1}
+{"suite": "scaling", "op": "hadamard", "k": 3, "family": "hadamard", "group": "core", "equation": "ij,ij->ij", "raw_equation": "ij,ij->ij", "shapes": [[3, 3], [3, 3]], "count": 1}
+{"suite": "scaling", "op": "hadamard", "k": 4, "family": "hadamard", "group": "core", "equation": "ij,ij->ij", "raw_equation": "ij,ij->ij", "shapes": [[4, 4], [4, 4]], "count": 1}
+{"suite": "scaling", "op": "hadamard", "k": 5, "family": "hadamard", "group": "core", "equation": "ij,ij->ij", "raw_equation": "ij,ij->ij", "shapes": [[5, 5], [5, 5]], "count": 1}
+{"suite": "scaling", "op": "hadamard", "k": 6, "family": "hadamard", "group": "core", "equation": "ij,ij->ij", "raw_equation": "ij,ij->ij", "shapes": [[6, 6], [6, 6]], "count": 1}
+{"suite": "scaling", "op": "hadamard", "k": 7, "family": "hadamard", "group": "core", "equation": "ij,ij->ij", "raw_equation": "ij,ij->ij", "shapes": [[7, 7], [7, 7]], "count": 1}
+{"suite": "scaling", "op": "hadamard", "k": 8, "family": "hadamard", "group": "core", "equation": "ij,ij->ij", "raw_equation": "ij,ij->ij", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"suite": "scaling", "op": "frobenius", "k": 1, "family": "trace", "group": "core", "equation": "ij,ij->", "raw_equation": "ij,ij->", "shapes": [[1, 1], [1, 1]], "count": 1}
+{"suite": "scaling", "op": "frobenius", "k": 2, "family": "trace", "group": "core", "equation": "ij,ij->", "raw_equation": "ij,ij->", "shapes": [[2, 2], [2, 2]], "count": 1}
+{"suite": "scaling", "op": "frobenius", "k": 3, "family": "trace", "group": "core", "equation": "ij,ij->", "raw_equation": "ij,ij->", "shapes": [[3, 3], [3, 3]], "count": 1}
+{"suite": "scaling", "op": "frobenius", "k": 4, "family": "trace", "group": "core", "equation": "ij,ij->", "raw_equation": "ij,ij->", "shapes": [[4, 4], [4, 4]], "count": 1}
+{"suite": "scaling", "op": "frobenius", "k": 5, "family": "trace", "group": "core", "equation": "ij,ij->", "raw_equation": "ij,ij->", "shapes": [[5, 5], [5, 5]], "count": 1}
+{"suite": "scaling", "op": "frobenius", "k": 6, "family": "trace", "group": "core", "equation": "ij,ij->", "raw_equation": "ij,ij->", "shapes": [[6, 6], [6, 6]], "count": 1}
+{"suite": "scaling", "op": "frobenius", "k": 7, "family": "trace", "group": "core", "equation": "ij,ij->", "raw_equation": "ij,ij->", "shapes": [[7, 7], [7, 7]], "count": 1}
+{"suite": "scaling", "op": "frobenius", "k": 8, "family": "trace", "group": "core", "equation": "ij,ij->", "raw_equation": "ij,ij->", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"suite": "scaling", "op": "broadcast", "k": 1, "family": "broadcast", "group": "core", "equation": "i,ij->ij", "raw_equation": "i,ij->ij", "shapes": [[1], [1, 1]], "count": 1}
+{"suite": "scaling", "op": "broadcast", "k": 2, "family": "broadcast", "group": "core", "equation": "i,ij->ij", "raw_equation": "i,ij->ij", "shapes": [[2], [2, 2]], "count": 1}
+{"suite": "scaling", "op": "broadcast", "k": 3, "family": "broadcast", "group": "core", "equation": "i,ij->ij", "raw_equation": "i,ij->ij", "shapes": [[3], [3, 3]], "count": 1}
+{"suite": "scaling", "op": "broadcast", "k": 4, "family": "broadcast", "group": "core", "equation": "i,ij->ij", "raw_equation": "i,ij->ij", "shapes": [[4], [4, 4]], "count": 1}
+{"suite": "scaling", "op": "broadcast", "k": 5, "family": "broadcast", "group": "core", "equation": "i,ij->ij", "raw_equation": "i,ij->ij", "shapes": [[5], [5, 5]], "count": 1}
+{"suite": "scaling", "op": "broadcast", "k": 6, "family": "broadcast", "group": "core", "equation": "i,ij->ij", "raw_equation": "i,ij->ij", "shapes": [[6], [6, 6]], "count": 1}
+{"suite": "scaling", "op": "broadcast", "k": 7, "family": "broadcast", "group": "core", "equation": "i,ij->ij", "raw_equation": "i,ij->ij", "shapes": [[7], [7, 7]], "count": 1}
+{"suite": "scaling", "op": "broadcast", "k": 8, "family": "broadcast", "group": "core", "equation": "i,ij->ij", "raw_equation": "i,ij->ij", "shapes": [[8], [8, 8]], "count": 1}
+{"suite": "scaling", "op": "vec-hadamard", "k": 1, "family": "vec_hadamard", "group": "core", "equation": "i,i->i", "raw_equation": "i,i->i", "shapes": [[1], [1]], "count": 1}
+{"suite": "scaling", "op": "vec-hadamard", "k": 2, "family": "vec_hadamard", "group": "core", "equation": "i,i->i", "raw_equation": "i,i->i", "shapes": [[2], [2]], "count": 1}
+{"suite": "scaling", "op": "vec-hadamard", "k": 3, "family": "vec_hadamard", "group": "core", "equation": "i,i->i", "raw_equation": "i,i->i", "shapes": [[3], [3]], "count": 1}
+{"suite": "scaling", "op": "vec-hadamard", "k": 4, "family": "vec_hadamard", "group": "core", "equation": "i,i->i", "raw_equation": "i,i->i", "shapes": [[4], [4]], "count": 1}
+{"suite": "scaling", "op": "vec-hadamard", "k": 5, "family": "vec_hadamard", "group": "core", "equation": "i,i->i", "raw_equation": "i,i->i", "shapes": [[5], [5]], "count": 1}
+{"suite": "scaling", "op": "vec-hadamard", "k": 6, "family": "vec_hadamard", "group": "core", "equation": "i,i->i", "raw_equation": "i,i->i", "shapes": [[6], [6]], "count": 1}
+{"suite": "scaling", "op": "vec-hadamard", "k": 7, "family": "vec_hadamard", "group": "core", "equation": "i,i->i", "raw_equation": "i,i->i", "shapes": [[7], [7]], "count": 1}
+{"suite": "scaling", "op": "vec-hadamard", "k": 8, "family": "vec_hadamard", "group": "core", "equation": "i,i->i", "raw_equation": "i,i->i", "shapes": [[8], [8]], "count": 1}
+{"suite": "scaling", "op": "scaling", "k": 1, "family": "sI", "group": "core", "equation": ",ij->ij", "raw_equation": ",ij->ij", "shapes": [[], [1, 1]], "count": 1}
+{"suite": "scaling", "op": "scaling", "k": 2, "family": "sI", "group": "core", "equation": ",ij->ij", "raw_equation": ",ij->ij", "shapes": [[], [2, 2]], "count": 1}
+{"suite": "scaling", "op": "scaling", "k": 3, "family": "sI", "group": "core", "equation": ",ij->ij", "raw_equation": ",ij->ij", "shapes": [[], [3, 3]], "count": 1}
+{"suite": "scaling", "op": "scaling", "k": 4, "family": "sI", "group": "core", "equation": ",ij->ij", "raw_equation": ",ij->ij", "shapes": [[], [4, 4]], "count": 1}
+{"suite": "scaling", "op": "scaling", "k": 5, "family": "sI", "group": "core", "equation": ",ij->ij", "raw_equation": ",ij->ij", "shapes": [[], [5, 5]], "count": 1}
+{"suite": "scaling", "op": "scaling", "k": 6, "family": "sI", "group": "core", "equation": ",ij->ij", "raw_equation": ",ij->ij", "shapes": [[], [6, 6]], "count": 1}
+{"suite": "scaling", "op": "scaling", "k": 7, "family": "sI", "group": "core", "equation": ",ij->ij", "raw_equation": ",ij->ij", "shapes": [[], [7, 7]], "count": 1}
+{"suite": "scaling", "op": "scaling", "k": 8, "family": "sI", "group": "core", "equation": ",ij->ij", "raw_equation": ",ij->ij", "shapes": [[], [8, 8]], "count": 1}
+{"suite": "scaling", "op": "diag", "k": 1, "family": "diag", "group": "core", "equation": "ij,ji->i", "raw_equation": "ij,ji->i", "shapes": [[1, 1], [1, 1]], "count": 1}
+{"suite": "scaling", "op": "diag", "k": 2, "family": "diag", "group": "core", "equation": "ij,ji->i", "raw_equation": "ij,ji->i", "shapes": [[2, 2], [2, 2]], "count": 1}
+{"suite": "scaling", "op": "diag", "k": 3, "family": "diag", "group": "core", "equation": "ij,ji->i", "raw_equation": "ij,ji->i", "shapes": [[3, 3], [3, 3]], "count": 1}
+{"suite": "scaling", "op": "diag", "k": 4, "family": "diag", "group": "core", "equation": "ij,ji->i", "raw_equation": "ij,ji->i", "shapes": [[4, 4], [4, 4]], "count": 1}
+{"suite": "scaling", "op": "diag", "k": 5, "family": "diag", "group": "core", "equation": "ij,ji->i", "raw_equation": "ij,ji->i", "shapes": [[5, 5], [5, 5]], "count": 1}
+{"suite": "scaling", "op": "diag", "k": 6, "family": "diag", "group": "core", "equation": "ij,ji->i", "raw_equation": "ij,ji->i", "shapes": [[6, 6], [6, 6]], "count": 1}
+{"suite": "scaling", "op": "diag", "k": 7, "family": "diag", "group": "core", "equation": "ij,ji->i", "raw_equation": "ij,ji->i", "shapes": [[7, 7], [7, 7]], "count": 1}
+{"suite": "scaling", "op": "diag", "k": 8, "family": "diag", "group": "core", "equation": "ij,ji->i", "raw_equation": "ij,ji->i", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"suite": "scaling", "op": "trace", "k": 1, "family": "trace", "group": "core", "equation": "ij,ji->", "raw_equation": "ij,ji->", "shapes": [[1, 1], [1, 1]], "count": 1}
+{"suite": "scaling", "op": "trace", "k": 2, "family": "trace", "group": "core", "equation": "ij,ji->", "raw_equation": "ij,ji->", "shapes": [[2, 2], [2, 2]], "count": 1}
+{"suite": "scaling", "op": "trace", "k": 3, "family": "trace", "group": "core", "equation": "ij,ji->", "raw_equation": "ij,ji->", "shapes": [[3, 3], [3, 3]], "count": 1}
+{"suite": "scaling", "op": "trace", "k": 4, "family": "trace", "group": "core", "equation": "ij,ji->", "raw_equation": "ij,ji->", "shapes": [[4, 4], [4, 4]], "count": 1}
+{"suite": "scaling", "op": "trace", "k": 5, "family": "trace", "group": "core", "equation": "ij,ji->", "raw_equation": "ij,ji->", "shapes": [[5, 5], [5, 5]], "count": 1}
+{"suite": "scaling", "op": "trace", "k": 6, "family": "trace", "group": "core", "equation": "ij,ji->", "raw_equation": "ij,ji->", "shapes": [[6, 6], [6, 6]], "count": 1}
+{"suite": "scaling", "op": "trace", "k": 7, "family": "trace", "group": "core", "equation": "ij,ji->", "raw_equation": "ij,ji->", "shapes": [[7, 7], [7, 7]], "count": 1}
+{"suite": "scaling", "op": "trace", "k": 8, "family": "trace", "group": "core", "equation": "ij,ji->", "raw_equation": "ij,ji->", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"suite": "scaling", "op": "row-sum", "k": 1, "family": "unary", "group": "core", "equation": "ij->i", "raw_equation": "ij->i", "shapes": [[1, 1]], "count": 1}
+{"suite": "scaling", "op": "row-sum", "k": 2, "family": "unary", "group": "core", "equation": "ij->i", "raw_equation": "ij->i", "shapes": [[2, 2]], "count": 1}
+{"suite": "scaling", "op": "row-sum", "k": 3, "family": "unary", "group": "core", "equation": "ij->i", "raw_equation": "ij->i", "shapes": [[3, 3]], "count": 1}
+{"suite": "scaling", "op": "row-sum", "k": 4, "family": "unary", "group": "core", "equation": "ij->i", "raw_equation": "ij->i", "shapes": [[4, 4]], "count": 1}
+{"suite": "scaling", "op": "row-sum", "k": 5, "family": "unary", "group": "core", "equation": "ij->i", "raw_equation": "ij->i", "shapes": [[5, 5]], "count": 1}
+{"suite": "scaling", "op": "row-sum", "k": 6, "family": "unary", "group": "core", "equation": "ij->i", "raw_equation": "ij->i", "shapes": [[6, 6]], "count": 1}
+{"suite": "scaling", "op": "row-sum", "k": 7, "family": "unary", "group": "core", "equation": "ij->i", "raw_equation": "ij->i", "shapes": [[7, 7]], "count": 1}
+{"suite": "scaling", "op": "row-sum", "k": 8, "family": "unary", "group": "core", "equation": "ij->i", "raw_equation": "ij->i", "shapes": [[8, 8]], "count": 1}
+{"suite": "scaling", "op": "total-sum", "k": 1, "family": "unary", "group": "core", "equation": "ij->", "raw_equation": "ij->", "shapes": [[1, 1]], "count": 1}
+{"suite": "scaling", "op": "total-sum", "k": 2, "family": "unary", "group": "core", "equation": "ij->", "raw_equation": "ij->", "shapes": [[2, 2]], "count": 1}
+{"suite": "scaling", "op": "total-sum", "k": 3, "family": "unary", "group": "core", "equation": "ij->", "raw_equation": "ij->", "shapes": [[3, 3]], "count": 1}
+{"suite": "scaling", "op": "total-sum", "k": 4, "family": "unary", "group": "core", "equation": "ij->", "raw_equation": "ij->", "shapes": [[4, 4]], "count": 1}
+{"suite": "scaling", "op": "total-sum", "k": 5, "family": "unary", "group": "core", "equation": "ij->", "raw_equation": "ij->", "shapes": [[5, 5]], "count": 1}
+{"suite": "scaling", "op": "total-sum", "k": 6, "family": "unary", "group": "core", "equation": "ij->", "raw_equation": "ij->", "shapes": [[6, 6]], "count": 1}
+{"suite": "scaling", "op": "total-sum", "k": 7, "family": "unary", "group": "core", "equation": "ij->", "raw_equation": "ij->", "shapes": [[7, 7]], "count": 1}
+{"suite": "scaling", "op": "total-sum", "k": 8, "family": "unary", "group": "core", "equation": "ij->", "raw_equation": "ij->", "shapes": [[8, 8]], "count": 1}
+{"suite": "scaling", "op": "pre-reduce", "k": 1, "family": "matmul", "group": "core", "equation": "ij,kl->ik", "raw_equation": "ij,kl->ik", "shapes": [[1, 1], [1, 1]], "count": 3}
+{"suite": "scaling", "op": "pre-reduce", "k": 2, "family": "matmul", "group": "core", "equation": "ij,kl->ik", "raw_equation": "ij,kl->ik", "shapes": [[2, 2], [2, 2]], "count": 3}
+{"suite": "scaling", "op": "pre-reduce", "k": 3, "family": "matmul", "group": "core", "equation": "ij,kl->ik", "raw_equation": "ij,kl->ik", "shapes": [[3, 3], [3, 3]], "count": 3}
+{"suite": "scaling", "op": "pre-reduce", "k": 4, "family": "matmul", "group": "core", "equation": "ij,kl->ik", "raw_equation": "ij,kl->ik", "shapes": [[4, 4], [4, 4]], "count": 3}
+{"suite": "scaling", "op": "pre-reduce", "k": 5, "family": "matmul", "group": "core", "equation": "ij,kl->ik", "raw_equation": "ij,kl->ik", "shapes": [[5, 5], [5, 5]], "count": 3}
+{"suite": "scaling", "op": "pre-reduce", "k": 6, "family": "matmul", "group": "core", "equation": "ij,kl->ik", "raw_equation": "ij,kl->ik", "shapes": [[6, 6], [6, 6]], "count": 3}
+{"suite": "scaling", "op": "pre-reduce", "k": 7, "family": "matmul", "group": "core", "equation": "ij,kl->ik", "raw_equation": "ij,kl->ik", "shapes": [[7, 7], [7, 7]], "count": 3}
+{"suite": "scaling", "op": "pre-reduce", "k": 8, "family": "matmul", "group": "core", "equation": "ij,kl->ik", "raw_equation": "ij,kl->ik", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"suite": "scaling", "op": "transpose", "k": 1, "family": "unary", "group": "transpose", "equation": "ij->ji", "raw_equation": "ij->ji", "shapes": [[1, 1]], "count": 1}
+{"suite": "scaling", "op": "transpose", "k": 2, "family": "unary", "group": "transpose", "equation": "ij->ji", "raw_equation": "ij->ji", "shapes": [[2, 2]], "count": 1}
+{"suite": "scaling", "op": "transpose", "k": 3, "family": "unary", "group": "transpose", "equation": "ij->ji", "raw_equation": "ij->ji", "shapes": [[3, 3]], "count": 1}
+{"suite": "scaling", "op": "transpose", "k": 4, "family": "unary", "group": "transpose", "equation": "ij->ji", "raw_equation": "ij->ji", "shapes": [[4, 4]], "count": 1}
+{"suite": "scaling", "op": "transpose", "k": 5, "family": "unary", "group": "transpose", "equation": "ij->ji", "raw_equation": "ij->ji", "shapes": [[5, 5]], "count": 1}
+{"suite": "scaling", "op": "transpose", "k": 6, "family": "unary", "group": "transpose", "equation": "ij->ji", "raw_equation": "ij->ji", "shapes": [[6, 6]], "count": 1}
+{"suite": "scaling", "op": "transpose", "k": 7, "family": "unary", "group": "transpose", "equation": "ij->ji", "raw_equation": "ij->ji", "shapes": [[7, 7]], "count": 1}
+{"suite": "scaling", "op": "transpose", "k": 8, "family": "unary", "group": "transpose", "equation": "ij->ji", "raw_equation": "ij->ji", "shapes": [[8, 8]], "count": 1}
+{"suite": "scaling", "op": "matmul-TN", "k": 1, "family": "matmul", "group": "transpose", "equation": "ij,ik->jk", "raw_equation": "ij,ik->jk", "shapes": [[1, 1], [1, 1]], "count": 1}
+{"suite": "scaling", "op": "matmul-TN", "k": 2, "family": "matmul", "group": "transpose", "equation": "ij,ik->jk", "raw_equation": "ij,ik->jk", "shapes": [[2, 2], [2, 2]], "count": 1}
+{"suite": "scaling", "op": "matmul-TN", "k": 3, "family": "matmul", "group": "transpose", "equation": "ij,ik->jk", "raw_equation": "ij,ik->jk", "shapes": [[3, 3], [3, 3]], "count": 1}
+{"suite": "scaling", "op": "matmul-TN", "k": 4, "family": "matmul", "group": "transpose", "equation": "ij,ik->jk", "raw_equation": "ij,ik->jk", "shapes": [[4, 4], [4, 4]], "count": 1}
+{"suite": "scaling", "op": "matmul-TN", "k": 5, "family": "matmul", "group": "transpose", "equation": "ij,ik->jk", "raw_equation": "ij,ik->jk", "shapes": [[5, 5], [5, 5]], "count": 1}
+{"suite": "scaling", "op": "matmul-TN", "k": 6, "family": "matmul", "group": "transpose", "equation": "ij,ik->jk", "raw_equation": "ij,ik->jk", "shapes": [[6, 6], [6, 6]], "count": 1}
+{"suite": "scaling", "op": "matmul-TN", "k": 7, "family": "matmul", "group": "transpose", "equation": "ij,ik->jk", "raw_equation": "ij,ik->jk", "shapes": [[7, 7], [7, 7]], "count": 1}
+{"suite": "scaling", "op": "matmul-TN", "k": 8, "family": "matmul", "group": "transpose", "equation": "ij,ik->jk", "raw_equation": "ij,ik->jk", "shapes": [[8, 8], [8, 8]], "count": 1}

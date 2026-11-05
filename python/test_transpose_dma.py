@@ -1,3 +1,6 @@
+# AI assistance: edited with Claude (Anthropic; Claude Code, Claude Opus 5/5.5):
+# later edits to this test were made with Claude. Reviewed, run and validated by Ben Colbourne.
+# See the thesis's Statement on the Use of Generative AI.
 import os
 import sys
 import argparse
@@ -727,18 +730,21 @@ def test_double_transpose(engine, sa_rows, sa_cols):
         error_msg=error_msg
     )
 
-# Test: Transpose + matmul (A^T @ B)
+# Test: transposed tile as the stationary operand (B @ rot180(A))
 
 def test_transpose_matmul(engine, sa_rows, sa_cols):
-    """Test computing A^T @ B using DMA transpose + SA matmul.
+    """Test a DMA-transposed tile used as the stationary operand.
+
+    The SA computes stream @ anti_transpose(stationary). With stationary = A^T
+    from the transpose load, that is B @ anti_transpose(A^T) = B @ rot180(A).
 
     Pipeline:
       1. Transpose load A -> spad as A^T
       2. LoadStationary A^T
       3. Normal load B -> spad
-      4. AttentionValue: stream B through SA -> acc = A^T @ B
+      4. TensorMultiplication: stream B through SA -> acc = B @ rot180(A)
       5. Store result
-      6. Verify against numpy A.T @ B
+      6. Verify against numpy B @ A[::-1, ::-1]
     """
     import fsa as F
     from fsa.instructions import FenceInstruction
@@ -755,7 +761,7 @@ def test_transpose_matmul(engine, sa_rows, sa_cols):
     A = np.random.rand(N, N).astype(np.float16)
     B = np.random.rand(N, N).astype(np.float16)
     
-    expected = (A.T.astype(np.float32) @ B.astype(np.float32))
+    expected = (B.astype(np.float32) @ A[::-1, ::-1].astype(np.float32))
 
     spad_at = F.alloc_spad((N, N))   
     spad_b = F.alloc_spad((N, N))    
@@ -784,7 +790,7 @@ def test_transpose_matmul(engine, sa_rows, sa_cols):
         spad_at, sem_id=2, acq_val=1, rel_val=2, e_itemsize=e_itemsize
     ))
 
-    # TensorMultiplication: A^T @ B
+    # TensorMultiplication: B @ anti_transpose(A^T) = B @ rot180(A)
     instructions.append(make_tensor_multiplication(
         spad_b, acc_out, sem_id=1, rel_val=1,
         e_itemsize=e_itemsize, a_itemsize=a_itemsize
@@ -806,7 +812,7 @@ def test_transpose_matmul(engine, sa_rows, sa_cols):
     error_msg = ""
     if not passed:
         max_err = np.max(np.abs(result - expected))
-        error_msg = (f"A^T @ B mismatch. Max error: {max_err}\n"
+        error_msg = (f"B @ rot180(A) mismatch. Max error: {max_err}\n"
                      f"Got:\n{result}\nExpected:\n{expected}")
 
     return TestResult(
@@ -842,10 +848,10 @@ def dry_run(sa_rows, sa_cols):
     np.random.seed(123)
     A = np.random.rand(N, N).astype(np.float16)
     B = np.random.rand(N, N).astype(np.float16)
-    print(f"\nTranspose matmul A^T @ B:")
+    print(f"\nTransposed stationary, B @ rot180(A):")
     print(f"  A:\n{A}")
     print(f"  B:\n{B}")
-    print(f"  Expected A^T @ B:\n{A.T.astype(np.float32) @ B.astype(np.float32)}")
+    print(f"  Expected B @ rot180(A):\n{B.astype(np.float32) @ A[::-1, ::-1].astype(np.float32)}")
 
 # Test registry
 

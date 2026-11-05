@@ -1,0 +1,9 @@
+{"suite": "fusemax", "op": "(33) QK", "family": "3-pass", "group": "in class", "equation": "ij,ik->kj", "raw_equation": "ep,em->mp", "shapes": [[16, 16], [16, 16]]}
+{"suite": "fusemax", "op": "(36) SD", "family": "3-pass", "group": "in class", "equation": "ij->j", "raw_equation": "mp->p", "shapes": [[16, 16]]}
+{"suite": "fusemax", "op": "(38) AV", "family": "3-pass", "group": "in class", "equation": "ij,ki->kj", "raw_equation": "mp,fm->fp", "shapes": [[16, 16], [16, 16]]}
+{"suite": "fusemax", "op": "(31) SNV", "family": "division-reduced", "group": "in class", "equation": "ij,ki->kj", "raw_equation": "mp,fm->fp", "shapes": [[16, 16], [16, 16]]}
+{"suite": "fusemax", "op": "(44) BQK", "family": "1-pass", "group": "in class", "equation": "ij,ik->kj", "raw_equation": "ep,eM->Mp", "shapes": [[16, 16], [16, 8]]}
+{"suite": "fusemax", "op": "(48) SLD", "family": "1-pass", "group": "in class", "equation": "ij->j", "raw_equation": "Mp->p", "shapes": [[8, 16]]}
+{"suite": "fusemax", "op": "(49) SLNV", "family": "1-pass", "group": "in class", "equation": "ij,ki->kj", "raw_equation": "Mp,fM->fp", "shapes": [[8, 16], [16, 8]]}
+{"suite": "fusemax", "op": "(51) SPD", "family": "1-pass", "group": "in class", "equation": "i,i->i", "raw_equation": "p,p->p", "shapes": [[16], [16]]}
+{"suite": "fusemax", "op": "(53) SPNV", "family": "1-pass", "group": "in class", "equation": "ij,j->ij", "raw_equation": "fp,p->fp", "shapes": [[16, 16], [16]]}

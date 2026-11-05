@@ -1,0 +1,1 @@
+{"suite": "pytorch", "source": "test/test_linalg.py::test_einsum @ v2.6.0", "raw_equation": "i...->...", "resolved_equation": "iZ->Z", "equation": "ij->j", "shapes": [[4, 4]], "sa_size": 4, "note": "ellipsis sum"}

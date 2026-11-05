@@ -1,3 +1,6 @@
+# AI assistance: written with Claude (Anthropic; Claude Code, Claude Opus 5/5.5),
+# then reviewed, run and validated by Ben Colbourne. See the thesis's
+# Statement on the Use of Generative AI.
 
 import os
 import sys
@@ -8,14 +11,7 @@ import string
 
 import einsum
 from einsum import TestResult, print_results, mx_einsum
-
-SEEDS = (42, 100, 69) 
-
-def shape_generator(shape, seed):
-    rng = np.random.default_rng(seed)
-    operand_shape = rng.uniform(low=-1, high=1, size=(shape))
-    operand_shape_f16 = operand_shape.astype(np.float16)
-    return operand_shape_f16
+from cases import SEEDS, shape_generator
 
 def random_letter_generator(equation, seed):
     rng = np.random.default_rng(seed)

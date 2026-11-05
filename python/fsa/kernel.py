@@ -1,3 +1,6 @@
+# AI assistance: edited with Claude (Anthropic; Claude Code, Claude Opus 5/5.5):
+# Claude helped with the first instruction builder and the file's structure; the rest is Ben Colbourne's. Reviewed, run and validated by Ben Colbourne.
+# See the thesis's Statement on the Use of Generative AI.
 from typing import Optional
 from .instructions import *
 from .tensor import MTile, STile, ATile

@@ -1,3 +1,6 @@
+# AI assistance: edited with Claude (Anthropic; Claude Code, Claude Opus 5/5.5):
+# Claude helped break down the pipeline for these tests and corrected errors in Ben Colbourne's first version. Reviewed, run and validated by Ben Colbourne.
+# See the thesis's Statement on the Use of Generative AI.
 import os
 import sys
 import argparse

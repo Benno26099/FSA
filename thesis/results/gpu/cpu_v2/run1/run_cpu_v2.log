@@ -1,0 +1,49 @@
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads 1 (env); OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 OMP_NUM_THREADS=1
+
+148/148 rows measured -> out/cpu_v2/scaling_cases_sa4_cpu_v2.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads 1 (env); OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 OMP_NUM_THREADS=1
+
+96/96 rows measured -> out/cpu_v2/blas3_cases_sa4_cpu_v2.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads 1 (env); OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 OMP_NUM_THREADS=1
+
+296/296 rows measured -> out/cpu_v2/scaling_cases_sa8_cpu_v2.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads 1 (env); OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 OMP_NUM_THREADS=1
+
+192/192 rows measured -> out/cpu_v2/blas3_cases_sa8_cpu_v2.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads 1 (env); OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 OMP_NUM_THREADS=1
+
+592/592 rows measured -> out/cpu_v2/scaling_cases_sa16_cpu_v2.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads 1 (env); OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 OMP_NUM_THREADS=1
+
+384/384 rows measured -> out/cpu_v2/blas3_cases_sa16_cpu_v2.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads 1 (env); OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 OMP_NUM_THREADS=1
+
+1184/1184 rows measured -> out/cpu_v2/scaling_cases_sa32_cpu_v2.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads 1 (env); OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 OMP_NUM_THREADS=1
+
+768/768 rows measured -> out/cpu_v2/blas3_cases_sa32_cpu_v2.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads default; OPENBLAS_NUM_THREADS=- MKL_NUM_THREADS=- OMP_NUM_THREADS=-
+
+148/148 rows measured -> out/cpu_v2/scaling_cases_sa4_cpu_v2_defthreads.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads default; OPENBLAS_NUM_THREADS=- MKL_NUM_THREADS=- OMP_NUM_THREADS=-
+
+96/96 rows measured -> out/cpu_v2/blas3_cases_sa4_cpu_v2_defthreads.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads default; OPENBLAS_NUM_THREADS=- MKL_NUM_THREADS=- OMP_NUM_THREADS=-
+
+296/296 rows measured -> out/cpu_v2/scaling_cases_sa8_cpu_v2_defthreads.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads default; OPENBLAS_NUM_THREADS=- MKL_NUM_THREADS=- OMP_NUM_THREADS=-
+
+192/192 rows measured -> out/cpu_v2/blas3_cases_sa8_cpu_v2_defthreads.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads default; OPENBLAS_NUM_THREADS=- MKL_NUM_THREADS=- OMP_NUM_THREADS=-
+
+592/592 rows measured -> out/cpu_v2/scaling_cases_sa16_cpu_v2_defthreads.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads default; OPENBLAS_NUM_THREADS=- MKL_NUM_THREADS=- OMP_NUM_THREADS=-
+
+384/384 rows measured -> out/cpu_v2/blas3_cases_sa16_cpu_v2_defthreads.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads default; OPENBLAS_NUM_THREADS=- MKL_NUM_THREADS=- OMP_NUM_THREADS=-
+
+1184/1184 rows measured -> out/cpu_v2/scaling_cases_sa32_cpu_v2_defthreads.csv
+numpy 2.5.4 on Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz (12 logical CPUs); BLAS scipy-openblas 0.3.34.106.0, threads default; OPENBLAS_NUM_THREADS=- MKL_NUM_THREADS=- OMP_NUM_THREADS=-
+
+768/768 rows measured -> out/cpu_v2/blas3_cases_sa32_cpu_v2_defthreads.csv
+ALL DONE

@@ -1,0 +1,241 @@
+testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =         60
+FSA: dmaInst =          3
+FSA: execTime =        137
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 4477 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+
+============================================================
+Running: square_sequential
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: readback_sequential
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: readback_col_marker
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: readback_random
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: normal_load_regression
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: nonsquare_2x3
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: nonsquare_3x2
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: nonsquare_1x16
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =        935
+FSA: dmaInst =          5
+FSA: execTime =       1088
+FSA: fence =          2
+FSA: mxActive =        130
+FSA: mxBubble =        516
+FSA: mxInst =          4
+FSA: rawInst =         34
+*** PASSED *** Completed after                15607 simulation cycles
+testing $random e23cbb39
+FSA: dmaActive =        485
+FSA: dmaInst =          3
+FSA: execTime =        562
+FSA: fence =          1
+FSA: mxActive =         65
+FSA: mxBubble =         56
+FSA: mxInst =          2
+FSA: rawInst =         19
+*** PASSED *** Completed after                 8677 simulation cycles
+
+Running: nonsquare_16x1
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: nonsquare_2x16
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: nonsquare_16x2
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: double_transpose
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000600.bin:0x80000600:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000600.bin, start=0x80000600, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+Running: transpose_matmul
+============================================================
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/mem.elf', '+max-cycles=10000000', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin:0x80000400:0x400']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/2a433de0-ea59-4e11-9d98-f22735a412bd/scratchpad/resweep/tmp16/0x80000400.bin, start=0x80000400, size=1024
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+
+============================================================
+TEST RESULTS
+============================================================
+  [PASS] transpose_sequential_16x16
+  [PASS] transpose_readback_sequential_16x16
+  [PASS] transpose_readback_col_marker_16x16
+  [PASS] transpose_readback_random_16x16
+  [PASS] normal_load_regression_16x16
+  [PASS] transpose_nonsquare_2x3_padded_to_16x16
+  [PASS] transpose_nonsquare_3x2_padded_to_16x16
+  [PASS] transpose_nonsquare_1x16_padded_to_16x16
+  [PASS] transpose_nonsquare_16x1_padded_to_16x16
+  [PASS] transpose_nonsquare_2x16_padded_to_16x16
+  [PASS] transpose_nonsquare_16x2_padded_to_16x16
+  [PASS] double_transpose_16x16
+  [PASS] transpose_matmul_16x16
+
+13/13 tests passed
+============================================================

@@ -1,3 +1,6 @@
+# AI assistance: edited with Claude (Anthropic; Claude Code, Claude Opus 5/5.5):
+# the einsum planner was co-written with Claude. Reviewed, run and validated by Ben Colbourne.
+# See the thesis's Statement on the Use of Generative AI.
 import os
 import sys
 import argparse

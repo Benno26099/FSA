@@ -1,3 +1,6 @@
+// AI assistance: edited with Claude (Anthropic; Claude Code, Claude Opus 5/5.5):
+// the instruction-preload driver change was written with Claude. Reviewed, run and validated by Ben Colbourne.
+// See the thesis's Statement on the Use of Generative AI.
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
@@ -19,7 +22,8 @@ fsa_tsi_t::fsa_tsi_t(int argc, char** argv) : tsi_t(argc, argv)
 }
 
 void fsa_tsi_t::run() {
-    reset();
+    // load_instructions() activates the FSA (reset()) itself, after preloading
+    // the instruction queue, so execTime excludes the slow TSI delivery.
     load_instructions(target_args()[0]);
     while(!should_exit()) {
         int state = fsa_tsi_t::STATE_IDLE;
@@ -62,10 +66,21 @@ void fsa_tsi_t::load_instructions(const std::string& path) {
     }
     close(fd);
 
+    // Preload up to PRELOAD_WORDS instruction words while the FSA is idle (the
+    // decoder only dequeues when active), then activate, then stream the rest.
+    // Activating first would make execTime count TSI delivery, one word per
+    // ~11 cycles in simulation, rather than the accelerator.
     uint32_t *data = static_cast<uint32_t *>(mapped);
-    for (size_t i = 0; i < filesize / sizeof(uint32_t); i++) {
+    size_t n_words = filesize / sizeof(uint32_t);
+    for (size_t i = 0; i < n_words; i++) {
+        if (i == PRELOAD_WORDS) {
+            reset();
+        }
         write_chunk(0x8000, sizeof(uint32_t), data);
         data++;
+    }
+    if (n_words <= PRELOAD_WORDS) {
+        reset();
     }
     if (munmap(mapped, filesize) == -1) {
         throw std::runtime_error("Error unmapping file: " + path);

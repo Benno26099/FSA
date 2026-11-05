@@ -1,0 +1,59 @@
+137 canonical equations, 57 role classes
+
+1 ops ranks=(0,) out=0 roles=-               1  ->
+1 ops ranks=(1,) out=0 roles=R               1  i->
+1 ops ranks=(1,) out=1 roles=F               1  i->i
+1 ops ranks=(2,) out=0 roles=R+R             1  ij->
+1 ops ranks=(2,) out=1 roles=F+R             2  ij->i ij->j
+1 ops ranks=(2,) out=2 roles=F+F             2  ij->ij ij->ji
+2 ops ranks=(0, 0) out=0 roles=-               1  ,->
+2 ops ranks=(0, 1) out=0 roles=Rb              1  ,i->
+2 ops ranks=(0, 1) out=1 roles=Fb              1  ,i->i
+2 ops ranks=(0, 2) out=0 roles=Rb+Rb           1  ,ij->
+2 ops ranks=(0, 2) out=1 roles=Fb+Rb           2  ,ij->i ,ij->j
+2 ops ranks=(0, 2) out=2 roles=Fb+Fb           2  ,ij->ij ,ij->ji
+2 ops ranks=(1, 0) out=0 roles=Ra              1  i,->
+2 ops ranks=(1, 0) out=1 roles=Fa              1  i,->i
+2 ops ranks=(1, 1) out=0 roles=C               1  i,i->
+2 ops ranks=(1, 1) out=0 roles=Ra+Rb           1  i,j->
+2 ops ranks=(1, 1) out=1 roles=E               1  i,i->i
+2 ops ranks=(1, 1) out=1 roles=Fa+Rb           1  i,j->i
+2 ops ranks=(1, 1) out=1 roles=Fb+Ra           1  i,j->j
+2 ops ranks=(1, 1) out=2 roles=Fa+Fb           2  i,j->ij i,j->ji
+2 ops ranks=(1, 2) out=0 roles=C+Rb            2  i,ij-> i,ji->
+2 ops ranks=(1, 2) out=0 roles=Ra+Rb+Rb        1  i,jk->
+2 ops ranks=(1, 2) out=1 roles=C+Fb            2  i,ij->j i,ji->j
+2 ops ranks=(1, 2) out=1 roles=E+Rb            2  i,ij->i i,ji->i
+2 ops ranks=(1, 2) out=1 roles=Fa+Rb+Rb        1  i,jk->i
+2 ops ranks=(1, 2) out=1 roles=Fb+Ra+Rb        2  i,jk->j i,jk->k
+2 ops ranks=(1, 2) out=2 roles=E+Fb            4  i,ij->ij i,ij->ji i,ji->ij i,ji->ji
+2 ops ranks=(1, 2) out=2 roles=Fa+Fb+Rb        4  i,jk->ij i,jk->ik i,jk->ji i,jk->ki
+2 ops ranks=(1, 2) out=2 roles=Fb+Fb+Ra        2  i,jk->jk i,jk->kj
+2 ops ranks=(2, 0) out=0 roles=Ra+Ra           1  ij,->
+2 ops ranks=(2, 0) out=1 roles=Fa+Ra           2  ij,->i ij,->j
+2 ops ranks=(2, 0) out=2 roles=Fa+Fa           2  ij,->ij ij,->ji
+2 ops ranks=(2, 1) out=0 roles=C+Ra            2  ij,i-> ij,j->
+2 ops ranks=(2, 1) out=0 roles=Ra+Ra+Rb        1  ij,k->
+2 ops ranks=(2, 1) out=1 roles=C+Fa            2  ij,i->j ij,j->i
+2 ops ranks=(2, 1) out=1 roles=E+Ra            2  ij,i->i ij,j->j
+2 ops ranks=(2, 1) out=1 roles=Fa+Ra+Rb        2  ij,k->i ij,k->j
+2 ops ranks=(2, 1) out=1 roles=Fb+Ra+Ra        1  ij,k->k
+2 ops ranks=(2, 1) out=2 roles=E+Fa            4  ij,i->ij ij,i->ji ij,j->ij ij,j->ji
+2 ops ranks=(2, 1) out=2 roles=Fa+Fa+Rb        2  ij,k->ij ij,k->ji
+2 ops ranks=(2, 1) out=2 roles=Fa+Fb+Ra        4  ij,k->ik ij,k->jk ij,k->ki ij,k->kj
+2 ops ranks=(2, 2) out=0 roles=C+C             2  ij,ij-> ij,ji->
+2 ops ranks=(2, 2) out=0 roles=C+Ra+Rb         4  ij,ik-> ij,jk-> ij,ki-> ij,kj->
+2 ops ranks=(2, 2) out=0 roles=Ra+Ra+Rb+Rb     1  ij,kl->
+2 ops ranks=(2, 2) out=1 roles=C+E             4  ij,ij->i ij,ij->j ij,ji->i ij,ji->j
+2 ops ranks=(2, 2) out=1 roles=C+Fa+Rb         4  ij,ik->j ij,jk->i ij,ki->j ij,kj->i
+2 ops ranks=(2, 2) out=1 roles=C+Fb+Ra         4  ij,ik->k ij,jk->k ij,ki->k ij,kj->k
+2 ops ranks=(2, 2) out=1 roles=E+Ra+Rb         4  ij,ik->i ij,jk->j ij,ki->i ij,kj->j
+2 ops ranks=(2, 2) out=1 roles=Fa+Ra+Rb+Rb     2  ij,kl->i ij,kl->j
+2 ops ranks=(2, 2) out=1 roles=Fb+Ra+Ra+Rb     2  ij,kl->k ij,kl->l
+2 ops ranks=(2, 2) out=2 roles=C+Fa+Fb         8  ij,ik->jk ij,ik->kj ij,jk->ik ij,jk->ki ij,ki->jk ij,ki->kj ij,kj->ik ij,kj->ki
+2 ops ranks=(2, 2) out=2 roles=E+E             4  ij,ij->ij ij,ij->ji ij,ji->ij ij,ji->ji
+2 ops ranks=(2, 2) out=2 roles=E+Fa+Rb         8  ij,ik->ij ij,ik->ji ij,jk->ij ij,jk->ji ij,ki->ij ij,ki->ji ij,kj->ij ij,kj->ji
+2 ops ranks=(2, 2) out=2 roles=E+Fb+Ra         8  ij,ik->ik ij,ik->ki ij,jk->jk ij,jk->kj ij,ki->ik ij,ki->ki ij,kj->jk ij,kj->kj
+2 ops ranks=(2, 2) out=2 roles=Fa+Fa+Rb+Rb     2  ij,kl->ij ij,kl->ji
+2 ops ranks=(2, 2) out=2 roles=Fa+Fb+Ra+Rb     8  ij,kl->ik ij,kl->il ij,kl->jk ij,kl->jl ij,kl->ki ij,kl->kj ij,kl->li ij,kl->lj
+2 ops ranks=(2, 2) out=2 roles=Fb+Fb+Ra+Ra     2  ij,kl->kl ij,kl->lk

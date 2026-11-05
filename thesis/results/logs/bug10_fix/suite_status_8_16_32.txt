@@ -1,0 +1,16 @@
+15:32 dispatcher 8x8: 93/93 tests passed
+15:32 test_matmul 8x8: 7/7 tests passed
+15:32 test_transpose_dma 8x8: 12/13 tests passed
+15:33 dispatcher 16x16: 93/93 tests passed
+15:34 test_matmul 16x16: 7/7 tests passed
+15:35 test_transpose_dma 16x16: 12/13 tests passed
+15:37 test_einsum_class 8x8: 270/270 tests passed
+15:37 attention 8x8: 'MAE': np.float32(0.00010121381) execTime =        133
+15:41 dispatcher 32x32: 93/93 tests passed
+15:42 test_matmul 32x32: 7/7 tests passed
+15:44 test_einsum_class 16x16: 271/271 tests passed
+15:44 attention 16x16: 'MAE': np.float32(9.4124e-05) execTime =        213
+15:44 test_transpose_dma 32x32: 12/13 tests passed
+20:20 test_einsum_class 32x32: 271/271 tests passed
+20:20 attention 32x32: 'MAE': np.float32(0.00010056322) execTime =        392
+20:20 DONE

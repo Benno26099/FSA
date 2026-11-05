@@ -1,3 +1,6 @@
+// AI assistance: edited with Claude (Anthropic; Claude Code, Claude Opus 5/5.5):
+// the instruction-preload driver change was written with Claude. Reviewed, run and validated by Ben Colbourne.
+// See the thesis's Statement on the Use of Generative AI.
 #ifndef __fsa_TSI_H
 #define __fsa_TSI_H
 
@@ -14,6 +17,8 @@ class fsa_tsi_t : public tsi_t
   static const int STATE_IDLE = 0;
   static const int STATE_ACTIVE = 1;
   static const int STATE_DONE = 2;
+  // Instruction words preloaded before activation: FSAParams.instructionQueueEntries.
+  static const size_t PRELOAD_WORDS = 256;
   fsa_tsi_t(int argc, char** argv);
   virtual ~fsa_tsi_t() noexcept override = default;
 

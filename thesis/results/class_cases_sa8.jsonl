@@ -1,0 +1,270 @@
+{"instance": "class_full", "family": "matmul", "step": 0, "group": "0 reduced", "equation": ",->", "raw_equation": ",->", "shapes": [[], []], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 1, "group": "1 reduced", "equation": ",i->", "raw_equation": ",i->", "shapes": [[], [8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 1, "group": "1 reduced", "equation": ",i->", "raw_equation": ",i->", "shapes": [[], [4]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 2, "group": "0 reduced", "equation": ",i->i", "raw_equation": ",i->i", "shapes": [[], [8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 2, "group": "0 reduced", "equation": ",i->i", "raw_equation": ",i->i", "shapes": [[], [7]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 3, "group": "1 reduced", "equation": ",ij->", "raw_equation": ",ij->", "shapes": [[], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 3, "group": "1 reduced", "equation": ",ij->", "raw_equation": ",ij->", "shapes": [[], [7, 1]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 4, "group": "1 reduced", "equation": ",ij->i", "raw_equation": ",ij->i", "shapes": [[], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 4, "group": "1 reduced", "equation": ",ij->i", "raw_equation": ",ij->i", "shapes": [[], [6, 8]], "count": 2}
+{"instance": "class_full", "family": "sI", "step": 5, "group": "0 reduced", "equation": ",ij->ij", "raw_equation": ",ij->ij", "shapes": [[], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "sI", "step": 5, "group": "0 reduced", "equation": ",ij->ij", "raw_equation": ",ij->ij", "shapes": [[], [6, 7]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 6, "group": "1 reduced", "equation": ",ij->j", "raw_equation": ",ij->j", "shapes": [[], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 6, "group": "1 reduced", "equation": ",ij->j", "raw_equation": ",ij->j", "shapes": [[], [4, 5]], "count": 2}
+{"instance": "class_full", "family": "sI", "step": 7, "group": "0 reduced", "equation": ",ij->ji", "raw_equation": ",ij->ji", "shapes": [[], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "sI", "step": 7, "group": "0 reduced", "equation": ",ij->ji", "raw_equation": ",ij->ji", "shapes": [[], [8, 6]], "count": 1}
+{"instance": "class_full", "family": "unary", "step": 8, "group": "0 reduced", "equation": "->", "raw_equation": "->", "shapes": [[]], "count": 0}
+{"instance": "class_full", "family": "matmul", "step": 9, "group": "1 reduced", "equation": "i,->", "raw_equation": "i,->", "shapes": [[8], []], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 9, "group": "1 reduced", "equation": "i,->", "raw_equation": "i,->", "shapes": [[4], []], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 10, "group": "0 reduced", "equation": "i,->i", "raw_equation": "i,->i", "shapes": [[8], []], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 10, "group": "0 reduced", "equation": "i,->i", "raw_equation": "i,->i", "shapes": [[7], []], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 11, "group": "0 reduced", "equation": "i,i->", "raw_equation": "i,i->", "shapes": [[8], [8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 11, "group": "0 reduced", "equation": "i,i->", "raw_equation": "i,i->", "shapes": [[2], [2]], "count": 1}
+{"instance": "class_full", "family": "vec_hadamard", "step": 12, "group": "0 reduced", "equation": "i,i->i", "raw_equation": "i,i->i", "shapes": [[8], [8]], "count": 1}
+{"instance": "class_random", "family": "vec_hadamard", "step": 12, "group": "0 reduced", "equation": "i,i->i", "raw_equation": "i,i->i", "shapes": [[5], [5]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 13, "group": "1 reduced", "equation": "i,ij->", "raw_equation": "i,ij->", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 13, "group": "1 reduced", "equation": "i,ij->", "raw_equation": "i,ij->", "shapes": [[8], [8, 7]], "count": 2}
+{"instance": "class_full", "family": "vec_hadamard", "step": 14, "group": "1 reduced", "equation": "i,ij->i", "raw_equation": "i,ij->i", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "vec_hadamard", "step": 14, "group": "1 reduced", "equation": "i,ij->i", "raw_equation": "i,ij->i", "shapes": [[2], [2, 7]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 15, "group": "0 reduced", "equation": "i,ij->ij", "raw_equation": "i,ij->ij", "shapes": [[8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "broadcast", "step": 15, "group": "0 reduced", "equation": "i,ij->ij", "raw_equation": "i,ij->ij", "shapes": [[8], [8, 6]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 16, "group": "0 reduced", "equation": "i,ij->j", "raw_equation": "i,ij->j", "shapes": [[8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 16, "group": "0 reduced", "equation": "i,ij->j", "raw_equation": "i,ij->j", "shapes": [[5], [5, 5]], "count": 1}
+{"instance": "class_full", "family": "broadcast", "step": 17, "group": "0 reduced", "equation": "i,ij->ji", "raw_equation": "i,ij->ji", "shapes": [[8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "broadcast", "step": 17, "group": "0 reduced", "equation": "i,ij->ji", "raw_equation": "i,ij->ji", "shapes": [[6], [6, 7]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 18, "group": "2 reduced", "equation": "i,j->", "raw_equation": "i,j->", "shapes": [[8], [8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 18, "group": "2 reduced", "equation": "i,j->", "raw_equation": "i,j->", "shapes": [[8], [4]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 19, "group": "1 reduced", "equation": "i,j->i", "raw_equation": "i,j->i", "shapes": [[8], [8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 19, "group": "1 reduced", "equation": "i,j->i", "raw_equation": "i,j->i", "shapes": [[5], [4]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 20, "group": "0 reduced", "equation": "i,j->ij", "raw_equation": "i,j->ij", "shapes": [[8], [8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 20, "group": "0 reduced", "equation": "i,j->ij", "raw_equation": "i,j->ij", "shapes": [[8], [3]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 21, "group": "1 reduced", "equation": "i,j->j", "raw_equation": "i,j->j", "shapes": [[8], [8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 21, "group": "1 reduced", "equation": "i,j->j", "raw_equation": "i,j->j", "shapes": [[3], [7]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 22, "group": "0 reduced", "equation": "i,j->ji", "raw_equation": "i,j->ji", "shapes": [[8], [8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 22, "group": "0 reduced", "equation": "i,j->ji", "raw_equation": "i,j->ji", "shapes": [[7], [3]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 23, "group": "1 reduced", "equation": "i,ji->", "raw_equation": "i,ji->", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 23, "group": "1 reduced", "equation": "i,ji->", "raw_equation": "i,ji->", "shapes": [[1], [6, 1]], "count": 2}
+{"instance": "class_full", "family": "vec_hadamard", "step": 24, "group": "1 reduced", "equation": "i,ji->i", "raw_equation": "i,ji->i", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "vec_hadamard", "step": 24, "group": "1 reduced", "equation": "i,ji->i", "raw_equation": "i,ji->i", "shapes": [[4], [3, 4]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 25, "group": "0 reduced", "equation": "i,ji->ij", "raw_equation": "i,ji->ij", "shapes": [[8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "broadcast", "step": 25, "group": "0 reduced", "equation": "i,ji->ij", "raw_equation": "i,ji->ij", "shapes": [[5], [2, 5]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 26, "group": "0 reduced", "equation": "i,ji->j", "raw_equation": "i,ji->j", "shapes": [[8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 26, "group": "0 reduced", "equation": "i,ji->j", "raw_equation": "i,ji->j", "shapes": [[7], [4, 7]], "count": 1}
+{"instance": "class_full", "family": "broadcast", "step": 27, "group": "0 reduced", "equation": "i,ji->ji", "raw_equation": "i,ji->ji", "shapes": [[8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "broadcast", "step": 27, "group": "0 reduced", "equation": "i,ji->ji", "raw_equation": "i,ji->ji", "shapes": [[1], [6, 1]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 28, "group": "2 reduced", "equation": "i,jk->", "raw_equation": "i,jk->", "shapes": [[8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 28, "group": "2 reduced", "equation": "i,jk->", "raw_equation": "i,jk->", "shapes": [[6], [7, 2]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 29, "group": "1 reduced", "equation": "i,jk->i", "raw_equation": "i,jk->i", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 29, "group": "1 reduced", "equation": "i,jk->i", "raw_equation": "i,jk->i", "shapes": [[8], [1, 5]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 30, "group": "1 reduced", "equation": "i,jk->ij", "raw_equation": "i,jk->ij", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 30, "group": "1 reduced", "equation": "i,jk->ij", "raw_equation": "i,jk->ij", "shapes": [[1], [2, 7]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 31, "group": "1 reduced", "equation": "i,jk->ik", "raw_equation": "i,jk->ik", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 31, "group": "1 reduced", "equation": "i,jk->ik", "raw_equation": "i,jk->ik", "shapes": [[5], [8, 4]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 32, "group": "2 reduced", "equation": "i,jk->j", "raw_equation": "i,jk->j", "shapes": [[8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 32, "group": "2 reduced", "equation": "i,jk->j", "raw_equation": "i,jk->j", "shapes": [[8], [2, 7]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 33, "group": "1 reduced", "equation": "i,jk->ji", "raw_equation": "i,jk->ji", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 33, "group": "1 reduced", "equation": "i,jk->ji", "raw_equation": "i,jk->ji", "shapes": [[8], [4, 4]], "count": 2}
+{"instance": "class_full", "family": "sI", "step": 34, "group": "1 reduced", "equation": "i,jk->jk", "raw_equation": "i,jk->jk", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "sI", "step": 34, "group": "1 reduced", "equation": "i,jk->jk", "raw_equation": "i,jk->jk", "shapes": [[1], [1, 1]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 35, "group": "2 reduced", "equation": "i,jk->k", "raw_equation": "i,jk->k", "shapes": [[8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 35, "group": "2 reduced", "equation": "i,jk->k", "raw_equation": "i,jk->k", "shapes": [[1], [3, 7]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 36, "group": "1 reduced", "equation": "i,jk->ki", "raw_equation": "i,jk->ki", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 36, "group": "1 reduced", "equation": "i,jk->ki", "raw_equation": "i,jk->ki", "shapes": [[4], [2, 4]], "count": 2}
+{"instance": "class_full", "family": "sI", "step": 37, "group": "1 reduced", "equation": "i,jk->kj", "raw_equation": "i,jk->kj", "shapes": [[8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "sI", "step": 37, "group": "1 reduced", "equation": "i,jk->kj", "raw_equation": "i,jk->kj", "shapes": [[2], [6, 6]], "count": 2}
+{"instance": "class_full", "family": "unary", "step": 38, "group": "1 reduced", "equation": "i->", "raw_equation": "i->", "shapes": [[8]], "count": 1}
+{"instance": "class_random", "family": "unary", "step": 38, "group": "1 reduced", "equation": "i->", "raw_equation": "i->", "shapes": [[2]], "count": 1}
+{"instance": "class_full", "family": "unary", "step": 39, "group": "0 reduced", "equation": "i->i", "raw_equation": "i->i", "shapes": [[8]], "count": 0}
+{"instance": "class_full", "family": "matmul", "step": 40, "group": "1 reduced", "equation": "ij,->", "raw_equation": "ij,->", "shapes": [[8, 8], []], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 40, "group": "1 reduced", "equation": "ij,->", "raw_equation": "ij,->", "shapes": [[5, 6], []], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 41, "group": "1 reduced", "equation": "ij,->i", "raw_equation": "ij,->i", "shapes": [[8, 8], []], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 41, "group": "1 reduced", "equation": "ij,->i", "raw_equation": "ij,->i", "shapes": [[6, 8], []], "count": 2}
+{"instance": "class_full", "family": "sI", "step": 42, "group": "0 reduced", "equation": "ij,->ij", "raw_equation": "ij,->ij", "shapes": [[8, 8], []], "count": 1}
+{"instance": "class_random", "family": "sI", "step": 42, "group": "0 reduced", "equation": "ij,->ij", "raw_equation": "ij,->ij", "shapes": [[1, 7], []], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 43, "group": "1 reduced", "equation": "ij,->j", "raw_equation": "ij,->j", "shapes": [[8, 8], []], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 43, "group": "1 reduced", "equation": "ij,->j", "raw_equation": "ij,->j", "shapes": [[5, 6], []], "count": 2}
+{"instance": "class_full", "family": "sI", "step": 44, "group": "0 reduced", "equation": "ij,->ji", "raw_equation": "ij,->ji", "shapes": [[8, 8], []], "count": 1}
+{"instance": "class_random", "family": "sI", "step": 44, "group": "0 reduced", "equation": "ij,->ji", "raw_equation": "ij,->ji", "shapes": [[6, 1], []], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 45, "group": "1 reduced", "equation": "ij,i->", "raw_equation": "ij,i->", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 45, "group": "1 reduced", "equation": "ij,i->", "raw_equation": "ij,i->", "shapes": [[8, 5], [8]], "count": 2}
+{"instance": "class_full", "family": "vec_hadamard", "step": 46, "group": "1 reduced", "equation": "ij,i->i", "raw_equation": "ij,i->i", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "vec_hadamard", "step": 46, "group": "1 reduced", "equation": "ij,i->i", "raw_equation": "ij,i->i", "shapes": [[5, 8], [5]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 47, "group": "0 reduced", "equation": "ij,i->ij", "raw_equation": "ij,i->ij", "shapes": [[8, 8], [8]], "count": 1}
+{"instance": "class_random", "family": "broadcast", "step": 47, "group": "0 reduced", "equation": "ij,i->ij", "raw_equation": "ij,i->ij", "shapes": [[1, 6], [1]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 48, "group": "0 reduced", "equation": "ij,i->j", "raw_equation": "ij,i->j", "shapes": [[8, 8], [8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 48, "group": "0 reduced", "equation": "ij,i->j", "raw_equation": "ij,i->j", "shapes": [[2, 4], [2]], "count": 1}
+{"instance": "class_full", "family": "broadcast", "step": 49, "group": "0 reduced", "equation": "ij,i->ji", "raw_equation": "ij,i->ji", "shapes": [[8, 8], [8]], "count": 1}
+{"instance": "class_random", "family": "broadcast", "step": 49, "group": "0 reduced", "equation": "ij,i->ji", "raw_equation": "ij,i->ji", "shapes": [[1, 3], [1]], "count": 1}
+{"instance": "class_full", "family": "trace", "step": 50, "group": "0 reduced", "equation": "ij,ij->", "raw_equation": "ij,ij->", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "trace", "step": 50, "group": "0 reduced", "equation": "ij,ij->", "raw_equation": "ij,ij->", "shapes": [[7, 7], [7, 7]], "count": 1}
+{"instance": "class_full", "family": "diag", "step": 51, "group": "0 reduced", "equation": "ij,ij->i", "raw_equation": "ij,ij->i", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "diag", "step": 51, "group": "0 reduced", "equation": "ij,ij->i", "raw_equation": "ij,ij->i", "shapes": [[4, 8], [4, 8]], "count": 1}
+{"instance": "class_full", "family": "hadamard", "step": 52, "group": "0 reduced", "equation": "ij,ij->ij", "raw_equation": "ij,ij->ij", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "hadamard", "step": 52, "group": "0 reduced", "equation": "ij,ij->ij", "raw_equation": "ij,ij->ij", "shapes": [[8, 5], [8, 5]], "count": 1}
+{"instance": "class_full", "family": "diag", "step": 53, "group": "0 reduced", "equation": "ij,ij->j", "raw_equation": "ij,ij->j", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "diag", "step": 53, "group": "0 reduced", "equation": "ij,ij->j", "raw_equation": "ij,ij->j", "shapes": [[7, 1], [7, 1]], "count": 1}
+{"instance": "class_full", "family": "hadamard", "step": 54, "group": "0 reduced", "equation": "ij,ij->ji", "raw_equation": "ij,ij->ji", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "hadamard", "step": 54, "group": "0 reduced", "equation": "ij,ij->ji", "raw_equation": "ij,ij->ji", "shapes": [[3, 2], [3, 2]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 55, "group": "2 reduced", "equation": "ij,ik->", "raw_equation": "ij,ik->", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 55, "group": "2 reduced", "equation": "ij,ik->", "raw_equation": "ij,ik->", "shapes": [[8, 7], [8, 6]], "count": 3}
+{"instance": "class_full", "family": "vec_hadamard", "step": 56, "group": "2 reduced", "equation": "ij,ik->i", "raw_equation": "ij,ik->i", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "vec_hadamard", "step": 56, "group": "2 reduced", "equation": "ij,ik->i", "raw_equation": "ij,ik->i", "shapes": [[3, 6], [3, 4]], "count": 3}
+{"instance": "class_full", "family": "broadcast", "step": 57, "group": "1 reduced", "equation": "ij,ik->ij", "raw_equation": "ij,ik->ij", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 57, "group": "1 reduced", "equation": "ij,ik->ij", "raw_equation": "ij,ik->ij", "shapes": [[1, 6], [1, 7]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 58, "group": "1 reduced", "equation": "ij,ik->ik", "raw_equation": "ij,ik->ik", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 58, "group": "1 reduced", "equation": "ij,ik->ik", "raw_equation": "ij,ik->ik", "shapes": [[5, 3], [5, 5]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 59, "group": "1 reduced", "equation": "ij,ik->j", "raw_equation": "ij,ik->j", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 59, "group": "1 reduced", "equation": "ij,ik->j", "raw_equation": "ij,ik->j", "shapes": [[7, 5], [7, 6]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 60, "group": "1 reduced", "equation": "ij,ik->ji", "raw_equation": "ij,ik->ji", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 60, "group": "1 reduced", "equation": "ij,ik->ji", "raw_equation": "ij,ik->ji", "shapes": [[2, 3], [2, 4]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 61, "group": "0 reduced", "equation": "ij,ik->jk", "raw_equation": "ij,ik->jk", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 61, "group": "0 reduced", "equation": "ij,ik->jk", "raw_equation": "ij,ik->jk", "shapes": [[4, 3], [4, 7]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 62, "group": "1 reduced", "equation": "ij,ik->k", "raw_equation": "ij,ik->k", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 62, "group": "1 reduced", "equation": "ij,ik->k", "raw_equation": "ij,ik->k", "shapes": [[4, 5], [4, 5]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 63, "group": "1 reduced", "equation": "ij,ik->ki", "raw_equation": "ij,ik->ki", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 63, "group": "1 reduced", "equation": "ij,ik->ki", "raw_equation": "ij,ik->ki", "shapes": [[4, 5], [4, 8]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 64, "group": "0 reduced", "equation": "ij,ik->kj", "raw_equation": "ij,ik->kj", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 64, "group": "0 reduced", "equation": "ij,ik->kj", "raw_equation": "ij,ik->kj", "shapes": [[5, 8], [5, 7]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 65, "group": "1 reduced", "equation": "ij,j->", "raw_equation": "ij,j->", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 65, "group": "1 reduced", "equation": "ij,j->", "raw_equation": "ij,j->", "shapes": [[2, 1], [1]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 66, "group": "0 reduced", "equation": "ij,j->i", "raw_equation": "ij,j->i", "shapes": [[8, 8], [8]], "count": 1}
+{"instance": "class_full", "family": "broadcast", "step": 67, "group": "0 reduced", "equation": "ij,j->ij", "raw_equation": "ij,j->ij", "shapes": [[8, 8], [8]], "count": 1}
+{"instance": "class_random", "family": "broadcast", "step": 67, "group": "0 reduced", "equation": "ij,j->ij", "raw_equation": "ij,j->ij", "shapes": [[7, 4], [4]], "count": 1}
+{"instance": "class_full", "family": "vec_hadamard", "step": 68, "group": "1 reduced", "equation": "ij,j->j", "raw_equation": "ij,j->j", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "vec_hadamard", "step": 68, "group": "1 reduced", "equation": "ij,j->j", "raw_equation": "ij,j->j", "shapes": [[4, 4], [4]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 69, "group": "0 reduced", "equation": "ij,j->ji", "raw_equation": "ij,j->ji", "shapes": [[8, 8], [8]], "count": 1}
+{"instance": "class_random", "family": "broadcast", "step": 69, "group": "0 reduced", "equation": "ij,j->ji", "raw_equation": "ij,j->ji", "shapes": [[1, 5], [5]], "count": 1}
+{"instance": "class_full", "family": "trace", "step": 70, "group": "0 reduced", "equation": "ij,ji->", "raw_equation": "ij,ji->", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "trace", "step": 70, "group": "0 reduced", "equation": "ij,ji->", "raw_equation": "ij,ji->", "shapes": [[6, 4], [4, 6]], "count": 1}
+{"instance": "class_full", "family": "diag", "step": 71, "group": "0 reduced", "equation": "ij,ji->i", "raw_equation": "ij,ji->i", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "diag", "step": 71, "group": "0 reduced", "equation": "ij,ji->i", "raw_equation": "ij,ji->i", "shapes": [[8, 3], [3, 8]], "count": 1}
+{"instance": "class_full", "family": "hadamard", "step": 72, "group": "0 reduced", "equation": "ij,ji->ij", "raw_equation": "ij,ji->ij", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "hadamard", "step": 72, "group": "0 reduced", "equation": "ij,ji->ij", "raw_equation": "ij,ji->ij", "shapes": [[8, 7], [7, 8]], "count": 2}
+{"instance": "class_full", "family": "diag", "step": 73, "group": "0 reduced", "equation": "ij,ji->j", "raw_equation": "ij,ji->j", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "diag", "step": 73, "group": "0 reduced", "equation": "ij,ji->j", "raw_equation": "ij,ji->j", "shapes": [[7, 4], [4, 7]], "count": 1}
+{"instance": "class_full", "family": "hadamard", "step": 74, "group": "0 reduced", "equation": "ij,ji->ji", "raw_equation": "ij,ji->ji", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "hadamard", "step": 74, "group": "0 reduced", "equation": "ij,ji->ji", "raw_equation": "ij,ji->ji", "shapes": [[2, 8], [8, 2]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 75, "group": "2 reduced", "equation": "ij,jk->", "raw_equation": "ij,jk->", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 75, "group": "2 reduced", "equation": "ij,jk->", "raw_equation": "ij,jk->", "shapes": [[6, 2], [2, 2]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 76, "group": "1 reduced", "equation": "ij,jk->i", "raw_equation": "ij,jk->i", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 76, "group": "1 reduced", "equation": "ij,jk->i", "raw_equation": "ij,jk->i", "shapes": [[5, 7], [7, 4]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 77, "group": "1 reduced", "equation": "ij,jk->ij", "raw_equation": "ij,jk->ij", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 77, "group": "1 reduced", "equation": "ij,jk->ij", "raw_equation": "ij,jk->ij", "shapes": [[1, 7], [7, 6]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 78, "group": "0 reduced", "equation": "ij,jk->ik", "raw_equation": "ij,jk->ik", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 78, "group": "0 reduced", "equation": "ij,jk->ik", "raw_equation": "ij,jk->ik", "shapes": [[6, 4], [4, 2]], "count": 1}
+{"instance": "class_full", "family": "vec_hadamard", "step": 79, "group": "2 reduced", "equation": "ij,jk->j", "raw_equation": "ij,jk->j", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "vec_hadamard", "step": 79, "group": "2 reduced", "equation": "ij,jk->j", "raw_equation": "ij,jk->j", "shapes": [[1, 8], [8, 8]], "count": 3}
+{"instance": "class_full", "family": "broadcast", "step": 80, "group": "1 reduced", "equation": "ij,jk->ji", "raw_equation": "ij,jk->ji", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 80, "group": "1 reduced", "equation": "ij,jk->ji", "raw_equation": "ij,jk->ji", "shapes": [[8, 6], [6, 1]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 81, "group": "1 reduced", "equation": "ij,jk->jk", "raw_equation": "ij,jk->jk", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 81, "group": "1 reduced", "equation": "ij,jk->jk", "raw_equation": "ij,jk->jk", "shapes": [[1, 4], [4, 1]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 82, "group": "1 reduced", "equation": "ij,jk->k", "raw_equation": "ij,jk->k", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 82, "group": "1 reduced", "equation": "ij,jk->k", "raw_equation": "ij,jk->k", "shapes": [[6, 8], [8, 6]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 83, "group": "0 reduced", "equation": "ij,jk->ki", "raw_equation": "ij,jk->ki", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 83, "group": "0 reduced", "equation": "ij,jk->ki", "raw_equation": "ij,jk->ki", "shapes": [[6, 3], [3, 5]], "count": 1}
+{"instance": "class_full", "family": "broadcast", "step": 84, "group": "1 reduced", "equation": "ij,jk->kj", "raw_equation": "ij,jk->kj", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 84, "group": "1 reduced", "equation": "ij,jk->kj", "raw_equation": "ij,jk->kj", "shapes": [[6, 6], [6, 2]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 85, "group": "2 reduced", "equation": "ij,k->", "raw_equation": "ij,k->", "shapes": [[8, 8], [8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 85, "group": "2 reduced", "equation": "ij,k->", "raw_equation": "ij,k->", "shapes": [[6, 1], [8]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 86, "group": "2 reduced", "equation": "ij,k->i", "raw_equation": "ij,k->i", "shapes": [[8, 8], [8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 86, "group": "2 reduced", "equation": "ij,k->i", "raw_equation": "ij,k->i", "shapes": [[8, 5], [2]], "count": 3}
+{"instance": "class_full", "family": "sI", "step": 87, "group": "1 reduced", "equation": "ij,k->ij", "raw_equation": "ij,k->ij", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "sI", "step": 87, "group": "1 reduced", "equation": "ij,k->ij", "raw_equation": "ij,k->ij", "shapes": [[5, 5], [1]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 88, "group": "1 reduced", "equation": "ij,k->ik", "raw_equation": "ij,k->ik", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 88, "group": "1 reduced", "equation": "ij,k->ik", "raw_equation": "ij,k->ik", "shapes": [[5, 2], [8]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 89, "group": "2 reduced", "equation": "ij,k->j", "raw_equation": "ij,k->j", "shapes": [[8, 8], [8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 89, "group": "2 reduced", "equation": "ij,k->j", "raw_equation": "ij,k->j", "shapes": [[7, 5], [3]], "count": 3}
+{"instance": "class_full", "family": "sI", "step": 90, "group": "1 reduced", "equation": "ij,k->ji", "raw_equation": "ij,k->ji", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "sI", "step": 90, "group": "1 reduced", "equation": "ij,k->ji", "raw_equation": "ij,k->ji", "shapes": [[6, 3], [1]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 91, "group": "1 reduced", "equation": "ij,k->jk", "raw_equation": "ij,k->jk", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 91, "group": "1 reduced", "equation": "ij,k->jk", "raw_equation": "ij,k->jk", "shapes": [[6, 3], [3]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 92, "group": "1 reduced", "equation": "ij,k->k", "raw_equation": "ij,k->k", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 92, "group": "1 reduced", "equation": "ij,k->k", "raw_equation": "ij,k->k", "shapes": [[4, 5], [8]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 93, "group": "1 reduced", "equation": "ij,k->ki", "raw_equation": "ij,k->ki", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 93, "group": "1 reduced", "equation": "ij,k->ki", "raw_equation": "ij,k->ki", "shapes": [[8, 8], [6]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 94, "group": "1 reduced", "equation": "ij,k->kj", "raw_equation": "ij,k->kj", "shapes": [[8, 8], [8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 94, "group": "1 reduced", "equation": "ij,k->kj", "raw_equation": "ij,k->kj", "shapes": [[1, 2], [8]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 95, "group": "2 reduced", "equation": "ij,ki->", "raw_equation": "ij,ki->", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 95, "group": "2 reduced", "equation": "ij,ki->", "raw_equation": "ij,ki->", "shapes": [[4, 5], [1, 4]], "count": 3}
+{"instance": "class_full", "family": "vec_hadamard", "step": 96, "group": "2 reduced", "equation": "ij,ki->i", "raw_equation": "ij,ki->i", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "vec_hadamard", "step": 96, "group": "2 reduced", "equation": "ij,ki->i", "raw_equation": "ij,ki->i", "shapes": [[7, 6], [7, 7]], "count": 3}
+{"instance": "class_full", "family": "broadcast", "step": 97, "group": "1 reduced", "equation": "ij,ki->ij", "raw_equation": "ij,ki->ij", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 97, "group": "1 reduced", "equation": "ij,ki->ij", "raw_equation": "ij,ki->ij", "shapes": [[2, 6], [1, 2]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 98, "group": "1 reduced", "equation": "ij,ki->ik", "raw_equation": "ij,ki->ik", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 98, "group": "1 reduced", "equation": "ij,ki->ik", "raw_equation": "ij,ki->ik", "shapes": [[3, 8], [6, 3]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 99, "group": "1 reduced", "equation": "ij,ki->j", "raw_equation": "ij,ki->j", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 99, "group": "1 reduced", "equation": "ij,ki->j", "raw_equation": "ij,ki->j", "shapes": [[8, 5], [7, 8]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 100, "group": "1 reduced", "equation": "ij,ki->ji", "raw_equation": "ij,ki->ji", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 100, "group": "1 reduced", "equation": "ij,ki->ji", "raw_equation": "ij,ki->ji", "shapes": [[7, 7], [1, 7]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 101, "group": "0 reduced", "equation": "ij,ki->jk", "raw_equation": "ij,ki->jk", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 101, "group": "0 reduced", "equation": "ij,ki->jk", "raw_equation": "ij,ki->jk", "shapes": [[3, 8], [6, 3]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 102, "group": "1 reduced", "equation": "ij,ki->k", "raw_equation": "ij,ki->k", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 102, "group": "1 reduced", "equation": "ij,ki->k", "raw_equation": "ij,ki->k", "shapes": [[4, 2], [5, 4]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 103, "group": "1 reduced", "equation": "ij,ki->ki", "raw_equation": "ij,ki->ki", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 103, "group": "1 reduced", "equation": "ij,ki->ki", "raw_equation": "ij,ki->ki", "shapes": [[5, 3], [1, 5]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 104, "group": "0 reduced", "equation": "ij,ki->kj", "raw_equation": "ij,ki->kj", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 104, "group": "0 reduced", "equation": "ij,ki->kj", "raw_equation": "ij,ki->kj", "shapes": [[6, 7], [3, 6]], "count": 1}
+{"instance": "class_full", "family": "matmul", "step": 105, "group": "2 reduced", "equation": "ij,kj->", "raw_equation": "ij,kj->", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 105, "group": "2 reduced", "equation": "ij,kj->", "raw_equation": "ij,kj->", "shapes": [[3, 6], [8, 6]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 106, "group": "1 reduced", "equation": "ij,kj->i", "raw_equation": "ij,kj->i", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 106, "group": "1 reduced", "equation": "ij,kj->i", "raw_equation": "ij,kj->i", "shapes": [[5, 8], [4, 8]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 107, "group": "1 reduced", "equation": "ij,kj->ij", "raw_equation": "ij,kj->ij", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 107, "group": "1 reduced", "equation": "ij,kj->ij", "raw_equation": "ij,kj->ij", "shapes": [[1, 6], [8, 6]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 108, "group": "0 reduced", "equation": "ij,kj->ik", "raw_equation": "ij,kj->ik", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 108, "group": "0 reduced", "equation": "ij,kj->ik", "raw_equation": "ij,kj->ik", "shapes": [[1, 7], [8, 7]], "count": 1}
+{"instance": "class_full", "family": "vec_hadamard", "step": 109, "group": "2 reduced", "equation": "ij,kj->j", "raw_equation": "ij,kj->j", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "vec_hadamard", "step": 109, "group": "2 reduced", "equation": "ij,kj->j", "raw_equation": "ij,kj->j", "shapes": [[5, 5], [3, 5]], "count": 3}
+{"instance": "class_full", "family": "broadcast", "step": 110, "group": "1 reduced", "equation": "ij,kj->ji", "raw_equation": "ij,kj->ji", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 110, "group": "1 reduced", "equation": "ij,kj->ji", "raw_equation": "ij,kj->ji", "shapes": [[5, 8], [6, 8]], "count": 2}
+{"instance": "class_full", "family": "broadcast", "step": 111, "group": "1 reduced", "equation": "ij,kj->jk", "raw_equation": "ij,kj->jk", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 111, "group": "1 reduced", "equation": "ij,kj->jk", "raw_equation": "ij,kj->jk", "shapes": [[4, 2], [6, 2]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 112, "group": "1 reduced", "equation": "ij,kj->k", "raw_equation": "ij,kj->k", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "matmul", "step": 112, "group": "1 reduced", "equation": "ij,kj->k", "raw_equation": "ij,kj->k", "shapes": [[2, 1], [7, 1]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 113, "group": "0 reduced", "equation": "ij,kj->ki", "raw_equation": "ij,kj->ki", "shapes": [[8, 8], [8, 8]], "count": 1}
+{"instance": "class_random", "family": "matmul", "step": 113, "group": "0 reduced", "equation": "ij,kj->ki", "raw_equation": "ij,kj->ki", "shapes": [[3, 1], [7, 1]], "count": 1}
+{"instance": "class_full", "family": "broadcast", "step": 114, "group": "1 reduced", "equation": "ij,kj->kj", "raw_equation": "ij,kj->kj", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "broadcast", "step": 114, "group": "1 reduced", "equation": "ij,kj->kj", "raw_equation": "ij,kj->kj", "shapes": [[2, 6], [8, 6]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 115, "group": "2 reduced", "equation": "ij,kl->", "raw_equation": "ij,kl->", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 115, "group": "2 reduced", "equation": "ij,kl->", "raw_equation": "ij,kl->", "shapes": [[6, 6], [2, 5]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 116, "group": "2 reduced", "equation": "ij,kl->i", "raw_equation": "ij,kl->i", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 116, "group": "2 reduced", "equation": "ij,kl->i", "raw_equation": "ij,kl->i", "shapes": [[2, 2], [5, 8]], "count": 3}
+{"instance": "class_full", "family": "sI", "step": 117, "group": "1 reduced", "equation": "ij,kl->ij", "raw_equation": "ij,kl->ij", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "sI", "step": 117, "group": "1 reduced", "equation": "ij,kl->ij", "raw_equation": "ij,kl->ij", "shapes": [[2, 8], [3, 2]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 118, "group": "2 reduced", "equation": "ij,kl->ik", "raw_equation": "ij,kl->ik", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 118, "group": "2 reduced", "equation": "ij,kl->ik", "raw_equation": "ij,kl->ik", "shapes": [[4, 8], [6, 8]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 119, "group": "2 reduced", "equation": "ij,kl->il", "raw_equation": "ij,kl->il", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 119, "group": "2 reduced", "equation": "ij,kl->il", "raw_equation": "ij,kl->il", "shapes": [[4, 8], [5, 6]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 120, "group": "2 reduced", "equation": "ij,kl->j", "raw_equation": "ij,kl->j", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 120, "group": "2 reduced", "equation": "ij,kl->j", "raw_equation": "ij,kl->j", "shapes": [[3, 7], [2, 1]], "count": 3}
+{"instance": "class_full", "family": "sI", "step": 121, "group": "1 reduced", "equation": "ij,kl->ji", "raw_equation": "ij,kl->ji", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "sI", "step": 121, "group": "1 reduced", "equation": "ij,kl->ji", "raw_equation": "ij,kl->ji", "shapes": [[3, 6], [4, 3]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 122, "group": "2 reduced", "equation": "ij,kl->jk", "raw_equation": "ij,kl->jk", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 122, "group": "2 reduced", "equation": "ij,kl->jk", "raw_equation": "ij,kl->jk", "shapes": [[7, 7], [2, 2]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 123, "group": "2 reduced", "equation": "ij,kl->jl", "raw_equation": "ij,kl->jl", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 123, "group": "2 reduced", "equation": "ij,kl->jl", "raw_equation": "ij,kl->jl", "shapes": [[1, 6], [5, 1]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 124, "group": "2 reduced", "equation": "ij,kl->k", "raw_equation": "ij,kl->k", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 124, "group": "2 reduced", "equation": "ij,kl->k", "raw_equation": "ij,kl->k", "shapes": [[8, 7], [7, 7]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 125, "group": "2 reduced", "equation": "ij,kl->ki", "raw_equation": "ij,kl->ki", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 125, "group": "2 reduced", "equation": "ij,kl->ki", "raw_equation": "ij,kl->ki", "shapes": [[4, 7], [1, 4]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 126, "group": "2 reduced", "equation": "ij,kl->kj", "raw_equation": "ij,kl->kj", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 126, "group": "2 reduced", "equation": "ij,kl->kj", "raw_equation": "ij,kl->kj", "shapes": [[3, 1], [1, 8]], "count": 3}
+{"instance": "class_full", "family": "sI", "step": 127, "group": "1 reduced", "equation": "ij,kl->kl", "raw_equation": "ij,kl->kl", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "sI", "step": 127, "group": "1 reduced", "equation": "ij,kl->kl", "raw_equation": "ij,kl->kl", "shapes": [[5, 1], [5, 2]], "count": 2}
+{"instance": "class_full", "family": "matmul", "step": 128, "group": "2 reduced", "equation": "ij,kl->l", "raw_equation": "ij,kl->l", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 128, "group": "2 reduced", "equation": "ij,kl->l", "raw_equation": "ij,kl->l", "shapes": [[6, 6], [6, 4]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 129, "group": "2 reduced", "equation": "ij,kl->li", "raw_equation": "ij,kl->li", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 129, "group": "2 reduced", "equation": "ij,kl->li", "raw_equation": "ij,kl->li", "shapes": [[5, 4], [2, 2]], "count": 3}
+{"instance": "class_full", "family": "matmul", "step": 130, "group": "2 reduced", "equation": "ij,kl->lj", "raw_equation": "ij,kl->lj", "shapes": [[8, 8], [8, 8]], "count": 3}
+{"instance": "class_random", "family": "matmul", "step": 130, "group": "2 reduced", "equation": "ij,kl->lj", "raw_equation": "ij,kl->lj", "shapes": [[6, 4], [3, 1]], "count": 3}
+{"instance": "class_full", "family": "sI", "step": 131, "group": "1 reduced", "equation": "ij,kl->lk", "raw_equation": "ij,kl->lk", "shapes": [[8, 8], [8, 8]], "count": 2}
+{"instance": "class_random", "family": "sI", "step": 131, "group": "1 reduced", "equation": "ij,kl->lk", "raw_equation": "ij,kl->lk", "shapes": [[4, 6], [3, 5]], "count": 2}
+{"instance": "class_full", "family": "unary", "step": 132, "group": "1 reduced", "equation": "ij->", "raw_equation": "ij->", "shapes": [[8, 8]], "count": 1}
+{"instance": "class_random", "family": "unary", "step": 132, "group": "1 reduced", "equation": "ij->", "raw_equation": "ij->", "shapes": [[7, 2]], "count": 1}
+{"instance": "class_full", "family": "unary", "step": 133, "group": "1 reduced", "equation": "ij->i", "raw_equation": "ij->i", "shapes": [[8, 8]], "count": 1}
+{"instance": "class_random", "family": "unary", "step": 133, "group": "1 reduced", "equation": "ij->i", "raw_equation": "ij->i", "shapes": [[5, 8]], "count": 1}
+{"instance": "class_full", "family": "unary", "step": 134, "group": "0 reduced", "equation": "ij->ij", "raw_equation": "ij->ij", "shapes": [[8, 8]], "count": 0}
+{"instance": "class_random", "family": "unary", "step": 134, "group": "0 reduced", "equation": "ij->ij", "raw_equation": "ij->ij", "shapes": [[7, 8]], "count": 0}
+{"instance": "class_full", "family": "unary", "step": 135, "group": "1 reduced", "equation": "ij->j", "raw_equation": "ij->j", "shapes": [[8, 8]], "count": 1}
+{"instance": "class_random", "family": "unary", "step": 135, "group": "1 reduced", "equation": "ij->j", "raw_equation": "ij->j", "shapes": [[4, 5]], "count": 1}
+{"instance": "class_full", "family": "unary", "step": 136, "group": "0 reduced", "equation": "ij->ji", "raw_equation": "ij->ji", "shapes": [[8, 8]], "count": 1}
+{"instance": "class_random", "family": "unary", "step": 136, "group": "0 reduced", "equation": "ij->ji", "raw_equation": "ij->ji", "shapes": [[8, 2]], "count": 1}

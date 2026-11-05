@@ -1,0 +1,21 @@
+einsum	tensor	cascade	expression	equation	canonical	status
+33	QK	3-pass	QK[m,p] = Q[e,p] x K[e,m]	ep,em->mp	ij,ik->kj	in class
+34	GM	3-pass	GM[p] = max over m of QK[m,p]			outside: max reduction
+35	SN	3-pass	SN[m,p] = exp(QK[m,p] - GM[p])			outside: exp / subtraction
+36	SD	3-pass	SD[p] = sum over m of SN[m,p]	mp->p	ij->j	in class
+37	A	3-pass	A[m,p] = SN[m,p] / SD[p]			outside: division
+38	AV	3-pass	AV[f,p] = A[m,p] x V[f,m]	mp,fm->fp	ij,ki->kj	in class
+31	SNV	division-reduced	SNV[f,p] = SN[m,p] x V[f,m]	mp,fm->fp	ij,ki->kj	in class
+32	AV	division-reduced	AV[f,p] = SNV[f,p] / SD[p]			outside: division
+44	BQK	1-pass	BQK[m0,p] = Q[e,p] x BK[e,m0]	ep,eM->Mp	ij,ik->kj	in class
+45	LM	1-pass	LM[p] = max over m0 of BQK[m0,p]			outside: max reduction
+46	RM	1-pass	RM'[p] = max(RM[p], LM[p])			outside: elementwise max
+47	SLN	1-pass	SLN[m0,p] = exp(BQK[m0,p] - RM'[p])			outside: exp / subtraction
+48	SLD	1-pass	SLD[p] = sum over m0 of SLN[m0,p]	Mp->p	ij->j	in class
+49	SLNV	1-pass	SLNV[f,p] = SLN[m0,p] x BV[f,m0]	Mp,fM->fp	ij,ki->kj	in class
+50	PRM	1-pass	PRM[p] = exp(RM[p] - RM'[p])			outside: exp / subtraction
+51	SPD	1-pass	SPD[p] = RD[p] x PRM[p]	p,p->p	i,i->i	in class
+52	RD	1-pass	RD'[p] = SLD[p] + SPD[p]			outside: tensor addition
+53	SPNV	1-pass	SPNV[f,p] = RNV[f,p] x PRM[p]	fp,p->fp	ij,j->ij	in class
+54	RNV	1-pass	RNV'[f,p] = SLNV[f,p] + SPNV[f,p]			outside: tensor addition
+55	AV	1-pass	AV[f,p] = RNV[f,p] / RD[p]			outside: division

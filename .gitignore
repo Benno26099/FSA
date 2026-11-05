@@ -18,6 +18,15 @@ build
 # Kept out of the fork; maintained separately.
 docs/thesis/
 
+# Self-authored reference docs. Deliberately *.md rather than docs/ — the
+# upstream images (fpga.jpg, innerloop.gif, microarch.jpg) are tracked and
+# must stay that way.
+docs/*.md
+
+# Scratch test scripts, superseded by dispatcher.py / test_transpose_dma.py
+python/test_transpose_attention.py
+python/transpose_test.py
+
 # Scala / SBT build state not already covered above
 project/target/
 project/project/
@@ -59,3 +68,6 @@ transcript
 # scratch/
 # TODO.md
 # NOTES.md
+
+# Thesis scripts and results are tracked (thesis/); keep their run logs too.
+!thesis/results/**/*.log

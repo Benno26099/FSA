@@ -1,0 +1,73 @@
+22:17:58 sweep start (new driver + Bug 10 fix + transpose test fix), tree: see TREE_STATE.txt
+22:17:58 start dispatcher 8x8
+22:17:58 start dispatcher 16x16
+22:17:58 start dispatcher 32x32
+22:17:58 start dispatcher 4x4
+22:19:35 end   dispatcher 4x4 rc=0 93/93 tests passed
+22:19:35 start class_suite 4x4
+22:20:01 end   dispatcher 8x8 rc=0 93/93 tests passed
+22:20:01 start class_suite 8x8
+22:23:28 end   dispatcher 16x16 rc=0 93/93 tests passed
+22:23:28 start class_suite 16x16
+22:28:00 end   class_suite 4x4 rc=0 263/263 tests passed
+22:28:00 start test_matmul 4x4
+22:28:14 end   test_matmul 4x4 rc=0 7/7 tests passed
+22:28:14 start test_transpose_dma 4x4
+22:28:29 end   test_transpose_dma 4x4 rc=0 13/13 tests passed
+22:28:29 start attention 4x4
+22:28:40 end   attention 4x4 rc=0 
+22:28:40 start fusemax 4x4
+22:28:54 end   fusemax 4x4 rc=0 9/9 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/fusemax_cases_4x4.csv
+22:28:54 start class_cases 4x4
+22:31:16 end   class_suite 8x8 rc=0 270/270 tests passed
+22:31:16 start test_matmul 8x8
+22:31:28 end   test_matmul 8x8 rc=0 7/7 tests passed
+22:31:28 start test_transpose_dma 8x8
+22:31:54 end   test_transpose_dma 8x8 rc=0 13/13 tests passed
+22:31:54 start attention 8x8
+22:32:01 end   attention 8x8 rc=0 
+22:32:01 start fusemax 8x8
+22:32:13 end   fusemax 8x8 rc=0 9/9 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/fusemax_cases_8x8.csv
+22:32:13 start class_cases 8x8
+22:37:33 end   dispatcher 32x32 rc=0 93/93 tests passed
+22:37:33 start class_suite 32x32
+22:37:34 end   class_cases 4x4 rc=0 263/263 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/class_cases_sa4_4x4.csv
+22:37:34 start benchmark 4x4
+22:41:05 end   benchmark 4x4 rc=0 165/165 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/benchmark_distinct_sa4_4x4.csv
+22:41:05 DONE 4x4
+22:42:03 end   class_cases 8x8 rc=0 270/270 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/class_cases_sa8_8x8.csv
+22:42:03 start benchmark 8x8
+22:47:35 end   class_suite 16x16 rc=0 271/271 tests passed
+22:47:35 start test_matmul 16x16
+22:47:56 end   test_matmul 16x16 rc=0 7/7 tests passed
+22:47:56 start test_transpose_dma 16x16
+22:48:48 end   test_transpose_dma 16x16 rc=0 13/13 tests passed
+22:48:48 start attention 16x16
+22:48:55 end   attention 16x16 rc=0 
+22:48:55 start fusemax 16x16
+22:49:22 end   fusemax 16x16 rc=0 9/9 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/fusemax_cases_16x16.csv
+22:49:22 start pytorch 16x16
+22:49:54 end   benchmark 8x8 rc=0 448/448 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/benchmark_distinct_sa8_8x8.csv
+22:49:54 DONE 8x8
+22:50:00 end   pytorch 16x16 rc=0 13/13 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/pytorch_cases_16x16.csv
+22:50:00 start class_cases 16x16
+23:03:56 end   class_cases 16x16 rc=0 271/271 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/class_cases_sa16_16x16.csv
+23:03:56 start benchmark 16x16
+23:24:31 end   benchmark 16x16 rc=0 582/582 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/benchmark_distinct_sa16_16x16.csv
+23:24:31 DONE 16x16
+23:26:45 end   class_suite 32x32 rc=0 271/271 tests passed
+23:26:45 start test_matmul 32x32
+23:28:07 end   test_matmul 32x32 rc=0 7/7 tests passed
+23:28:07 start test_transpose_dma 32x32
+23:31:40 end   test_transpose_dma 32x32 rc=0 13/13 tests passed
+23:31:40 start attention 32x32
+23:31:51 end   attention 32x32 rc=0 
+23:31:51 start fusemax 32x32
+23:32:49 end   fusemax 32x32 rc=0 9/9 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/fusemax_cases_32x32.csv
+23:32:49 start pytorch 32x32
+23:34:08 end   pytorch 32x32 rc=0 13/13 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/pytorch_cases_32x32.csv
+23:34:08 start class_cases 32x32
+00:06:13 end   class_cases 32x32 rc=0 271/271 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/class_cases_sa32_32x32.csv
+00:06:13 start benchmark 32x32
+12:18:47 end   benchmark 32x32 rc=0 740/740 cases passed -> /home/ben/chipyard/chipyard-fsa/generators/fsa/docs/thesis/results/final_preload/benchmark_distinct_sa32_32x32.csv
+12:18:47 DONE 32x32
