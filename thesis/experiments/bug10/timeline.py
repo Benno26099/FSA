@@ -1,3 +1,6 @@
+# AI assistance: written with Claude (Anthropic; Claude Code, Claude Opus 5/5.5),
+# then reviewed, run and validated by Ben Colbourne. See the thesis's
+# Statement on the Use of Generative AI.
 """Event timeline of one kernel: DMA spad writes, MX spad reads, semaphores, MX issue."""
 import sys
 sys.path.insert(0, sys.argv[2])

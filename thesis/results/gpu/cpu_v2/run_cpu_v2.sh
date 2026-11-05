@@ -1,4 +1,7 @@
 #!/bin/bash
+# AI assistance: written with Claude (Anthropic; Claude Code, Claude Opus 5/5.5),
+# then reviewed, run and validated by Ben Colbourne. See the thesis's
+# Statement on the Use of Generative AI.
 # CPU baseline v2 on guppy: warm-up, single-threaded main run, then one default-threads run.
 # Run in ~/fsa-gpu (run_cases_gpu.py, cases.py, results/*.jsonl); outputs go to out/cpu_v2/
 set -u

@@ -1,3 +1,6 @@
+# AI assistance: written with Claude (Anthropic; Claude Code, Claude Opus 5/5.5),
+# then reviewed, run and validated by Ben Colbourne. See the thesis's
+# Statement on the Use of Generative AI.
 """Per-cycle PE control grid for rows 0..n-1 around LOAD_STATIONARY -> TENSOR_MUL."""
 import sys
 sys.path.insert(0, sys.argv[2])

@@ -1,3 +1,5 @@
+> AI assistance: written with Claude (Anthropic; Claude Code, Claude Opus 5/5.5), then reviewed and validated by Ben Colbourne. See the thesis's Statement on the Use of Generative AI.
+
 # Coverage reconcile (Task 3c, parts 1–2) — 2026-10-11
 
 `python/extract_einsum_cases.py` re-run against the role planner. Raw outputs:

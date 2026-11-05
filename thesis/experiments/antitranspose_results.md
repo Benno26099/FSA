@@ -1,3 +1,5 @@
+> AI assistance: written with Claude (Anthropic; Claude Code, Claude Opus 5/5.5), then reviewed and validated by Ben Colbourne. See the thesis's Statement on the Use of Generative AI.
+
 # anti_transpose source experiment — results (2026-10-02)
 
 Script: `antitranspose_experiment.py` (this directory). Run from

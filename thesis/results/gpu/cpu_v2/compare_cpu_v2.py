@@ -1,3 +1,6 @@
+# AI assistance: written with Claude (Anthropic; Claude Code, Claude Opus 5/5.5),
+# then reviewed, run and validated by Ben Colbourne. See the thesis's
+# Statement on the Use of Generative AI.
 """Form-matched FSA vs best-CPU at k = N from the *_cpu_v2.csv files.
 
 usage: compare_cpu_v2.py <dir with *_cpu_v2*.csv> <results dir (has final_new/)> [suffix] [out.csv]
