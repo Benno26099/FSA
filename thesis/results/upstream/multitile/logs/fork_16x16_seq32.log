@@ -1,0 +1,18 @@
+fsa package: /home/ben/chipyard/chipyard-fsa/generators/fsa/python/fsa/__init__.py
+testing $random e23cbb39
+FSA: dmaActive =        226
+FSA: dmaInst =         12
+FSA: execTime =        566
+FSA: fence =          1
+FSA: mxActive =        482
+FSA: mxBubble =         55
+FSA: mxInst =         16
+FSA: rawInst =         97
+*** PASSED *** Completed after                17377 simulation cycles
+Using simulator binary: /home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug
+Loading config from: /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/chipyard.harness.TestHarness.FSA16X16Fp16Config.FSAConfig.json
+Start simulation with cmd: ['/home/ben/chipyard/chipyard-fsa/sims/verilator/simulator-chipyard.harness-FSA16X16Fp16Config-debug', '/tmp/claude-1000/-home-ben-chipyard/a55bd2db-0171-4d12-8d18-2680bc8c3c0d/scratchpad/mt/fork_16x16_seq32/inst.bin', '+loadmem=/tmp/claude-1000/-home-ben-chipyard/a55bd2db-0171-4d12-8d18-2680bc8c3c0d/scratchpad/mt/fork_16x16_seq32/mem.elf', '+max-cycles=0', '+verbose', '+dump-mem=/tmp/claude-1000/-home-ben-chipyard/a55bd2db-0171-4d12-8d18-2680bc8c3c0d/scratchpad/mt/fork_16x16_seq32/0x80000c00.bin:0x80000c00:0x800']
+[fsa] Memory dump configured: /tmp/claude-1000/-home-ben-chipyard/a55bd2db-0171-4d12-8d18-2680bc8c3c0d/scratchpad/mt/fork_16x16_seq32/0x80000c00.bin, start=0x80000c00, size=2048
+- /home/ben/chipyard/chipyard-fsa/sims/verilator/generated-src/chipyard.harness.TestHarness.FSA16X16Fp16Config/gen-collateral/TestDriver.v:158: Verilog $finish
+Comparing with Torch...
+Error of FSA vs torch: {'MAE': np.float32(0.000103057595), 'MSE': np.float32(1.551501e-08), 'MaxErr': np.float32(0.00028389692), 'RelErr': np.float32(0.00019603198)}
