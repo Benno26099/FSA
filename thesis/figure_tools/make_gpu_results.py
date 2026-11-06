@@ -133,7 +133,7 @@ def line(ax, xs, ys, color, marker, label, dashed=False, end_label=True, dy=1.0)
     ax.plot(xs, ys, color=color, linewidth=2, marker=marker, markersize=6, markeredgecolor="white",
             markeredgewidth=0.8, linestyle="--" if dashed else "-", label=label, zorder=3)
     if end_label:
-        ax.text(xs[-1] * 1.09, ys[-1] * dy, label, va="center", fontsize=8, color=M.INK2)
+        ax.text(xs[-1] * 1.09, ys[-1] * dy, label, va="center", fontsize=9, color=M.INK2)
 
 
 # ---------------------------------------------------------------- accuracy (T11, F8)
@@ -197,7 +197,7 @@ def accuracy(fsa_dir, gpu_dir, tdir, fdir, md):
     ax.set_ylim(len(rules) - 0.5, -0.6)
     ax.set_xlabel("Normwise relative error against fp64 (log scale; dot = median, bar = 10th–90th percentile)")
     M.style(ax)
-    ax.legend(frameon=False, fontsize=8, ncol=3, loc="lower left", bbox_to_anchor=(0, 1.0))
+    ax.legend(frameon=False, fontsize=9, ncol=3, loc="lower left", bbox_to_anchor=(0, 1.0))
     M.save(fig, fdir, "F8_gpu_accuracy_by_rule")
 
 
@@ -301,7 +301,7 @@ def batch_sweep(fsa_dir, gpu_dir, tdir, fdir, md):
         ax.plot([p[0] for p in pts], [p[1] for p in pts], color=M.SA_RAMP[n], linewidth=2, marker=M.SA_MARK[n],
                 markersize=5, markeredgecolor="white", markeredgewidth=0.8, label=f"GPU, {M.arr(n)} operands", zorder=3)
         ax.hlines(fsa_line[n], 0.8, 1300, color=M.SA_RAMP[n], linewidth=1.2, linestyle="--", zorder=2)
-        ax.text(1450, fsa_line[n], f"FSA, {M.arr(n)}", fontsize=8, color=M.INK2,
+        ax.text(1450, fsa_line[n], f"FSA, {M.arr(n)}", fontsize=9, color=M.INK2,
                 va={4: "top", 8: "bottom"}.get(n, "center"))
     ax.set_xscale("log", base=2)
     ax.set_yscale("log")
@@ -312,7 +312,7 @@ def batch_sweep(fsa_dir, gpu_dir, tdir, fdir, md):
     ax.set_xlabel("Matrix products per GPU call (B)")
     ax.set_ylabel("Time per matrix product (µs, log scale)")
     style_y(ax)
-    ax.legend(frameon=False, fontsize=8, loc="upper right", bbox_to_anchor=(0.72, 1.0))
+    ax.legend(frameon=False, fontsize=9, loc="upper right", bbox_to_anchor=(0.72, 1.0))
     M.save(fig, fdir, "F10_gpu_batch_sweep_matmul")
 
 
@@ -360,7 +360,7 @@ def large(fsa_dir, gpu_dir, tdir, fdir, md):
     line(ax, [p[0] for p in fsa_pts], [p[1] for p in fsa_pts], C_FSA, "o", "FSA at 1.5 GHz, array = matrix size")
     line(ax, [p[0] for p in fsa_slow], [p[1] for p in fsa_slow], C_FSA, "o", "FSA at 70 MHz", dashed=True)
     ax.axhline(GPU_PEAK_FP32_GFLOPS, color=M.INK2, linewidth=1, linestyle=":")
-    ax.text(4.2, GPU_PEAK_FP32_GFLOPS * 1.25, "GPU fp32 peak", fontsize=8, color=M.INK2)
+    ax.text(4.2, GPU_PEAK_FP32_GFLOPS * 1.25, "GPU fp32 peak", fontsize=9, color=M.INK2)
     ax.set_xscale("log", base=2)
     ax.set_yscale("log")
     ticks = [4, 16, 64, 256, 1024, 4096]
@@ -372,7 +372,7 @@ def large(fsa_dir, gpu_dir, tdir, fdir, md):
     ax.set_xlabel("Matrix size n (n×n by n×n product, fp32 on the GPU)")
     ax.set_ylabel("GFLOP/s (2n³ / time, log scale)")
     style_y(ax)
-    ax.legend(frameon=False, fontsize=8, loc="lower right")
+    ax.legend(frameon=False, fontsize=9, loc="lower right")
     for t in ax.texts[:4]:
         t.set_visible(False)   # legend carries identity: the end labels would run off the right edge
     M.save(fig, fdir, "F11_gpu_matmul_throughput_by_size")

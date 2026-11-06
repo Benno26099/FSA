@@ -27,11 +27,18 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt   # noqa: E402
 import matplotlib.ticker   # noqa: E402
+import matplotlib.font_manager   # noqa: E402
 
 SIZES = (4, 8, 16, 32)
 INK, INK2, GRID = "#0b0b0b", "#52514e", "#e6e5e1"
 SLOTS = ("#2a78d6", "#eb6834", "#1baf7a")
-plt.rcParams.update({"font.size": 9, "font.family": "DejaVu Sans", "axes.edgecolor": INK2,
+# Latin Modern (the OpenType Computer Modern) to match the thesis body text; DejaVu Serif
+# supplies the few glyphs Latin Modern lacks (superscript T, >=).
+FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
+for _f in sorted(os.listdir(FONT_DIR)):
+    matplotlib.font_manager.fontManager.addfont(os.path.join(FONT_DIR, _f))
+plt.rcParams.update({"font.size": 10, "font.family": ["Latin Modern Roman", "DejaVu Serif"],
+                     "mathtext.fontset": "cm", "pdf.fonttype": 3, "axes.edgecolor": INK2,
                      "xtick.color": INK2, "ytick.color": INK2, "text.color": INK,
                      "axes.labelcolor": INK2})
 missing = []
@@ -178,7 +185,7 @@ def coverage(res, tdir, fdir, md):
         ax.barh(labels, vals, color=colors, height=0.62)
         ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, _: f"{int(x):,}"))
         for y, v in enumerate(vals):
-            ax.text(v + 8000, y, f"{v:,}", va="center", fontsize=8, color=INK2)
+            ax.text(v + 8000, y, f"{v:,}", va="center", fontsize=9, color=INK2)
         ax.set_xlabel("Pairwise contraction steps in the einsum benchmark (1,615,342 in total)")
         ax.set_xlim(0, max(vals) * 1.18)
         style(ax)
@@ -213,7 +220,7 @@ def benchmark_exec(res, tdir, fdir, md):
                 [100 * d[k] / total for k in ks][::-1], color=SLOTS[0], height=0.6)
         for y, k in enumerate(ks[::-1]):
             ax.text(100 * d[k] / total + 1, y, f"{100 * d[k] / total:.1f}%  ({d[k]:,} steps)",
-                    va="center", fontsize=8, color=INK2)
+                    va="center", fontsize=9, color=INK2)
         ax.set_xlim(0, 115)
         ax.set_xlabel("Share of benchmark steps in the 2D class (%)")
         style(ax)
@@ -262,9 +269,9 @@ def class_runs(res, tdir, fdir, md):
             n_exact = sum(r["family"] == rule for r in exact)
             if n_exact and not any(r["family"] == rule for r in data):
                 ax.text(1.2e-8, RULE_ORDER.index(rule), f"All {n_exact} cases exact",
-                        va="center", fontsize=8, color=INK2)
+                        va="center", fontsize=9, color=INK2)
         ax.set_ylim(len(RULE_ORDER) - 0.4, -0.6)
-        ax.legend(frameon=False, fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=3)
+        ax.legend(frameon=False, fontsize=9, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=3)
         save(fig, fdir, "F3_precision_by_rule")
 
     reps = [("ij,jk->ik", "Matrix product"), ("ij,ij->ij", "Hadamard"), ("ij->ji", "Transpose")]
@@ -293,7 +300,7 @@ def class_runs(res, tdir, fdir, md):
             close_above = j > 0 and ends[j - 1][0] - y < 0.08 * ends[0][0]
             close_below = j + 1 < len(ends) and y - ends[j + 1][0] < 0.08 * ends[0][0]
             va = "top" if close_above else "bottom" if close_below else "center"
-            ax.text(SIZES[-1] * 1.08, y, label, va=va, fontsize=8, color=INK2)
+            ax.text(SIZES[-1] * 1.08, y, label, va=va, fontsize=9, color=INK2)
         ax.set_xscale("log", base=2)
         ax.set_xticks(SIZES)
         ax.set_xticklabels([arr(n) for n in SIZES])
@@ -306,7 +313,7 @@ def class_runs(res, tdir, fdir, md):
         ax.set_axisbelow(True)
         for s in ("top", "right"):
             ax.spines[s].set_visible(False)
-        ax.legend(frameon=False, fontsize=8, loc="upper left")
+        ax.legend(frameon=False, fontsize=9, loc="upper left")
         save(fig, fdir, "F4_exectime_vs_sa_size")
 
 
@@ -354,7 +361,7 @@ def blas3(res, tdir, fdir, md):
             pts = sorted(set(series[label]))
             ax.plot([p[0] for p in pts], [p[1] for p in pts], color=SLOTS[i], linewidth=2, marker="o",
                     markersize=5, markeredgecolor="white", label=label)
-            ax.text(pts[-1][0] * 1.08, pts[-1][1], f"{pts[-1][1]:,}", va="center", fontsize=8, color=INK2)
+            ax.text(pts[-1][0] * 1.08, pts[-1][1], f"{pts[-1][1]:,}", va="center", fontsize=9, color=INK2)
         ax.set_xscale("log", base=2)
         ax.set_xticks(SIZES)
         ax.set_xticklabels([arr(n) for n in SIZES])
@@ -367,7 +374,7 @@ def blas3(res, tdir, fdir, md):
         ax.set_axisbelow(True)
         for sp in ("top", "right"):
             ax.spines[sp].set_visible(False)
-        ax.legend(frameon=False, fontsize=8, loc="upper left")
+        ax.legend(frameon=False, fontsize=9, loc="upper left")
         save(fig, fdir, "F5_blas3_transpose_cost")
 
 
@@ -480,7 +487,7 @@ def scaling(res, tdir, fdir, md):
     ax.set_axisbelow(True)
     for sp in ("top", "right"):
         ax.spines[sp].set_visible(False)
-    ax.legend(frameon=False, fontsize=8, loc="upper left")
+    ax.legend(frameon=False, fontsize=9, loc="upper left")
     save(fig, fdir, "F6_scaling_matmul_throughput")
 
     # F7: execTime per pass at full size, by form, one dot per SA size.
@@ -505,7 +512,7 @@ def scaling(res, tdir, fdir, md):
     ax.set_ylim(len(forms) - 0.4, -0.6)
     ax.set_xlabel("Execution time per pass (cycles, log scale), operands at full size")
     style(ax)
-    ax.legend(frameon=False, fontsize=8, ncol=4, loc="lower left", bbox_to_anchor=(0, 1.0),
+    ax.legend(frameon=False, fontsize=9, ncol=4, loc="lower left", bbox_to_anchor=(0, 1.0),
               handletextpad=0.3, columnspacing=1.2)
     save(fig, fdir, "F7_scaling_exectime_by_form")
 

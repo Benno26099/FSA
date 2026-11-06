@@ -8,7 +8,7 @@
 WaveDrom draws text at a fixed pixel size relative to each cycle's width, so a
 figure 40-50 cycles wide prints at about 2 pt when scaled to the text width.
 This script redraws the same WaveJSON (same lanes, values, gaps and arrows)
-with matplotlib at the size it is printed, so the text is 8 pt in the PDF.
+with matplotlib at the size it is printed, so lane names are 9 pt in the PDF (Latin Modern, matching the body text).
 Include each PDF at its natural size (or at the width given in WIDTH_IN).
 
 Supported WaveJSON subset (all that plot_wavedrom.py emits): bit lanes
@@ -23,6 +23,7 @@ import sys
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
 from matplotlib.patches import Polygon
 
 TEXT_WIDTH_IN = 6.3          # A4 with 3 cm + 2 cm margins
@@ -34,15 +35,20 @@ WIDTH_IN = {                 # printed width of each figure, inches
 }
 # Edge labels that would collide with lane names at the default place (left of
 # the arrow's start): offset from the start node in cycles / lanes, and alignment.
-LABEL_AT = {"9 cycles before the first write": (0.6, -0.15, "left")}
+LABEL_AT = {"9 cycles before the first write": (0.6, -0.58, "left")}
 LANE_IN = 0.27               # height of one lane, inches
-NAME_PT, DATA_PT = 8, 7      # lane names, values inside data lanes
+NAME_PT, DATA_PT = 9, 8      # lane names, values inside data lanes
 GAP_W = 0.6                  # width of a '|' gap column, in cycles
 SLOPE = 0.12                 # transition width, in cycles
 AMP = 0.32                   # half the signal height, in lane units
+WRAP_AMP = 0.45              # half-height of a data lane whose labels wrap onto two lines
+WRAP_BELOW = 7.5             # wrap a label (at an underscore) that would print below this size
 
-plt.rcParams.update({"font.family": "sans-serif", "font.sans-serif": ["DejaVu Sans"],
-                     "pdf.fonttype": 42, "svg.fonttype": "none"})
+FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
+for _f in sorted(os.listdir(FONT_DIR)):
+    font_manager.fontManager.addfont(os.path.join(FONT_DIR, _f))
+plt.rcParams.update({"font.family": ["Latin Modern Roman", "DejaVu Serif"],
+                     "pdf.fonttype": 3, "svg.fonttype": "none"})
 
 
 def columns(n_cols, waves):
@@ -93,25 +99,47 @@ def draw_clock(ax, xs, y):
 
 
 def draw_data(ax, xs, states, data, y, gap):
-    i = 0
+    """Data lane. A label that would print below WRAP_BELOW pt on one line is split at an
+    underscore onto two lines, and the whole lane's boxes are drawn taller (WRAP_AMP)."""
+    segs, i = [], 0
     while i < len(states):
         j = i
         while j + 1 < len(states) and states[j + 1] == states[i]:
             j += 1
-        x0, x1 = xs[i], xs[j + 1]
-        poly = [(x0, y), (x0 + SLOPE, y + AMP), (x1 - SLOPE, y + AMP),
-                (x1, y), (x1 - SLOPE, y - AMP), (x0 + SLOPE, y - AMP)]
-        if states[i] == "x":
+        segs.append((xs[i], xs[j + 1], states[i]))
+        i = j + 1
+    labels = {}
+    for x0, x1, st in segs:
+        if st != "x":
+            labels[(x0, x1)] = data[st[1]] if st[1] < len(data) else ""
+    wrap = {k for k, v in labels.items()
+            if "_" in v and text_size(ax, v, k[1] - k[0] - 2 * SLOPE - 0.1) < WRAP_BELOW}
+    amp = WRAP_AMP if wrap else AMP
+    for x0, x1, st in segs:
+        poly = [(x0, y), (x0 + SLOPE, y + amp), (x1 - SLOPE, y + amp),
+                (x1, y), (x1 - SLOPE, y - amp), (x0 + SLOPE, y - amp)]
+        if st == "x":
             ax.add_patch(Polygon(poly, closed=True, facecolor="none", edgecolor="0.55",
                                  hatch="////", lw=0.5))
-        else:
-            ax.add_patch(Polygon(poly, closed=True, facecolor="white", edgecolor="black", lw=0.8))
-            label = data[states[i][1]] if states[i][1] < len(data) else ""
-            # white background so a gap mark inside the box passes behind the label
-            t = ax.text((x0 + x1) / 2, y, label, ha="center", va="center", fontsize=DATA_PT,
-                        zorder=3, bbox=dict(facecolor="white", edgecolor="none", pad=0.4))
-            fit_text(ax, t, x1 - x0 - 2 * SLOPE - 0.1)
-        i = j + 1
+            continue
+        ax.add_patch(Polygon(poly, closed=True, facecolor="white", edgecolor="black", lw=0.8))
+        label = labels[(x0, x1)]
+        if (x0, x1) in wrap:
+            k = min((m for m, ch in enumerate(label) if ch == "_"), key=lambda m: abs(m - len(label) / 2))
+            label = label[:k + 1] + "\n" + label[k + 1:]
+        # white background so a gap mark inside the box passes behind the label
+        t = ax.text((x0 + x1) / 2, y, label, ha="center", va="center", fontsize=DATA_PT,
+                    linespacing=1.0, zorder=3, bbox=dict(facecolor="white", edgecolor="none", pad=0.4))
+        fit_text(ax, t, x1 - x0 - 2 * SLOPE - 0.1)
+
+
+def text_size(ax, label, width):
+    """Font size fit_text would settle on for a one-line label."""
+    t = ax.text(0, 0, label, fontsize=DATA_PT)
+    fit_text(ax, t, width)
+    size = t.get_fontsize()
+    t.remove()
+    return size
 
 
 def fit_text(ax, t, width, min_pt=6.0):
