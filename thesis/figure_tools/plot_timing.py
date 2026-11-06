@@ -42,13 +42,24 @@ GAP_W = 0.6                  # width of a '|' gap column, in cycles
 SLOPE = 0.12                 # transition width, in cycles
 AMP = 0.32                   # half the signal height, in lane units
 WRAP_AMP = 0.45              # half-height of a data lane whose labels wrap onto two lines
-WRAP_BELOW = 7.5             # wrap a label (at an underscore) that would print below this size
+WRAP_BELOW = 8.0             # wrap a label (at an underscore) that would print below this size
 
 FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
 for _f in sorted(os.listdir(FONT_DIR)):
     font_manager.fontManager.addfont(os.path.join(FONT_DIR, _f))
 plt.rcParams.update({"font.family": ["Latin Modern Roman", "DejaVu Serif"],
+                     "mathtext.fontset": "custom", "mathtext.tt": "Latin Modern Mono",
+                     "mathtext.rm": "Latin Modern Roman",
                      "pdf.fonttype": 3, "svg.fonttype": "none"})
+
+
+def tt(text, ident=None):
+    """Set identifiers (any word containing '_') in typewriter, as the thesis body does;
+    Latin Modern Roman's long underscore otherwise reads as a doubled one at print size.
+    ident=True sets every word in typewriter (the second line of a wrapped identifier)."""
+    def word(w):
+        return "$\\mathtt{" + w.replace("_", "\\_") + "}$" if (ident or "_" in w) and w else w
+    return "\n".join(" ".join(word(w) for w in line.split(" ")) for line in text.split("\n"))
 
 
 def columns(n_cols, waves):
@@ -113,7 +124,7 @@ def draw_data(ax, xs, states, data, y, gap):
         if st != "x":
             labels[(x0, x1)] = data[st[1]] if st[1] < len(data) else ""
     wrap = {k for k, v in labels.items()
-            if "_" in v and text_size(ax, v, k[1] - k[0] - 2 * SLOPE - 0.1) < WRAP_BELOW}
+            if "_" in v and text_size(ax, v, k[1] - k[0] - 2 * SLOPE - 0.9) < WRAP_BELOW}
     amp = WRAP_AMP if wrap else AMP
     for x0, x1, st in segs:
         poly = [(x0, y), (x0 + SLOPE, y + amp), (x1 - SLOPE, y + amp),
@@ -128,14 +139,14 @@ def draw_data(ax, xs, states, data, y, gap):
             k = min((m for m, ch in enumerate(label) if ch == "_"), key=lambda m: abs(m - len(label) / 2))
             label = label[:k + 1] + "\n" + label[k + 1:]
         # white background so a gap mark inside the box passes behind the label
-        t = ax.text((x0 + x1) / 2, y, label, ha="center", va="center", fontsize=DATA_PT,
+        t = ax.text((x0 + x1) / 2, y, tt(label, "_" in labels[(x0, x1)]), ha="center", va="center", fontsize=DATA_PT,
                     linespacing=1.0, zorder=3, bbox=dict(facecolor="white", edgecolor="none", pad=0.4))
-        fit_text(ax, t, x1 - x0 - 2 * SLOPE - 0.1)
+        fit_text(ax, t, x1 - x0 - 2 * SLOPE - 0.9)
 
 
 def text_size(ax, label, width):
     """Font size fit_text would settle on for a one-line label."""
-    t = ax.text(0, 0, label, fontsize=DATA_PT)
+    t = ax.text(0, 0, tt(label), fontsize=DATA_PT)
     fit_text(ax, t, width)
     size = t.get_fontsize()
     t.remove()
@@ -213,7 +224,7 @@ def render(spec, name, out):
 
     fig = plt.figure(figsize=(width, height))
     # left margin wide enough for the longest lane name
-    probe = fig.text(0, 0, max((s["name"] for s in signal), key=len), fontsize=NAME_PT)
+    probe = fig.text(0, 0, tt(max((s["name"] for s in signal), key=len)), fontsize=NAME_PT)
     fig.canvas.draw()
     name_in = probe.get_window_extent().width / fig.dpi + 0.08
     probe.remove()
@@ -233,7 +244,7 @@ def render(spec, name, out):
 
     for lane, s in enumerate(signal):
         y = -lane
-        ax.text(-0.25, y, s["name"], ha="right", va="center", fontsize=NAME_PT,
+        ax.text(-0.25, y, tt(s["name"]), ha="right", va="center", fontsize=NAME_PT,
                 transform=ax.transData, clip_on=False)
         w = s.get("wave", "")
         if w.startswith("p"):
